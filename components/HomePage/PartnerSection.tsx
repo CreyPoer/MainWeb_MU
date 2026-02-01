@@ -1,0 +1,309 @@
+"use client";
+
+import React, { useState } from "react";
+import Image from "next/image";
+import { FaArrowUp } from "react-icons/fa";
+
+// --- DUMMY DATA ---
+const PARTNERS_DATA = [
+    {
+        id: "main-1",
+        name: "Kangean Energy",
+        type: "MAIN SPONSOR",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
+        isMain: true,
+    },
+    {
+        id: "p-1",
+        name: "Warrior",
+        type: "APPAREL PARTNER",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
+        isMain: false,
+    },
+    {
+        id: "p-2",
+        name: "Vidio",
+        type: "OFFICIAL BROADCASTER",
+        logo: "https://upload.wikimedia.org/wikipedia/id/4/49/Logo_Vidio_Apps.png",
+        isMain: false,
+    },
+    {
+        id: "p-3",
+        name: "POIN BET",
+        type: "OFFICIAL PARTNER",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png",
+        isMain: false,
+    },
+    {
+        id: "p-4",
+        name: "Coca Cola",
+        type: "OFFICIAL DRINK",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/960px-Coca-Cola_logo.svg.png",
+        isMain: false,
+    },
+    {
+        id: "p-5",
+        name: "BCA",
+        type: "OFFICIAL BANK",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
+        isMain: false,
+    },
+    {
+        id: "p-6",
+        name: "Lion Air",
+        type: "OFFICIAL AIRLINE",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
+        isMain: false,
+    },
+    {
+        id: "p-7",
+        name: "Extra Joss",
+        type: "ENERGY PARTNER",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
+        isMain: false,
+    },
+    {
+        id: "p-8",
+        name: "Extra Joss",
+        type: "ENERGY PARTNER",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
+        isMain: false,
+    },
+
+];
+
+export default function PartnerSection() {
+    const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+    return (
+        <section style={{
+            position: 'relative',
+            padding: '80px 24px',
+            overflow: 'hidden',
+            backgroundColor: '#ffffff',
+            backgroundImage: 'radial-gradient(circle at top right, #fef2f2, #ffffff, #ffffff)'
+        }}>
+
+            <div style={{ maxWidth: '1280px', margin: '0 auto', position: 'relative' }}>
+
+                {/* HEADER */}
+                <div style={{ textAlign: 'center', marginBottom: '64px' }} data-aos="fade-down">
+                    <h5 style={{
+                        color: '#DC2626',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontSize: '14px',
+                        marginBottom: '8px'
+                    }}>
+                        Online Store
+                    </h5>
+                    <h2 style={{
+                        fontSize: '36px',
+                        fontWeight: '900',
+                        textTransform: 'uppercase',
+                        color: '#111827',
+                        lineHeight: '1.2'
+                    }} className="header-title">
+                        General Partners & Sponsors <br />
+                        <span style={{ color: '#DC2626' }}>Of Madura United</span>
+                    </h2>
+                </div>
+
+
+                {/* BENTO GRID */}
+                <div className="partner-grid" data-aos="fade-up">
+                    {PARTNERS_DATA.map((partner, index) => {
+                        const isHovered = hoveredId === partner.id;
+                        const hasHover = hoveredId !== null;
+                        const isDimmed = hasHover && !isHovered;
+
+                        const isMain = partner.isMain;
+
+                        // Calculate Initial Transform State (The "Off" state)
+                        // If it's hovered, we shouldn't worry about entry animation because it's already entered (presumably).
+                        // BUT, to be safe, we rely on the CSS !important override for the "Active" state.
+                        // Here we define the "Hidden" state values.
+                        let initialTransform = '';
+                        if (isMain) {
+                            initialTransform = 'scale(0.5) translateY(30px)'; // Pop up
+                        } else if (index % 2 === 0) {
+                            initialTransform = 'translateX(50px) rotate(5deg)'; // From Right
+                        } else {
+                            initialTransform = 'translateX(-50px) rotate(-5deg)'; // From Left
+                        }
+
+                        // Determine final transform style
+                        // If AOS is active (we can't easily check JS state for AOS), we rely on CSS !important.
+                        // However, we must provide the base style here.
+                        // The CSS rule `:global(.partner-grid.aos-animate) .partner-card-custom` will override this `transform`.
+                        // EXCEPT inline styles usually beat CSS classes.
+                        // WE WILL USE A CSS VARIABLE to get around this cleanly or rely on !important in CSS.
+                        // Since I added !important in the CSS block, it will override this inline style when active.
+
+                        return (
+                            <div
+                                key={partner.id}
+                                className={`partner-card partner-card-custom ${isMain ? 'main-sponsor' : ''}`}
+                                // Remove individual data-aos
+                                style={{
+                                    // Use CSS Variables for the animation start state
+                                    "--initial-transform": initialTransform,
+                                    "--initial-opacity": 0,
+
+                                    // On Hover, we apply a specific transform inline.
+                                    // If NOT hovered, we want to fallback to the CSS class behavior (which uses variables or 'none' based on AOS).
+                                    // So we only emit 'transform' key if hovered.
+                                    ...(isHovered ? { transform: "translateY(-4px) scale(1.01)" } : {}),
+
+                                    // For dimming, same logic. If dimmed, specific opacity.
+                                    // If active (aos-animate), opacity is 1.
+                                    // If dimmed, we want 0.4. Inline beats CSS.
+                                    ...(isDimmed ? { opacity: 0.4 } : {}),
+
+                                    // Other props
+                                    filter: isDimmed ? "grayscale(100%) blur(1px)" : "grayscale(0%) blur(0px)",
+                                    borderColor: isHovered ? "rgba(220, 38, 38, 0.3)" : "rgba(0,0,0,0.05)",
+                                    transitionDelay: `${index * 100}ms`, // Inline delay
+                                    boxShadow: isHovered
+                                        ? "0 20px 40px -10px rgba(220, 38, 38, 0.15)"
+                                        : "0 4px 6px -1px rgba(0, 0, 0, 0.02)",
+                                    zIndex: isHovered ? 10 : 1
+                                } as React.CSSProperties}
+                                onMouseEnter={() => setHoveredId(partner.id)}
+                                onMouseLeave={() => setHoveredId(null)}
+                            >
+                                {/* HOVER GLOW BACKGROUND */}
+                                <div
+                                    className="glow-effect"
+                                    style={{ opacity: isHovered ? 1 : 0 }}
+                                />
+
+                                {/* CONTENT */}
+                                <div className="card-content">
+
+                                    {/* LOGO */}
+                                    <div className="logo-container" style={{
+                                        width: partner.isMain ? '220px' : '140px',
+                                        height: partner.isMain ? '220px' : '140px',
+                                    }}>
+                                        <Image
+                                            src={partner.logo}
+                                            alt={partner.name}
+                                            fill
+                                            style={{
+                                                objectFit: 'contain',
+                                                filter: isHovered ? 'none' : 'grayscale(100%)',
+                                                opacity: isHovered ? 1 : 0.7,
+                                                transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                                                transition: 'all 0.4s ease'
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* TYPE LABEL */}
+
+
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+            </div>
+
+            <style jsx>{`
+                /* Base Animation State */
+                .partner-card-custom {
+                    transform: var(--initial-transform, translateY(30px));
+                    opacity: var(--initial-opacity, 0); 
+                    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                }
+
+                /* Active State (Triggered by AOS on parent) */
+                :global(.partner-grid.aos-animate) .partner-card-custom {
+                    opacity: 1;
+                    transform: translate3d(0, 0, 0) rotate(0) scale(1);
+                }
+
+                /* Grid Layout */
+                .partner-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 16px;
+                    width: 100%;
+                    padding: 32px;
+                }
+
+                /* Card Styles */
+                .partner-card {
+                    background-color: rgba(255, 255, 255, 0.6);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    border-radius: 16px;
+                    position: relative;
+                    overflow: hidden;
+                    cursor: pointer;
+                    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 180px;
+                }
+
+                .card-content {
+                    position: relative;
+                    z-index: 2;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    padding: 24px;
+                }
+
+                .logo-container {
+                    position: relative;
+                    transition: all 0.5s ease;
+                }
+
+                .glow-effect {
+                    position: absolute;
+                    inset: 0;
+                    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8), transparent 70%);
+                    pointer-events: none;
+                    transition: opacity 0.5s ease;
+                    z-index: 1;
+                }
+
+                /* RESPONSIVE: Desktop */
+                @media (min-width: 768px) {
+                    .partner-grid {
+                        grid-template-columns: repeat(4, 1fr);
+                        grid-auto-rows: 200px; /* Fixed height for consistent bento rows */
+                    }
+
+                    .main-sponsor {
+                        grid-column: span 2;
+                        grid-row: span 2;
+                        min-height: 416px; /* 200 * 2 + 16 gap */
+                    }
+
+                    .header-title {
+                        font-size: 48px !important;
+                    }
+                }
+
+                /* RESPONSIVE: Mobile tweaks */
+                @media (max-width: 767px) {
+                    .main-sponsor {
+                        grid-column: span 2; /* Full width on mobile */
+                        min-height: 300px;
+                    }
+                }
+            `}</style>
+        </section >
+    );
+}

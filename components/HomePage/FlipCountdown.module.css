@@ -1,0 +1,322 @@
+/* Ported from flip-countdown-css-js - STRICT MODE */
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    user-select: none;
+}
+
+.interval_cont {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+}
+
+.digits {
+    display: flex;
+    gap: 5px;
+}
+
+.description {
+    margin-top: 5px;
+    font-size: 0.6rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    padding: 0 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.digit_cont {
+    position: relative;
+    width: 34px;
+    height: 50px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 50px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #202020;
+    perspective: 300px;
+    transform-style: preserve-3d;
+    /* Critical for 3D children */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    /* Keep hidden to clip content */
+}
+
+.digit_cont span {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50px !important;
+    line-height: 50px !important;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Middle Line */
+.digit_cont:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+/* --- STATIC LAYERS --- */
+
+/* Old Bottom (Static) - Base Layer */
+.last_placeholder {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    bottom: 0;
+    background: linear-gradient(to bottom, #2a2a2a 0%, #151515 100%);
+    z-index: 0;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+}
+
+.last_placeholder span {
+    top: -25px;
+}
+
+/* New Top (Static) - Base Layer */
+.new_placeholder {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    top: 0;
+    background: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+    z-index: 0;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+}
+
+.new_placeholder span {
+    top: 0;
+}
+
+
+/* --- ANIMATING LAYERS --- */
+
+/* Old Top (Flaps Down) */
+.last_rotate {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    top: 0;
+    background: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+
+    transform-origin: 50% 100%;
+    /* Hinge at Bottom */
+    animation: last_rotate 0.5s linear forwards;
+    z-index: 1;
+    /* Starts ABOVE new_placeholder (z0) */
+}
+
+.last_rotate span {
+    top: 0;
+}
+
+/* New Bottom (Flaps Down) */
+.new_rotate {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    top: 0;
+    background: linear-gradient(to top, #2a2a2a 0%, #151515 100%);
+    /* Inverted Gradient */
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+
+    transform-origin: 50% 100%;
+    /* Hinge at Bottom */
+    animation: new_rotate 0.5s linear forwards;
+    z-index: 0;
+    /* Starts BELOW last_rotate (z1) */
+}
+
+/* Inner content must be pre-rotated 180deg so it's upright when container flips -180deg */
+.new_rotate .rotated {
+    width: 100%;
+    height: 100%;
+    transform: rotateX(180deg);
+    overflow: hidden;
+    position: relative;
+}
+
+.new_rotate .rotated span {
+    top: -25px;
+}
+
+/* Shows Bottom Half */
+
+
+/* --- KEYFRAMES (Matched to Reference) --- */
+
+@keyframes last_rotate {
+    0% {
+        transform: rotateX(0deg);
+        z-index: 1;
+    }
+
+    100% {
+        transform: rotateX(-180deg);
+        z-index: 0;
+        /* Ends behind */
+    }
+}
+
+@keyframes new_rotate {
+    0% {
+        transform: rotateX(0deg);
+        z-index: 0;
+    }
+
+    100% {
+        transform: rotateX(-180deg);
+        z-index: 1;
+        /* Ends in front of last_placeholder */
+    }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .wrapper {
+        gap: 0.5rem;
+    }
+
+    .digit_cont {
+        width: 60px;
+        height: 90px;
+        font-size: 60px;
+        line-height: 90px;
+        border-radius: 6px;
+    }
+
+    .digit_cont span {
+        height: 90px !important;
+        line-height: 90px !important;
+    }
+
+    .digit_cont:after {
+        height: 2px;
+    }
+
+    .last_placeholder {
+        border-radius: 0 0 6px 6px;
+    }
+
+    .last_placeholder span {
+        top: -45px;
+    }
+
+    .new_placeholder {
+        border-radius: 6px 6px 0 0;
+    }
+
+    .last_rotate {
+        border-radius: 6px 6px 0 0;
+    }
+
+    .new_rotate {
+        border-radius: 6px 6px 0 0;
+    }
+
+    .new_rotate .rotated span {
+        top: -45px;
+    }
+
+    .description {
+        font-size: 0.75rem;
+    }
+
+    .separator {
+        font-size: 2.5rem;
+        padding: 0 0.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Extra Small Mobile Devices (below 400px) */
+@media (max-width: 400px) {
+    .wrapper {
+        gap: 0.25rem;
+    }
+
+    .digit_cont {
+        width: 28px;
+        height: 42px;
+        font-size: 24px;
+        line-height: 42px;
+        border-radius: 3px;
+    }
+
+    .digit_cont span {
+        height: 42px !important;
+        line-height: 42px !important;
+    }
+
+    .digit_cont:after {
+        height: 1px;
+    }
+
+    .last_placeholder {
+        border-radius: 0 0 3px 3px;
+    }
+
+    .last_placeholder span {
+        top: -21px;
+    }
+
+    .new_placeholder {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .last_rotate {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .new_rotate {
+        border-radius: 3px 3px 0 0;
+    }
+
+    .new_rotate .rotated span {
+        top: -21px;
+    }
+
+    .description {
+        font-size: 0.5rem;
+        margin-top: 3px;
+    }
+
+    .separator {
+        font-size: 1.2rem;
+        padding: 0 0.15rem;
+        margin-bottom: 1rem;
+    }
+}
