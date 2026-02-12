@@ -1,0 +1,166 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  background: #ffffff;
+  padding: 3rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 4rem 2.5rem;
+  }
+}
+
+.bgPhoto {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  background-image: url("/suporter.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: grayscale(1);
+  opacity: 0.22;
+}
+
+.bgOverlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -9;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 92%, rgba(255, 255, 255, 1) 100%);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  color: #111827;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.title {
+  margin-top: 0.5rem;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b91c1c;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 34px;
+  }
+}
+
+.rule {
+  display: none;
+  height: 1px;
+  flex: 1;
+  background: #e5e7eb;
+}
+
+@media (min-width: 768px) {
+  .rule {
+    display: block;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #f3f4f6;
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 250ms ease;
+}
+
+.card:link,
+.card:visited,
+.card:hover,
+.card:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
+}
+
+.accent {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 6px;
+  background: #b91c1c;
+  transform-origin: 50% 50%;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  display: block;
+}
+
+.cardTitle {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #111827;
+}
+
+.cardDesc {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.75;
+  color: #1f2937;
+}

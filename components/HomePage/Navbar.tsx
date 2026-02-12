@@ -66,6 +66,7 @@ export default function Navbar() {
         {
             label: 'Media',
             submenu: [
+                { label: 'Berita', href: '/media/berita' },
                 { label: 'Gallery', href: '/media/gallery' },
                 { label: 'Infografik', href: '/media/infografik' },
                 { label: 'Video', href: '/media/video' }

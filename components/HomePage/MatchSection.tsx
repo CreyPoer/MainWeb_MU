@@ -104,12 +104,12 @@ export default function MatchSection() {
                     <div className="hidden md:grid" style={{ gridTemplateColumns: '1fr auto', gap: 'clamp(1rem, 3vw, 3rem)', alignItems: 'center', justifyContent: 'end' }}>
                         {/* Name Column - ALWAYS stays in its column (OUTER LEFT) */}
                         <div className="flex justify-end items-center" style={{ overflow: 'visible' }}>
-                            <h2 className="font-black uppercase text-white tracking-tighter leading-none text-right" style={{ fontSize: 'clamp(2rem, 4vw, 5rem)', whiteSpace: 'nowrap' }}>
+                            <h2 className="font-black uppercase text-white tracking-tighter leading-none text-right" style={{ fontSize: 'clamp(2rem, 4vw, 5rem)', whiteSpace: 'normal' }}>
                                 {nextMatch.home_team}
                             </h2>
                         </div>
                         {/* Logo Column - ALWAYS stays in its column (CENTER) */}
-                        <div className="shrink-0 transition-transform duration-500 hover:scale-110">
+                        <div className="shrink-0 transition-transform duration-500 hover:scale-110" style={{ position: 'relative', zIndex: 10 }}>
                             {nextMatch.home_logo ? (
                                 <Image
                                     src={nextMatch.home_logo}
@@ -229,17 +229,6 @@ export default function MatchSection() {
                 </div>
 
             </div>
-
-            {/* GO TOP BUTTON */}
-            <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="fixed bottom-8 right-8 w-12 h-12 md:w-16 md:h-16 bg-[#D32F2F] rounded-full flex flex-col items-center justify-center text-white shadow-2xl hover:bg-[#b71c1c] hover:-translate-y-2 transition-all z-50 border-2 md:border-4 border-[#151515]"
-            >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="mb-0 md:mb-1 w-5 h-5 md:w-6 md:h-6">
-                    <path d="M12 19V5M5 12l7-7 7 7" />
-                </svg>
-                <span className="text-[7px] md:text-[9px] font-black uppercase leading-none">TOP</span>
-            </button>
         </section>
     );
 }

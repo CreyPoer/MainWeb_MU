@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaArrowUp } from 'react-icons/fa';
 
 interface Slider {
     id: number;
@@ -16,20 +15,10 @@ export default function HeroSlider() {
     const [sliders, setSliders] = useState<Slider[]>([]);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const [showGoTop, setShowGoTop] = useState(false);
     const [animationKey, setAnimationKey] = useState(0);
 
     useEffect(() => {
         fetchSliders();
-    }, []);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowGoTop(window.scrollY > 300);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     useEffect(() => {
@@ -58,10 +47,6 @@ export default function HeroSlider() {
     const goToSlide = (index: number) => {
         setCurrentSlide(index);
         setAnimationKey((prev) => prev + 1); // Force animation restart
-    };
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     if (isLoading) {
@@ -141,14 +126,6 @@ export default function HeroSlider() {
                     </button>
                 ))}
             </div>
-
-            {/* Go Top Button */}
-            {showGoTop && (
-                <button onClick={scrollToTop} className="go-top-btn">
-                    <FaArrowUp />
-                    <span>GO TOP</span>
-                </button>
-            )}
         </div>
     );
 }

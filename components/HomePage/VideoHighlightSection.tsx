@@ -9,9 +9,6 @@ const VIDEO_DATA = [
     { id: "opya-Ta2PgQ", title: "Highlight Match 1", date: "FEB 28, 2018", duration: "10:30" },
     { id: "fZDbSj-mUsI", title: "Highlight Match 2", date: "FEB 28, 2018", duration: "08:15" },
     { id: "avdO-Dyi7Hk", title: "Highlight Match 3", date: "FEB 28, 2018", duration: "12:00" },
-    { id: "2N0tdwa1yeM", title: "Highlight Match 4", date: "FEB 28, 2018", duration: "05:45" },
-    { id: "Zcfa0IqPQn8", title: "Highlight Match 5", date: "FEB 28, 2018", duration: "09:20" },
-    { id: "eT4nHU8_uIo", title: "Highlight Match 6", date: "FEB 28, 2018", duration: "09:20" },
 ];
 
 export default function VideoHighlightSection() {
@@ -46,7 +43,7 @@ export default function VideoHighlightSection() {
                 transform: "translateX(-50%)",
                 fontSize: "12vw",
                 fontWeight: "900",
-                color: "rgba(255, 255, 255, 0.14)",
+                color: "rgba(255, 255, 255, 0.84)",
                 whiteSpace: "nowrap",
                 pointerEvents: "none",
                 zIndex: 0

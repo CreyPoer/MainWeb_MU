@@ -1,0 +1,289 @@
+.mufaPage {
+  min-height: 100vh;
+  background: #050709;
+  color: #f9fafb;
+}
+
+.mufaSection {
+  padding: 80px 0;
+}
+
+.mufaContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.mufaNavbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.mufaNavbarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+}
+
+.mufaNavbarScrolled {
+  background: linear-gradient(90deg, #dc2626 0%, #7f1d1d 100%);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.mufaNavMenu {
+  display: none;
+  gap: 24px;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .mufaNavMenu {
+    display: flex;
+  }
+}
+
+.mufaNavLink {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #e5e7eb;
+  cursor: pointer;
+  position: relative;
+}
+
+.mufaNavLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #fbbf24;
+  transition: width 0.25s ease;
+}
+
+.mufaNavLink:hover::after {
+  width: 100%;
+}
+
+.mufaLogoCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 20%, #fecaca 0%, #b91c1c 55%, #450a0a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mufaLogoInner {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mufaLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mufaMobileToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(248, 250, 252, 0.12);
+  background: rgba(15, 23, 42, 0.8);
+  color: #f9fafb;
+}
+
+@media (min-width: 1024px) {
+  .mufaMobileToggle {
+    display: none;
+  }
+}
+
+.mufaMobileMenu {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  padding: 16px 24px 24px;
+  background: radial-gradient(circle at top, rgba(248, 113, 113, 0.12), transparent 60%), #020617;
+  border-bottom: 1px solid rgba(248, 113, 113, 0.4);
+  z-index: 40;
+}
+
+.mufaHero {
+  position: relative;
+  padding-top: 88px;
+}
+
+.mufaHeroSlider {
+  position: relative;
+  width: 100%;
+  border-radius: 32px;
+  overflow: hidden;
+  background: radial-gradient(circle at top left, #1e293b, #020617);
+}
+
+.mufaHeroFrame {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 75vh, 640px);
+}
+
+.mufaHeroImage {
+  animation: mufaHeroZoom 24s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes mufaHeroZoom {
+  0% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+.mufaHeroDots {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mufaHeroDot {
+  width: 40px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.mufaHeroDotActive {
+  background: #fbbf24;
+}
+
+.mufaBadgeRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mufaPill {
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mufaProgramGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .mufaProgramGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.mufaProgramCard {
+  border-radius: 20px;
+  background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.16), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  padding: 22px 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.mufaFacilitiesShell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 24px;
+}
+
+@media (max-width: 1023px) {
+  .mufaFacilitiesShell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.mufaFacilitySelectorCard {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  min-height: 140px;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.mufaFacilitySelectorCardActive {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.6);
+}
+
+.mufaFacilityBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mufaFacilityBadge {
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  background: #D32F2F;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.mufaNewsGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .mufaNewsGrid {
+    grid-template-columns: 2fr 1.1fr;
+  }
+}
+
+.mufaGalleryShell {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .mufaGalleryShell {
+    grid-template-columns: 2fr 1.2fr;
+  }
+}
+
+.mufaFooter {
+  background: linear-gradient(90deg, #dc2626 0%, #7f1d1d 100%);
+  color: #e5e7eb;
+}

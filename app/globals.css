@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../tailwind.config.ts";
+@source "./**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../pages/**/*.{js,ts,jsx,tsx,mdx}";
+@import "tailwindcss/theme";
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
 
 /* ========== GLOBAL STYLES ========== */
 * {
@@ -12,6 +16,1365 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     overflow-x: hidden;
+}
+
+/* ========== TENTANG KAMI: FILOSOFI LOGO & WARNA ========== */
+.mu-philosophy {
+    margin-top: 4rem;
+}
+
+.mu-philosophy__shell {
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.mu-philosophy__inner {
+    padding: 28px 24px;
+}
+
+.mu-philosophy__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items: end;
+}
+
+.mu-philosophy__eyebrow {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+}
+
+.mu-philosophy__title {
+    color: #111827;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    margin-top: 6px;
+}
+
+.mu-philosophy__subtitle {
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-top: 8px;
+    max-width: 56rem;
+}
+
+.mu-philosophy__divider {
+    height: 1px;
+    width: 100%;
+    background: #e5e7eb;
+    border-radius: 999px;
+}
+
+.mu-philosophy__content {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.mu-philosophy__logoCard {
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 22px;
+    padding: 16px;
+}
+
+.mu-philosophy__logoFrame {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 18px 14px;
+    text-align: center;
+}
+
+.mu-philosophy__logo {
+    height: 220px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.mu-philosophy__logoCaption {
+    color: #6b7280;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.mu-philosophy__callout {
+    margin-top: 14px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 14px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: start;
+}
+
+.mu-philosophy__pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 12px;
+    color: #ffffff;
+    background: #b91c1c;
+    letter-spacing: 0.06em;
+}
+
+.mu-philosophy__calloutText {
+    color: #374151;
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.mu-philosophy__panel {
+    border-radius: 22px;
+    padding: 18px 16px;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    background: #b91c1c;
+}
+
+.mu-philosophy__panel > * {
+    position: relative;
+    z-index: 1;
+}
+
+.mu-philosophy__panelHeader {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.mu-philosophy__panelTitle {
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    font-size: 16px;
+}
+
+.mu-philosophy__panelRule {
+    height: 1px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+}
+
+.mu-philosophy__grid {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.mu-philosophy__item {
+    background: rgba(26, 26, 26, 1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 18px;
+    padding: 14px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+}
+
+.mu-philosophy__badge {
+    min-width: 44px;
+    height: 38px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+.mu-philosophy__itemTitle {
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 1.25;
+}
+
+.mu-philosophy__itemText {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.mu-philosophy__itemEm {
+    font-weight: 900;
+    color: #ffffff;
+}
+
+@media (min-width: 768px) {
+    .mu-philosophy__inner {
+        padding: 34px 32px;
+    }
+
+    .mu-philosophy__header {
+        grid-template-columns: 1fr 220px;
+        gap: 18px;
+    }
+
+    .mu-philosophy__divider {
+        width: 220px;
+        justify-self: end;
+    }
+
+    .mu-philosophy__title {
+        font-size: 26px;
+    }
+
+    .mu-philosophy__subtitle {
+        font-size: 15px;
+    }
+
+    .mu-philosophy__logo {
+        height: 260px;
+    }
+
+    .mu-philosophy__panel {
+        padding: 22px 20px;
+    }
+
+    .mu-philosophy__grid {
+        gap: 14px;
+    }
+
+    .mu-philosophy__item {
+        padding: 16px 16px;
+    }
+
+    .mu-philosophy__itemTitle {
+        font-size: 15px;
+    }
+
+    .mu-philosophy__itemText {
+        font-size: 14px;
+    }
+}
+
+/* ========== TENTANG KAMI: HOME BASE ========== */
+.mu-homebase {
+    margin-top: 4rem;
+}
+
+.mu-homebase__shell {
+    background: #b91c1c;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+.mu-homebase__inner {
+    padding: 28px 24px;
+}
+
+.mu-homebase__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items: end;
+}
+
+.mu-homebase__eyebrow {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+}
+
+.mu-homebase__title {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    margin-top: 6px;
+}
+
+.mu-homebase__subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-top: 8px;
+    max-width: 56rem;
+}
+
+.mu-homebase__divider {
+    height: 1px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 0;
+}
+
+.mu-homebase__stage {
+    position: relative !important;
+    width: 100%;
+    max-width: 64rem;
+    margin: 22px auto 0;
+    height: 18rem;
+    min-height: 18rem;
+    isolation: isolate;
+}
+
+.mu-homebase__card {
+    position: absolute !important;
+    width: 62%;
+    height: 62%;
+    min-height: 180px;
+    background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(255, 255, 255, 0.22);
+    will-change: transform;
+}
+
+.mu-homebase__img {
+    object-fit: cover;
+}
+
+.mu-homebase__arrow {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.9);
+    display: block;
+    max-width: none;
+    max-height: none;
+}
+
+.mu-homebase__cardOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0) 62%);
+}
+
+.mu-homebase__caption {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%) translateY(8px);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 200ms ease, transform 200ms ease;
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 0 14px;
+    width: 100%;
+}
+
+.mu-homebase__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 4;
+    background: #b91c1c;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    border-radius: 999px;
+}
+
+.mu-homebase__card:hover .mu-homebase__cardOverlay {
+    opacity: 1;
+}
+
+.mu-homebase__card:hover .mu-homebase__caption {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.mu-homebase__arrow--top {
+    top: 8px;
+    right: 20%;
+    width: 10rem !important;
+    height: 7rem !important;
+}
+
+.mu-homebase__arrow--bottom {
+    bottom: 8px;
+    left: 18%;
+    width: 11rem !important;
+    height: 8rem !important;
+}
+
+/* Home Base: staged reveal for arrows + cards (avoid putting `data-aos` on absolute children) */
+.mu-homebase__anim {
+    transform: none !important;
+}
+
+/* Only hide while AOS is active on the section (fallback-safe) */
+.mu-homebase.aos-init:not(.aos-animate) .mu-homebase__anim {
+    opacity: 0;
+}
+
+.mu-homebase.aos-init:not(.aos-animate) .mu-homebase__anim--card-a .mu-homebase__card,
+.mu-homebase.aos-init:not(.aos-animate) .mu-homebase__anim--card-b .mu-homebase__card {
+    filter: blur(10px);
+}
+
+.mu-homebase.aos-animate .mu-homebase__anim {
+    opacity: 1;
+    transition: opacity 650ms ease;
+    transition-delay: var(--mu-hb-delay, 0ms);
+}
+
+.mu-homebase.aos-animate .mu-homebase__anim--card-a,
+.mu-homebase.aos-animate .mu-homebase__anim--card-b {
+    transition: opacity 650ms ease;
+    transition-delay: var(--mu-hb-delay, 0ms);
+}
+
+.mu-homebase.aos-animate .mu-homebase__anim--card-a .mu-homebase__card,
+.mu-homebase.aos-animate .mu-homebase__anim--card-b .mu-homebase__card {
+    filter: blur(0);
+    transition: filter 700ms ease;
+    transition-delay: var(--mu-hb-delay, 0ms);
+}
+
+/* Delay order: after section finishes (section delay 200ms + duration ~1000ms) */
+.mu-homebase__anim--arrow-1 { --mu-hb-delay: 1300ms; }
+.mu-homebase__anim--arrow-2 { --mu-hb-delay: 1450ms; }
+.mu-homebase__anim--card-a { --mu-hb-delay: 1600ms; }
+.mu-homebase__anim--card-b { --mu-hb-delay: 1750ms; }
+
+@media (max-width: 425px) {
+    .mu-homebase__arrow--top {
+        right: 5%;
+    }
+    .mu-homebase__arrow--bottom {
+        left: 1%;
+    }
+}
+
+/* ========== MUFA: NEWS DETAIL PAGE ========== */
+.mufa-news-detail-section {
+    background: #020617;
+    padding: 60px 0 80px;
+}
+
+.mufa-news-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.mufa-news-detail-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+}
+
+.mufa-news-detail-main {
+    flex: 3;
+    min-width: 0;
+}
+
+.mufa-news-detail-imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 22px 55px rgba(0, 0, 0, 0.75);
+}
+
+.mufa-news-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.mufa-news-detail-category {
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: #dc2626;
+    color: #fff;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 10px;
+}
+
+.mufa-news-detail-date {
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.mufa-news-detail-content {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.9;
+    color: #e5e7eb;
+}
+
+.mufa-news-detail-content p {
+    margin-bottom: 18px;
+}
+
+.mufa-news-detail-divider {
+    margin: 36px 0 30px;
+    border-color: #111827;
+}
+
+.mufa-news-detail-bottomRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.mufa-news-detail-tagsRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mufa-news-detail-tagsLabel {
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.16em;
+    color: #e5e7eb;
+}
+
+.mufa-news-detail-tagPill {
+    background: rgba(248, 113, 113, 0.1);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fecaca;
+    border: 1px solid rgba(248, 113, 113, 0.5);
+}
+
+.mufa-news-detail-shareRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mufa-news-detail-shareLabel {
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.16em;
+    color: #e5e7eb;
+}
+
+.mufa-news-detail-shareBtn {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: #020617;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    color: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.mufa-news-detail-shareBtn:hover {
+    background: #dc2626;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7);
+    transform: translateY(-2px);
+}
+
+.mufa-news-detail-author {
+    margin-top: 48px;
+    padding: 24px 22px;
+    border-radius: 20px;
+    background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.18), rgba(15, 23, 42, 0.98));
+    border: 1px solid rgba(248, 113, 113, 0.4);
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.mufa-news-detail-authorAvatar {
+    position: relative;
+    width: 90px;
+    height: 55px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #020617;
+}
+
+.mufa-news-detail-authorBody h3 {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fef2f2;
+    margin-bottom: 8px;
+}
+
+.mufa-news-detail-authorDesc {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #e5e7eb;
+    margin-bottom: 10px;
+}
+
+.mufa-news-detail-authorLink {
+    border: none;
+    background: transparent;
+    padding: 0;
+    color: #f97373;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.mufa-news-detail-sidebar {
+    flex: 1;
+    min-width: 260px;
+    position: relative;
+}
+
+.mufa-news-detail-sidebarInner {
+    position: sticky;
+    top: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.mufa-news-detail-widget {
+    background: #020617;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+}
+
+.mufa-news-detail-widgetHeader {
+    background: #0f172a;
+    padding: 14px 18px;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #e5e7eb;
+}
+
+.mufa-news-detail-widgetBody {
+    padding: 18px 18px 20px;
+}
+
+.mufa-news-detail-searchWrapper {
+    position: relative;
+}
+
+.mufa-news-detail-searchIcon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.mufa-news-detail-searchInput {
+    width: 100%;
+    padding: 10px 12px 10px 34px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 13px;
+}
+
+.mufa-news-detail-searchInput::placeholder {
+    color: #6b7280;
+}
+
+.mufa-news-detail-tagsCloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mufa-news-detail-tagFilter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(248, 113, 113, 0.55);
+    background: rgba(248, 113, 113, 0.12);
+    color: #fecaca;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.mufa-news-detail-sidebarHeader-mobile {
+    display: none;
+}
+
+.mufa-news-detail-sidebarToggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 18px 6px;
+    border-radius: 12px 0 0 12px;
+    background: #dc2626;
+    color: #fff;
+    border: 1px solid #b91c1c;
+}
+
+.mufa-news-detail-sidebarToggle span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.mufa-news-detail-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 50;
+}
+
+@media (max-width: 1023px) {
+    .mufa-news-detail-layout {
+        flex-direction: column;
+    }
+
+    .mufa-news-detail-sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 320px;
+        height: 100vh;
+        background: #020617;
+        z-index: 70;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.65);
+        padding: 0;
+    }
+
+    .mufa-news-detail-sidebar-open {
+        transform: translateX(0);
+    }
+
+    .mufa-news-detail-sidebarInner {
+        position: static;
+        padding: 16px 16px 24px;
+        gap: 18px;
+    }
+
+    .mufa-news-detail-sidebarHeader-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 18px 10px;
+        border-bottom: 1px solid rgba(30, 64, 175, 0.5);
+        color: #e5e7eb;
+    }
+
+    .mufa-news-detail-sidebarHeader-mobile h4 {
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        margin: 0;
+    }
+
+    .mufa-news-detail-sidebarHeader-mobile button {
+        background: none;
+        border: none;
+        color: #f9fafb;
+        cursor: pointer;
+    }
+
+    .mufa-news-detail-sidebarToggle {
+        display: flex;
+    }
+}
+
+@media (max-width: 640px) {
+    .mufa-news-detail-imageWrapper {
+        height: 260px;
+    }
+
+    .mufa-news-detail-author {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 768px) {
+    .mu-homebase__divider {
+        display: none;
+    }
+    .mu-homebase__inner {
+        padding: 34px 32px;
+    }
+
+    .mu-homebase__header {
+        grid-template-columns: 1fr 220px;
+        gap: 18px;
+    }
+
+    .mu-homebase__title {
+        font-size: 26px;
+    }
+
+    .mu-homebase__subtitle {
+        font-size: 15px;
+    }
+
+    .mu-homebase__stage {
+        height: 20rem;
+    }
+
+    .mu-homebase__arrow--top {
+        width: 14rem !important;
+        height: 9rem !important;
+    }
+
+    .mu-homebase__arrow--bottom {
+        width: 15rem !important;
+        height: 10rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mu-homebase__stage {
+        height: 24rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mu-philosophy__content {
+        grid-template-columns: 360px 1fr;
+        gap: 22px;
+    }
+
+    .mu-philosophy__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+}
+
+/* ========== TENTANG KAMI: PRESTASI & PENGHARGAAN ========== */
+.mu-achievements {
+    margin-top: 4rem;
+}
+
+.mu-achievements__shell {
+    position: relative;
+    overflow: hidden;
+    padding: 30px 22px;
+    background: linear-gradient(90deg, #b91c1c 0%, #7f1d1d 100%);
+}
+
+/* Subtle jersey-like diagonal texture */
+.mu-achievements__shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.18) 0px,
+            rgba(0, 0, 0, 0.18) 2px,
+            rgba(0, 0, 0, 0) 2px,
+            rgba(0, 0, 0, 0) 14px
+        ),
+        repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.08) 0px,
+            rgba(255, 255, 255, 0.08) 1px,
+            rgba(255, 255, 255, 0) 1px,
+            rgba(255, 255, 255, 0) 18px
+        );
+    opacity: 0.65;
+}
+
+.mu-achievements__shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(80% 80% at 50% 15%, rgba(255, 255, 255, 0.10), rgba(0, 0, 0, 0.12) 60%, rgba(0, 0, 0, 0.22));
+    opacity: 0.55;
+}
+
+.mu-achievements__header,
+.mu-achievements__grid {
+    position: relative;
+    z-index: 1;
+}
+
+.mu-achievements__header {
+    text-align: left;
+}
+
+.mu-achievements__eyebrow {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.mu-achievements__title {
+    color: #ffffff;
+    margin-top: 0.5rem;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.mu-achievements__grid {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px 16px;
+}
+
+.mu-achievements__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.mu-achievements__iconWrap {
+    width:168px;
+    height:168px;
+    border-radius: 9999px;
+    background: #e5e7eb;
+    display: grid;
+    place-items: center;
+    box-shadow:
+        0 18px 34px rgba(0, 0, 0, 0.28),
+        0 0 0 6px rgba(255, 255, 255, 0.12),
+        0 0 26px rgba(255, 255, 255, 0.18);
+}
+
+.mu-achievements__icon {
+    width:152px;
+    height:152px;
+    object-fit: contain;
+    display: block;
+}
+
+@keyframes muAchievementsIconPop {
+    from {
+        transform: scale(0.92);
+        filter: blur(2px);
+    }
+    to {
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Runs after the circle wrapper animates in */
+.mu-achievements__iconWrap.aos-animate .mu-achievements__icon {
+    animation: muAchievementsIconPop 420ms ease-out both;
+    animation-delay: 140ms;
+}
+
+.mu-achievements__itemTitle {
+    margin-top: 14px;
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.mu-achievements__itemDesc {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 32ch;
+}
+
+@media (min-width: 640px) {
+    .mu-achievements__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 18px;
+    }
+}
+
+@media (min-width: 768px) {
+    .mu-achievements__shell {
+        padding: 34px 28px;
+    }
+
+    .mu-achievements__title {
+        font-size: 34px;
+    }
+
+    .mu-achievements__itemTitle {
+        font-size: 14px;
+    }
+
+    .mu-achievements__itemDesc {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mu-achievements__grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* ========== TENTANG KAMI HISTORY TIMELINE ========== */
+.mu-history-timeline {
+    margin-top: 2rem;
+    position: relative;
+}
+
+.mu-history-timeline__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.mu-history-timeline__path {
+    fill: none;
+    stroke: #D32F2F;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.95;
+}
+
+.mu-history-timeline--svg .timeline-row.timeline {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.mu-history-timeline--svg .how-it-works .col-2::after {
+    display: none;
+}
+
+.mu-history-timeline--svg .timeline-row.how-it-works,
+.mu-history-timeline--svg .circle {
+    position: relative;
+    z-index: 2;
+}
+
+.mu-history-timeline__node {
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.mu-history-timeline__node.is-hidden {
+    opacity: 0;
+    transform: scale(0.7);
+}
+
+.mu-history-timeline__node.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.mu-history-timeline .timeline-row {
+    display: flex;
+    width: 100%;
+}
+
+.mu-history-timeline .timeline-row.how-it-works {
+    align-items: stretch;
+    margin-bottom: 2.25rem;
+}
+
+.mu-history-timeline .timeline-row.justify-end {
+    justify-content: flex-end;
+}
+
+.mu-history-timeline .col-2 {
+    flex: 0 0 12.666%;
+    position: relative;
+}
+
+.mu-history-timeline .col-6 {
+    flex: 0 0 50%;
+}
+
+.mu-history-timeline .col-8 {
+    flex: 0 0 74.666%;
+}
+
+.mu-history-timeline .text-right {
+    text-align: right;
+}
+
+.mu-history-timeline .circle {
+    font-weight: 700;
+    padding: 0.65rem 1.05rem;
+    border-radius: 9999px;
+    background-color: #D32F2F;
+    color: #ffffff;
+    max-height: 3rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.mu-step-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #B91C1C;
+    margin-bottom: 0.4rem;
+}
+
+.mu-step-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #B91C1C;
+    margin-bottom: 0.75rem;
+}
+
+.mu-step-body {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+/* Timeline connectors & responsive tweaks */
+.mu-history-timeline .how-it-works .col-2 {
+    display: inline-flex;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+}
+
+.mu-history-timeline .how-it-works .col-2::after {
+    content: '';
+    position: absolute;
+    border-left: 3px solid #D32F2F;
+    z-index: 1;
+}
+
+.mu-history-timeline .how-it-works .col-2.bottom::after {
+    height: 65%;
+    left: 50%;
+    top: 55%;
+}
+
+.mu-history-timeline .how-it-works .col-2.full::after {
+    height: 120%;
+    left: calc(50% - 3px);
+    top: 0;
+}
+
+.mu-history-timeline .how-it-works .col-2.top::after {
+    height: 50%;
+    left: 50%;
+    top: 0;
+}
+
+.mu-history-timeline .timeline-row.timeline div {
+    padding: 0;
+    height: 40px;
+}
+
+.mu-history-timeline .timeline-row.timeline hr {
+    border-top: 3px solid #D32F2F;
+    margin: 0;
+    top: 17px;
+    position: relative;
+}
+
+.mu-history-timeline .timeline-row.timeline .col-2 {
+    display: flex;
+    overflow: hidden;
+}
+
+.mu-history-timeline .timeline-row.timeline .corner {
+    border: 3px solid #D32F2F;
+    width: 100%;
+    position: relative;
+    border-radius: 15px;
+}
+
+.mu-history-timeline .timeline-row.timeline .top-right {
+    left: 50%;
+    top: -50%;
+}
+
+.mu-history-timeline .timeline-row.timeline .left-bottom {
+    left: -50%;
+    top: calc(50% - 3px);
+}
+
+.mu-history-timeline .timeline-row.timeline .top-left {
+    left: -50%;
+    top: -50%;
+}
+
+.mu-history-timeline .timeline-row.timeline .right-bottom {
+    left: 50%;
+    top: calc(50% - 3px);
+}
+
+@media (max-width: 768px) {
+    .mu-history-timeline .timeline-row {
+        flex-direction: column;
+    }
+
+    .mu-history-timeline .timeline-row.timeline {
+        display: none;
+    }
+
+    .mu-history-timeline {
+        position: relative;
+        padding-left: 3.75rem;
+    }
+
+    .mu-history-timeline::before {
+        content: '';
+        position: absolute;
+        left: 1.875rem;
+        top: 1.25rem;
+        bottom: 0.75rem;
+        width: 3px;
+        background: #D32F2F;
+        border-radius: 999px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .mu-history-timeline .timeline-row.how-it-works {
+        position: relative;
+        padding-left: 0;
+    }
+
+    .mu-history-timeline .timeline-row.how-it-works::before {
+        display: none;
+    }
+
+    .mu-history-timeline .col-2,
+    .mu-history-timeline .col-6,
+    .mu-history-timeline .col-8 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .mu-history-timeline .timeline-row.justify-end {
+        justify-content: flex-start;
+    }
+
+    .mu-history-timeline .text-right {
+        text-align: left;
+    }
+
+    .mu-history-timeline .how-it-works .col-2 {
+        position: absolute;
+        left: -3.75rem;
+        top: 0;
+        width: 3.75rem;
+        justify-content: center;
+        padding-bottom: 0;
+        z-index: 1;
+    }
+
+    .mu-history-timeline .how-it-works .col-2::after {
+        display: none;
+    }
+
+    .mu-history-timeline .circle {
+        font-size: 0.85rem;
+        padding: 0.55rem 0.95rem;
+    }
+
+    .mu-step-label {
+        font-size: 0.65rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .mu-step-title {
+        font-size: 1rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .mu-step-body {
+        font-size: 0.88rem;
+    }
+
+    .mu-history-timeline {
+        margin-top: 1.5rem;
+    }
+
+    .mu-history-timeline .timeline-row.how-it-works {
+        margin-bottom: 1.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mu-step-title {
+        font-size: 1rem;
+    }
+
+    .mu-step-body {
+        font-size: 0.88rem;
+    }
 }
 
 /* ========== NAVBAR STYLES ========== */
@@ -426,11 +1789,11 @@ body {
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.5);
     color: rgba(255, 255, 255, 0.7);
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -462,7 +1825,7 @@ body {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    border: none;
+    border: 2px solid #ffffff;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -589,9 +1952,9 @@ body {
     }
 
     .indicator {
-        width: 40px;
-        height: 40px;
-        font-size: 0.8rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.75rem;
     }
 
     .go-top-btn {
@@ -617,8 +1980,185 @@ body {
     }
 
     .indicator {
-        width: 35px;
-        height: 35px;
-        font-size: 0.75rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+}
+
+/* ========== VISI & MISI - SLANTED OVERLAP SECTION ========== */
+.visi-misi-section {
+    position: relative;
+    margin-top: 2.5rem;
+    border-radius: 0 !important;
+    overflow: hidden;
+    background: #050608;
+}
+
+.visi-misi-bg {
+    position: absolute;
+    inset: -10%;
+    /* Merah tema proyek -> merah lebih gelap */
+    background: linear-gradient(135deg, #d32f2f 0%, #7f1d1d 50%, #7f1d1d 100%);
+    transform-origin: center;
+    opacity: 0.98;
+}
+
+.visi-misi-inner {
+    position: relative;
+    padding: 2.5rem 1.5rem 2.75rem;
+}
+
+@media (min-width: 768px) {
+    .visi-misi-inner {
+        padding: 3rem 2.5rem 3.25rem;
+    }
+}
+
+.visi-misi-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .visi-misi-grid {
+        grid-template-columns: 1.35fr 1fr;
+        align-items: flex-start;
+    }
+}
+
+.visi-misi-vision {
+    color: #e5e7eb;
+}
+
+.visi-misi-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(252, 165, 165, 0.94);
+    margin-bottom: 0.5rem;
+}
+
+.visi-misi-title {
+    font-size: 1.75rem;
+    line-height: 1.25;
+    font-weight: 900;
+    color: #f9fafb;
+    margin-bottom: 0.9rem;
+    font-family: "Oswald", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@media (min-width: 768px) {
+    .visi-misi-title {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .visi-misi-title {
+        font-size: 2.35rem;
+    }
+}
+
+.visi-misi-subtext {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 30rem;
+    color: rgba(229, 231, 235, 0.92);
+}
+
+@media (min-width: 768px) {
+    .visi-misi-subtext {
+        font-size: 0.95rem;
+    }
+}
+
+.visi-misi-cards {
+    position: relative;
+}
+
+.visi-misi-card {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border-radius: 0.9rem;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(156, 163, 175, 0.7);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
+    color: #e5e7eb;
+    backdrop-filter: blur(10px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+@media (min-width: 768px) {
+    .visi-misi-card {
+        padding: 1.1rem 1.4rem;
+    }
+}
+
+.visi-misi-card + .visi-misi-card {
+    margin-top: 0.6rem;
+}
+
+@media (min-width: 1024px) {
+    .visi-misi-card + .visi-misi-card {
+        margin-top: -0.5rem;
+    }
+}
+
+.visi-misi-card--overlap-1 {
+    z-index: 1;
+}
+
+.visi-misi-card--overlap-2 {
+    z-index: 2;
+}
+
+.visi-misi-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(248, 113, 113, 0.95);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.9);
+    background-color: rgba(15, 23, 42, 0.98);
+}
+
+.visi-misi-icon {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #d32f2f;
+    color: #f9fafb;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(248, 187, 187, 0.8);
+}
+
+.visi-misi-icon svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.visi-misi-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    color: #ffffff;
+}
+
+.visi-misi-card-text {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: rgba(209, 213, 219, 0.95);
+}
+
+@media (min-width: 768px) {
+    .visi-misi-card-text {
+        font-size: 0.85rem;
     }
 }
