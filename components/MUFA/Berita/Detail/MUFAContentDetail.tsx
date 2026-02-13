@@ -1,8 +1,10 @@
 "use client";
 
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaSearch, FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp, FaFilter, FaTimes, FaTag, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { MufaNewsDetail, MUFA_NEWS_LIST } from "../newsData";
 
@@ -24,7 +26,19 @@ const SIDEBAR_TAGS = [
 ];
 
 export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) {
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/mufa/berita?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleTagClick = (tag: string) => {
+    router.push(`/mufa/berita?tag=${encodeURIComponent(tag)}`);
+  };
 
   return (
     <section className="mufa-news-detail-section">
@@ -59,7 +73,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               <div className="mufa-news-detail-tagsRow">
                 <span className="mufa-news-detail-tagsLabel">TAGS:</span>
                 {newsItem.tags.slice(0, 4).map((tag) => (
-                  <span key={tag} className="mufa-news-detail-tagPill">
+                  <span key={tag} className="mufa-news-detail-tagPill" onClick={() => handleTagClick(tag)} style={{ cursor: "pointer" }}>
                     #{tag}
                   </span>
                 ))}
@@ -106,7 +120,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               {MUFA_NEWS_LIST.find((n) => n.id === newsItem.id - 1) ? (
                 <Link
                   href={`/mufa/berita/${newsItem.id - 1}`}
-                  className="group relative flex flex-col p-6 rounded-2xl bg-red-600 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+                  className="group relative flex flex-col p-6 rounded-2xl bg-red-500 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
 
@@ -126,7 +140,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               {MUFA_NEWS_LIST.find((n) => n.id === newsItem.id + 1) ? (
                 <Link
                   href={`/mufa/berita/${newsItem.id + 1}`}
-                  className="group relative flex flex-col p-6 rounded-2xl bg-red-600 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 text-right items-end overflow-hidden"
+                  className="group relative flex flex-col p-6 rounded-2xl bg-red-500 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 text-right items-end overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
 
@@ -214,11 +228,16 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                 <div className="mufa-news-detail-widgetHeader">Pencarian Berita</div>
                 <div className="mufa-news-detail-widgetBody">
                   <div className="mufa-news-detail-searchWrapper">
-                    <FaSearch className="mufa-news-detail-searchIcon" size={14} />
+                    <button onClick={handleSearch} className="mufa-news-detail-searchIconBtn">
+                      <FaSearch className="mufa-news-detail-searchIcon" size={14} />
+                    </button>
                     <input
                       type="text"
                       placeholder="Cari di berita MUFA..."
                       className="mufa-news-detail-searchInput"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                     />
                   </div>
                 </div>
@@ -230,7 +249,11 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                 <div className="mufa-news-detail-widgetBody">
                   <div className="mufa-news-detail-tagsCloud">
                     {SIDEBAR_TAGS.map((tag) => (
-                      <button key={tag} className="mufa-news-detail-tagFilter">
+                      <button
+                        key={tag}
+                        className="mufa-news-detail-tagFilter"
+                        onClick={() => handleTagClick(tag)}
+                      >
                         <FaTag size={11} />
                         <span>#{tag}</span>
                       </button>

@@ -272,9 +272,7 @@ export default function MatchContent() {
                                             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                                 <FaCalendarAlt /> {match.date}
                                             </div>
-                                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                                <FaClock /> {match.time}
-                                            </div>
+
                                             <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "white" }}>
                                                 {match.stadium} <FaMapMarkerAlt style={{ color: "#DC2626" }} />
                                             </div>
@@ -320,7 +318,9 @@ export default function MatchContent() {
 
                                         {/* Action Button */}
                                         <div style={{ background: "#DC2626", color: "white", textAlign: "center", padding: "10px", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", cursor: "pointer", transition: "background 0.3s" }} className="hover:bg-red-700">
-                                            Match Details
+                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                                <FaClock /> {match.time}
+                                            </div>
                                         </div>
                                     </div>
                                 );

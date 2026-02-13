@@ -79,12 +79,16 @@ export default function MUFAGallerySection() {
             <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
               Visual Stories
             </p>
-            <h2 className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight">
+            <h2
+              data-aos="fade-up"
+              className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight"
+            >
               Gallery <span className="text-red-400">MUFA</span>
             </h2>
           </div>
           <Link
             href="/mufa/gallery"
+            data-aos="fade-left"
             className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase text-slate-100/90 hover:text-amber-300 transition-colors"
           >
             Lihat Selengkapnya <FaArrowRight size={12} />
@@ -92,7 +96,10 @@ export default function MUFAGallerySection() {
         </div>
 
         <div className={styles.mufaGalleryShell}>
-          <div className="relative rounded-3xl overflow-hidden min-h-[260px] bg-slate-900 border border-slate-700">
+          <div
+            className="relative rounded-3xl overflow-hidden min-h-[260px] bg-slate-900 border border-slate-700"
+            data-aos="fade-up"
+          >
             {GALLERY_ALBUMS.slice(0, 1).map((album) => (
               <button
                 key={album.id}
@@ -123,12 +130,14 @@ export default function MUFAGallerySection() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-3">
-            {GALLERY_ALBUMS.slice(1).map((album) => (
+            {GALLERY_ALBUMS.slice(1).map((album, index) => (
               <button
                 key={album.id}
                 type="button"
                 className="relative rounded-2xl overflow-hidden min-h-[120px] bg-slate-900 border border-slate-700 group"
                 onClick={() => openAlbum(album)}
+                data-aos="zoom-in"
+                data-aos-delay={index * 100}
               >
                 <Image
                   src={album.cover}

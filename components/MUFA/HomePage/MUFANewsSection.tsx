@@ -47,12 +47,16 @@ export default function MUFANewsSection() {
             <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
               MUFA Updates
             </p>
-            <h2 className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight">
+            <h2
+              data-aos="fade-up"
+              className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight"
+            >
               Berita Terbaru <span className="text-red-400">Academy</span>
             </h2>
           </div>
           <Link
             href="/mufa/berita"
+            data-aos="fade-left"
             className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase text-slate-100/90 hover:text-amber-300"
           >
             Lihat Semua Berita <FaArrowRight size={12} />
@@ -61,7 +65,10 @@ export default function MUFANewsSection() {
 
         <div className={styles.mufaNewsGrid}>
           {/* Featured */}
-          <article className="group relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70">
+          <article
+            data-aos="fade-right"
+            className="group relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70"
+          >
             <div className="relative h-72 md:h-[360px]">
               <Image
                 src={featured.image}
@@ -87,9 +94,11 @@ export default function MUFANewsSection() {
 
           {/* List */}
           <div className="flex flex-col gap-4">
-            {rest.map((item) => (
+            {rest.map((item, index) => (
               <article
                 key={item.id}
+                data-aos="fade-left"
+                data-aos-delay={index * 100}
                 className="group flex gap-3 rounded-2xl bg-slate-900/80 border border-slate-700/80 overflow-hidden hover:border-red-500/70 hover:bg-slate-900 transition"
               >
                 <div className="relative w-28 md:w-32 min-h-[96px]">

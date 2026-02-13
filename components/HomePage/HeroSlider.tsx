@@ -6,6 +6,7 @@ import Link from 'next/link';
 interface Slider {
     id: number;
     name: string;
+    subtitle?: string;
     image: string;
     link: string | null;
     status: number;
@@ -93,7 +94,7 @@ export default function HeroSlider() {
                         <h1 className="hero-title">
                             {slider.name.split(' ').map((word, i) => {
                                 // Highlight specific words with red background
-                                const highlightWords = ['ANDREW', 'HARRIS', 'MADURA', 'UNITED'];
+                                const highlightWords = ['MADURA', 'UNITED'];
                                 if (highlightWords.some(hw => word.toUpperCase().includes(hw))) {
                                     return (
                                         <span key={i} className="highlight">
@@ -104,6 +105,11 @@ export default function HeroSlider() {
                                 return <span key={i}>{word} </span>;
                             })}
                         </h1>
+                        {slider.subtitle && (
+                            <p className="hero-subtitle">
+                                {slider.subtitle}
+                            </p>
+                        )}
                         {slider.link && (
                             <Link href={slider.link} className="hero-cta">
                                 READ MORE

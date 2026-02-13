@@ -12,6 +12,7 @@ const PARTNERS_DATA = [
         type: "MAIN SPONSOR",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
         isMain: true,
+        link: "https://www.kangean-energy.co.id",
     },
     {
         id: "p-1",
@@ -19,6 +20,7 @@ const PARTNERS_DATA = [
         type: "APPAREL PARTNER",
         logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
         isMain: false,
+        link: "https://www.warrior.com",
     },
     {
         id: "p-2",
@@ -26,6 +28,7 @@ const PARTNERS_DATA = [
         type: "OFFICIAL BROADCASTER",
         logo: "https://upload.wikimedia.org/wikipedia/id/4/49/Logo_Vidio_Apps.png",
         isMain: false,
+        link: "https://www.vidio.com",
     },
     {
         id: "p-3",
@@ -33,6 +36,7 @@ const PARTNERS_DATA = [
         type: "OFFICIAL PARTNER",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png",
         isMain: false,
+        link: "#",
     },
     {
         id: "p-4",
@@ -40,6 +44,7 @@ const PARTNERS_DATA = [
         type: "OFFICIAL DRINK",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/960px-Coca-Cola_logo.svg.png",
         isMain: false,
+        link: "https://www.coca-cola.co.id",
     },
     {
         id: "p-5",
@@ -47,6 +52,7 @@ const PARTNERS_DATA = [
         type: "OFFICIAL BANK",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
         isMain: false,
+        link: "https://www.bca.co.id",
     },
     {
         id: "p-6",
@@ -54,6 +60,7 @@ const PARTNERS_DATA = [
         type: "OFFICIAL AIRLINE",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
         isMain: false,
+        link: "https://www.lionair.co.id",
     },
     {
         id: "p-7",
@@ -61,6 +68,7 @@ const PARTNERS_DATA = [
         type: "ENERGY PARTNER",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
         isMain: false,
+        link: "https://www.extrajoss.co.id",
     },
     {
         id: "p-8",
@@ -68,8 +76,8 @@ const PARTNERS_DATA = [
         type: "ENERGY PARTNER",
         logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
         isMain: false,
+        link: "https://www.extrajoss.co.id",
     },
-
 ];
 
 export default function PartnerSection() {
@@ -142,8 +150,11 @@ export default function PartnerSection() {
                         // Since I added !important in the CSS block, it will override this inline style when active.
 
                         return (
-                            <div
+                            <a
                                 key={partner.id}
+                                href={partner.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className={`partner-card partner-card-custom ${isMain ? 'main-sponsor' : ''}`}
                                 // Remove individual data-aos
                                 style={{
@@ -205,7 +216,7 @@ export default function PartnerSection() {
 
 
                                 </div>
-                            </div>
+                            </a>
                         );
                     })}
                 </div>

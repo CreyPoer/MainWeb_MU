@@ -48,10 +48,10 @@ export default function Navbar() {
                         {
                             label: 'U-20',
                             submenu: [
-                                { label: 'Pemain', href: '/tim/academy/u20/pemain' }
+                                { label: 'Pemain', href: '/tim/utama/pemain?tab=akademi' }
                             ]
                         },
-                        { label: 'Officials', href: '/tim/academy/officials' }
+                        { label: 'Officials', href: '/tim/utama/officials?tab=akademi' }
                     ]
                 }
             ]
@@ -68,7 +68,6 @@ export default function Navbar() {
             submenu: [
                 { label: 'Berita', href: '/media/berita' },
                 { label: 'Gallery', href: '/media/gallery' },
-                { label: 'Infografik', href: '/media/infografik' },
                 { label: 'Video', href: '/media/video' }
             ]
         },

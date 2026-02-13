@@ -72,11 +72,14 @@ export default function MUFAFacilitiesSection() {
             <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
               Living & Training Environment
             </p>
-            <h2 className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight">
+            <h2
+              data-aos="fade-up"
+              className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight"
+            >
               Fasilitas <span className="text-red-400">Lengkap</span> Untuk Perjalananmu
             </h2>
           </div>
-         
+
         </div>
 
         <div className={styles.mufaFacilitiesShell}>
@@ -86,9 +89,8 @@ export default function MUFAFacilitiesSection() {
               <button
                 key={card.key}
                 type="button"
-                className={`${styles.mufaFacilitySelectorCard} ${
-                  active === card.key ? styles.mufaFacilitySelectorCardActive : ""
-                }`}
+                className={`${styles.mufaFacilitySelectorCard} ${active === card.key ? styles.mufaFacilitySelectorCardActive : ""
+                  }`}
                 onClick={() => setActive(card.key)}
               >
                 <div
@@ -120,7 +122,10 @@ export default function MUFAFacilitiesSection() {
           </div>
 
           {/* Right detail */}
-          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-slate-700/60 p-6 md:p-8 flex flex-col gap-4">
+          <div
+            className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-slate-700/60 p-6 md:p-8 flex flex-col gap-4"
+            data-aos="fade-left"
+          >
             <div className="flex flex-col gap-2">
               <span className="text-xs tracking-[0.26em] uppercase text-red-300 font-semibold">
                 {active === "homebase" && "Homebase MUFA"}

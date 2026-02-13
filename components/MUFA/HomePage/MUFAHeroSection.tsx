@@ -77,15 +77,27 @@ export default function MUFAHeroSection() {
             {/* Content */}
             <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-12 lg:px-16 py-10 gap-6 max-w-3xl">
 
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight uppercase">
+              <h1
+                data-aos="fade-up"
+                data-aos-delay="100"
+                className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight uppercase"
+              >
                 {current.title}
               </h1>
 
-              <p className="text-sm md:text-base text-slate-100/90 max-w-xl">
+              <p
+                data-aos="fade-up"
+                data-aos-delay="200"
+                className="text-sm md:text-base text-slate-100/90 max-w-xl"
+              >
                 {current.subtitle}
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 mt-2">
+              <div
+                data-aos="fade-up"
+                data-aos-delay="300"
+                className="flex flex-wrap items-center gap-3 mt-2"
+              >
                 <Link
                   href="#program"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full text-xs md:text-sm font-semibold tracking-[0.18em] uppercase bg-amber-400 text-black hover:bg-amber-300 transition shadow-lg shadow-amber-500/30"

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight, FaArrowRight } from "react-icons/fa";
 
@@ -185,34 +187,59 @@ export default function NewsStandingsSection() {
 
                         {/* Main Content (Left) */}
                         <div className="news-main-image" style={{ flex: '1', position: 'relative', overflow: 'hidden', borderRadius: '8px', height: '100%' }}>
-                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                                <Image
-                                    src={NEWS_DATA[newsIndex].image}
-                                    alt={NEWS_DATA[newsIndex].title}
-                                    fill
-                                    style={{ objectFit: 'cover' }}
-                                />
-                                {/* Overlay */}
-                                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)' }} />
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={NEWS_DATA[newsIndex].id}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.3 }}
+                                    style={{ position: 'relative', width: '100%', height: '100%' }}
+                                >
+                                    <Image
+                                        src={NEWS_DATA[newsIndex].image}
+                                        alt={NEWS_DATA[newsIndex].title}
+                                        fill
+                                        style={{ objectFit: 'cover' }}
+                                    />
+                                    {/* Overlay */}
+                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)' }} />
 
-                                {/* Text */}
-                                <div style={{ position: 'absolute', bottom: 0, left: 0, padding: '32px', width: '100%', color: 'white', zIndex: 10 }}>
-                                    <h3 style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '16px', lineHeight: 1.1 }}>
-                                        {NEWS_DATA[newsIndex].title}
-                                    </h3>
-                                    <p style={{ fontSize: '16px', color: '#e5e7eb', marginBottom: '24px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                        {NEWS_DATA[newsIndex].description}
-                                    </p>
-                                    <button style={{
-                                        backgroundColor: '#DC2626', color: 'white', padding: '12px 28px',
-                                        fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase',
-                                        borderRadius: '9999px', border: 'none', cursor: 'pointer',
-                                        boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)'
-                                    }}>
-                                        Read More
-                                    </button>
-                                </div>
-                            </div>
+                                    {/* Text */}
+                                    <div style={{ position: 'absolute', bottom: 0, left: 0, padding: '32px', width: '100%', color: 'white', zIndex: 10 }}>
+                                        <motion.h3
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.1, duration: 0.3 }}
+                                            style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '16px', lineHeight: 1.1 }}
+                                        >
+                                            {NEWS_DATA[newsIndex].title}
+                                        </motion.h3>
+                                        <motion.p
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.2, duration: 0.3 }}
+                                            style={{ fontSize: '16px', color: '#e5e7eb', marginBottom: '24px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                                        >
+                                            {NEWS_DATA[newsIndex].description}
+                                        </motion.p>
+                                        <Link href={`/media/berita/${NEWS_DATA[newsIndex].id}`} passHref>
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                style={{
+                                                    backgroundColor: '#DC2626', color: 'white', padding: '12px 28px',
+                                                    fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase',
+                                                    borderRadius: '9999px', border: 'none', cursor: 'pointer',
+                                                    boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)'
+                                                }}
+                                            >
+                                                Read More
+                                            </motion.button>
+                                        </Link>
+                                    </div>
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
 
                         {/* Thumbnails List (Right) */}
@@ -358,9 +385,15 @@ export default function NewsStandingsSection() {
                         </div>
 
                         <div style={{ marginTop: 'auto', padding: '16px', display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #f3f4f6' }}>
-                            <button style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#DC2626', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', background: 'none', border: 'none', cursor: 'pointer' }}>
-                                Fixtures and Matches <FaArrowRight />
-                            </button>
+                            <Link href="/pertandingan/klasemen" passHref>
+                                <motion.button
+                                    whileHover={{ x: 5 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#DC2626', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', background: 'none', border: 'none', cursor: 'pointer' }}
+                                >
+                                    Fixtures and Matches <FaArrowRight />
+                                </motion.button>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -1,23 +1,40 @@
 "use client";
 
+
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaBars, FaTimes } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
 
-const MENU_ITEMS = [
-  { label: "Beranda", href: "#home" },
-  { label: "Program", href: "#program" },
-  { label: "Fasilitas", href: "#fasilitas" },
-  { label: "Berita", href: "#berita" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Video", href: "#video" },
+const HOME_MENU = [
+  { label: "Beranda", href: "#home", type: "hash" },
+  { label: "Program", href: "#program", type: "hash" },
+  { label: "Fasilitas", href: "#fasilitas", type: "hash" },
+  { label: "Berita", href: "#berita", type: "hash" },
+  { label: "Gallery", href: "#gallery", type: "hash" },
+  { label: "Video", href: "#video", type: "hash" },
+];
+
+const OTHER_MENU = [
+  { label: "Beranda", href: "/mufa", type: "route" },
+  { label: "Berita", href: "/mufa/berita", type: "route" },
+  { label: "Gallery", href: "/mufa/gallery", type: "route" },
+  { label: "Video", href: "/mufa/video", type: "route" },
 ];
 
 export default function MUFANavbar() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  // Check if we are on the homepage (either root /mufa or just /mufa/)
+  // Adjust logic if your homepage is different. Assuming /mufa is home based on context.
+  const isHomePage = pathname === "/mufa" || pathname === "/mufa/";
+
+  const menuItems = isHomePage ? HOME_MENU : OTHER_MENU;
 
   useEffect(() => {
     const onScroll = () => {
@@ -28,25 +45,31 @@ export default function MUFANavbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
-    if (href.startsWith("#")) {
-      const id = href.replace("#", "");
+  const handleNavClick = (item: { label: string; href: string; type: string }) => {
+    if (item.type === "hash" && isHomePage) {
+      // Smooth scroll on homepage
+      const id = item.href.replace("#", "");
       const el = document.getElementById(id);
       if (el) {
         const offset = 88;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: "smooth" });
       }
+    } else if (item.type === "route") {
+      // Direct navigation
+      router.push(item.href);
+    } else if (item.type === "hash" && !isHomePage) {
+      // If we are on another page and click a hash link (shouldn't happen with current menu logic, but safe to handle)
+      router.push(`/mufa${item.href}`);
     }
     setIsMobileOpen(false);
   };
 
-  const navbarClass = `${styles.mufaNavbar} ${
-    isScrolled ? styles.mufaNavbarScrolled : ""
-  }`;
+  const navbarClass = `${styles.mufaNavbar} ${isScrolled ? styles.mufaNavbarScrolled : ""
+    }`;
 
   return (
-    <header className={navbarClass}>
+    <header className={navbarClass} data-aos="fade-down" data-aos-duration="800">
       <div className={`${styles.mufaContainer} ${styles.mufaNavbarInner}`}>
         {/* Logo + Brand */}
         <Link href="/mufa" className="flex items-center gap-3">
@@ -63,9 +86,8 @@ export default function MUFANavbar() {
           </div>
           <div className="hidden sm:flex flex-col leading-tight">
             <span
-              className={`text-xs tracking-[0.35em] font-semibold uppercase transition-colors duration-200 ${
-                isScrolled ? "text-red-200/80" : "text-red-500"
-              }`}
+              className={`text-xs tracking-[0.35em] font-semibold uppercase transition-colors duration-200 ${isScrolled ? "text-red-200/80" : "text-red-500"
+                }`}
             >
               Madura United
             </span>
@@ -77,12 +99,12 @@ export default function MUFANavbar() {
 
         {/* Desktop Menu */}
         <nav className={styles.mufaNavMenu}>
-          {MENU_ITEMS.map((item) => (
+          {menuItems.map((item) => (
             <button
               key={item.label}
               type="button"
               className={styles.mufaNavLink}
-              onClick={() => handleNavClick(item.href)}
+              onClick={() => handleNavClick(item)}
             >
               {item.label}
             </button>
@@ -131,12 +153,12 @@ export default function MUFANavbar() {
       {isMobileOpen && (
         <div className={styles.mufaMobileMenu}>
           <div className="flex flex-col gap-3">
-            {MENU_ITEMS.map((item) => (
+            {menuItems.map((item) => (
               <button
                 key={item.label}
                 type="button"
                 className="text-sm font-semibold tracking-widest uppercase text-slate-50/90 text-left py-2 border-b border-white/5"
-                onClick={() => handleNavClick(item.href)}
+                onClick={() => handleNavClick(item)}
               >
                 {item.label}
               </button>

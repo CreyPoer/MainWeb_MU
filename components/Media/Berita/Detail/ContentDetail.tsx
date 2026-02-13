@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaSearch, FaChevronRight, FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp, FaFilter, FaTimes } from "react-icons/fa";
 
 // --- DUMMY DATA FOR SIDEBAR ---
@@ -30,6 +31,26 @@ interface ContentDetailProps {
 
 export default function ContentDetail({ newsItem }: ContentDetailProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter();
+
+    const handleSearch = () => {
+        if (searchQuery.trim()) {
+            router.push(`/media/berita?q=${encodeURIComponent(searchQuery)}`);
+        }
+    };
+
+    const handleCategoryClick = (category: string) => {
+        router.push(`/media/berita?category=${encodeURIComponent(category)}`);
+    };
+
+    const handleTagClick = (tag: string) => {
+        router.push(`/media/berita?tag=${encodeURIComponent(tag)}`);
+    };
+
+    const handleAuthorClick = (author: string) => {
+        router.push(`/media/berita?author=${encodeURIComponent(author)}`);
+    };
 
     // Helper for Sidebar Widget Title
     const WidgetHeader = ({ title }: { title: string }) => (
@@ -174,14 +195,18 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                 >
                                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.
                                 </p>
-                                <a href="#" style={{
-                                    color: "#DC2626", // Red
-                                    fontWeight: "700",
-                                    fontSize: "14px",
-                                    textDecoration: "none"
-                                }}>
+                                <div
+                                    onClick={() => handleAuthorClick(newsItem.author)}
+                                    style={{
+                                        color: "#DC2626", // Red
+                                        fontWeight: "700",
+                                        fontSize: "14px",
+                                        textDecoration: "none",
+                                        cursor: "pointer"
+                                    }}
+                                >
                                     View all posts by {newsItem.author}
-                                </a>
+                                </div>
                             </div>
                         </div>
 
@@ -189,7 +214,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                         <div className="nav-buttons-container" style={{ display: "flex", gap: "30px", marginTop: "60px" }}>
 
                             {/* Previous Post */}
-                            <a href="#" style={{
+                            <Link href={`/media/berita/${Math.max(1, newsItem.id - 1)}`} style={{
                                 flex: 1,
                                 backgroundColor: "white",
                                 padding: "40px",
@@ -225,10 +250,10 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                 }}>
                                     2018 RATING: WHO’S THE MOST “EXPENSIVE” PLAYER?
                                 </h4>
-                            </a>
+                            </Link>
 
                             {/* Next Post */}
-                            <a href="#" style={{
+                            <Link href={`/media/berita/${newsItem.id + 1}`} style={{
                                 flex: 1,
                                 backgroundColor: "white",
                                 padding: "40px",
@@ -266,9 +291,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                 }}>
                                     WHAT TO EXPECT FROM THE UPCOMING WORLD CUP?
                                 </h4>
-                            </a>
-
-
+                            </Link>
                         </div>
 
                         {/* --- YOU MAY ALSO LIKE SECTION --- */}
@@ -287,6 +310,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "30px" }}>
                                 {[
                                     {
+                                        id: 5,
                                         title: "2018 LEAGUE REPORT AND HIGHLIGHTS",
                                         date: "August 1, 2018",
                                         category: "Football Clubs",
@@ -294,6 +318,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                         image: "/images/dummy/news_match_action_1769655568450.png"
                                     },
                                     {
+                                        id: 6,
                                         title: "THE FASTEST GOAL OF THE WORLD CHAMPIONSHIP",
                                         date: "November 4, 2018",
                                         category: "Football Clubs",
@@ -363,7 +388,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                 {item.desc}
                                             </p>
 
-                                            <button style={{
+                                            <Link href={`/media/berita/${item.id}`} style={{
                                                 backgroundColor: "#DC2626",
                                                 color: "white",
                                                 border: "none",
@@ -373,12 +398,14 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                 fontSize: "12px",
                                                 textTransform: "uppercase",
                                                 cursor: "pointer",
-                                                transition: "background 0.3s"
+                                                transition: "background 0.3s",
+                                                display: "inline-block",
+                                                textDecoration: "none"
                                             }}
                                                 className="hover:bg-red-700"
                                             >
                                                 READ MORE
-                                            </button>
+                                            </Link>
                                         </div>
                                     </div>
                                 ))}
@@ -422,23 +449,29 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                 fontSize: "14px",
                                                 color: "#6B7280"
                                             }}
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                                         />
-                                        <button style={{
-                                            position: "absolute",
-                                            right: "5px",
-                                            top: "50%",
-                                            transform: "translateY(-50%)",
-                                            backgroundColor: "#DC2626",
-                                            color: "white",
-                                            border: "none",
-                                            width: "40px",
-                                            height: "40px",
-                                            borderRadius: "50%",
-                                            cursor: "pointer",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center"
-                                        }}>
+                                        <button
+                                            onClick={handleSearch}
+                                            style={{
+                                                position: "absolute",
+                                                right: "5px",
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                                backgroundColor: "#DC2626",
+                                                color: "white",
+                                                border: "none",
+                                                width: "40px",
+                                                height: "40px",
+                                                borderRadius: "50%",
+                                                cursor: "pointer",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center"
+                                            }}
+                                        >
                                             <FaSearch size={14} />
                                         </button>
                                     </div>
@@ -456,20 +489,23 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                 borderBottom: idx !== CATEGORIES.length - 1 ? "1px solid #E5E7EB" : "none",
                                                 paddingBottom: idx !== CATEGORIES.length - 1 ? "12px" : "0"
                                             }}>
-                                                <a href="#" style={{
-                                                    display: "block",
-                                                    textDecoration: "none",
-                                                    color: "#111827",
-                                                    fontWeight: "700",
-                                                    fontSize: "14px",
-                                                    textTransform: "uppercase",
-                                                    letterSpacing: "0.5px",
-                                                    transition: "color 0.2s"
-                                                }}
+                                                <div
+                                                    onClick={() => handleCategoryClick(cat)}
+                                                    style={{
+                                                        display: "block",
+                                                        textDecoration: "none",
+                                                        color: "#111827",
+                                                        fontWeight: "700",
+                                                        fontSize: "14px",
+                                                        textTransform: "uppercase",
+                                                        letterSpacing: "0.5px",
+                                                        transition: "color 0.2s",
+                                                        cursor: "pointer"
+                                                    }}
                                                     className="hover:text-red-600"
                                                 >
                                                     {cat}
-                                                </a>
+                                                </div>
                                             </li>
                                         ))}
                                     </ul>
@@ -482,16 +518,18 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                 <div style={{ padding: "30px" }}>
                                     <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                                         {TAGS.map((tag, idx) => (
-                                            <span key={idx} style={{
-                                                backgroundColor: "#F3F4F6",
-                                                color: "#6B7280",
-                                                padding: "8px 16px",
-                                                borderRadius: "20px",
-                                                fontSize: "12px",
-                                                fontWeight: "600",
-                                                cursor: "pointer",
-                                                transition: "all 0.2s"
-                                            }}
+                                            <span key={idx}
+                                                onClick={() => handleTagClick(tag)}
+                                                style={{
+                                                    backgroundColor: "#F3F4F6",
+                                                    color: "#6B7280",
+                                                    padding: "8px 16px",
+                                                    borderRadius: "20px",
+                                                    fontSize: "12px",
+                                                    fontWeight: "600",
+                                                    cursor: "pointer",
+                                                    transition: "all 0.2s"
+                                                }}
                                                 className="hover:bg-red-600 hover:text-white"
                                             >
                                                 {tag}

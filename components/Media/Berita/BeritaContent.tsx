@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaFilter, FaTimes, FaSearch, FaChevronRight } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -16,6 +17,7 @@ const NEWS_DATA = [
         category: "Tim Utama",
         excerpt: "Persiapan matang telah dilakukan oleh skuad Laskar Sape Kerrab menyambut musim kompetisi yang akan segera bergulir dengan target papan atas.",
         image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop", // Football text match
+        author: "Admin",
     },
     {
         id: 2,
@@ -24,6 +26,7 @@ const NEWS_DATA = [
         category: "Academy",
         excerpt: "Para pemain muda Madura United U-20 berhasil mencatatkan kemenangan beruntun dalam laga uji coba terakhir mereka.",
         image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1000&auto=format&fit=crop", // Football match
+        author: "Reporter 1",
     },
     {
         id: 3,
@@ -32,6 +35,7 @@ const NEWS_DATA = [
         category: "Pertandingan",
         excerpt: "Madura United berhasil mengamankan 3 poin penuh di kandang setelah mengalahkan tamunya dengan skor meyakinkan 2-0.",
         image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45?q=80&w=1000&auto=format&fit=crop",
+        author: "Admin",
     },
     {
         id: 4,
@@ -40,6 +44,7 @@ const NEWS_DATA = [
         category: "Wawancara",
         excerpt: "Simak kisah inspiratif dari kapten tim Madura United tentang perjalanan karirnya hingga memimpin laskar Sape Kerrab.",
         image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=1000&auto=format&fit=crop",
+        author: "Reporter 2",
     },
     {
         id: 5,
@@ -48,6 +53,7 @@ const NEWS_DATA = [
         category: "Latihan",
         excerpt: "Pelatih kiper Madura United menerapkan metode latihan baru untuk meningkatkan refleks dan distribusi bola para penjaga gawang.",
         image: "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?q=80&w=1000&auto=format&fit=crop",
+        author: "Admin",
     },
     {
         id: 6,
@@ -56,6 +62,7 @@ const NEWS_DATA = [
         category: "Klub",
         excerpt: "K-Conk Mania dan elemen suporter lainnya menggelar aksi sosial sebagai bentuk kepedulian terhadap masyarakat sekitar.",
         image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1000&auto=format&fit=crop",
+        author: "Admin",
     }
 ];
 
@@ -69,6 +76,42 @@ const TAGS = [
 
 export default function BeritaContent() {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // Get filter values from URL
+    const activeCategory = searchParams.get("category");
+    const activeTag = searchParams.get("tag");
+    const activeQuery = searchParams.get("q");
+    const activeAuthor = searchParams.get("author");
+
+    // Filter Logic
+    const filteredNews = useMemo(() => {
+        return NEWS_DATA.filter((news) => {
+            // 1. Filter by Category
+            if (activeCategory && news.category.toLowerCase() !== activeCategory.toLowerCase()) {
+                return false;
+            }
+            // 2. Filter by Search Query
+            if (activeQuery && !news.title.toLowerCase().includes(activeQuery.toLowerCase())) {
+                return false;
+            }
+            // 3. Filter by Tag
+            if (activeTag) {
+                const content = `${news.title} ${news.excerpt} ${news.category}`.toLowerCase();
+                if (!content.includes(activeTag.toLowerCase())) {
+                    return false;
+                }
+            }
+            // 4. Filter by Author
+            // @ts-ignore
+            if (activeAuthor && news.author && news.author.toLowerCase() !== activeAuthor.toLowerCase()) {
+                return false;
+            }
+            return true;
+        });
+    }, [activeCategory, activeTag, activeQuery, activeAuthor]);
 
     useEffect(() => {
         AOS.init({
@@ -81,159 +124,212 @@ export default function BeritaContent() {
         setIsFilterOpen(!isFilterOpen);
     };
 
+    const resetAll = () => {
+        setSearchQuery("");
+        router.push('/media/berita');
+        if (window.innerWidth < 1024) setIsFilterOpen(false);
+    };
+
+    // Helper to push URL
+    const updateFilter = (type: "category" | "tag" | "q", value: string | null) => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        // Reset others when setting one, or combine? 
+        // Typically category and tag might be exclusive or combined.
+        // Let's implement exclusive for simplicity in this request (User asked "Category OR Tag").
+        // But Search can be combined or separate.
+        // Let's clear others for a clean "Filter by X" experience as requested for the Hero Title change.
+
+        if (value) {
+            // If selecting a category, clear tag/search to make the Title clear "Kategori: X"
+            if (type === "category") {
+                params.delete("tag");
+                params.delete("q");
+                params.set("category", value);
+            } else if (type === "tag") {
+                params.delete("category");
+                params.delete("q");
+                params.set("tag", value);
+            } else if (type === "q") {
+                // Search might want to keep category, but let's clear for "Search: X" hero title simplicity
+                params.delete("category");
+                params.delete("tag");
+                params.set("q", value);
+            }
+        } else {
+            params.delete(type);
+        }
+
+        router.push(`/media/berita?${params.toString()}`);
+        if (window.innerWidth < 1024) setIsFilterOpen(false); // Close sidebar on mobile selection
+    };
+
     return (
         <div style={{ backgroundColor: "#111827", minHeight: "100vh", position: "relative", overflowX: "hidden" }}>
 
             {/* --- MAIN CONTENT: 4-COLUMN CHECKERBOARD GRID --- */}
             <div className="news-grid-container" style={{ width: "100%", padding: "0" }}>
-                {NEWS_DATA.map((news, index) => {
-                    // Logic for Checkerboard Pattern in 4 columns (Desktop)
-                    // Desktop Row 0 (Items 0, 1): Text-Image | Text-Image
-                    // Desktop Row 1 (Items 2, 3): Image-Text | Image-Text
-                    // ... and so on.
+                {filteredNews.length > 0 ? (
+                    filteredNews.map((news, index) => {
+                        // Logic for Checkerboard Pattern in 4 columns (Desktop)
+                        // Desktop Row 0 (Items 0, 1): Text-Image | Text-Image
+                        // Desktop Row 1 (Items 2, 3): Image-Text | Image-Text
+                        // ... and so on.
 
-                    const rowNumber = Math.floor(index / 2);
+                        const rowNumber = Math.floor(index / 2);
 
-                    // Logic Flags
-                    const swapTablet = index % 2 !== 0; // Swap every 2nd item on tablet (Item 1, 3, 5...)
-                    const swapDesktop = rowNumber % 2 !== 0; // Swap every 2nd row on desktop (Row 1, 3...)
+                        // Logic Flags
+                        const swapTablet = index % 2 !== 0; // Swap every 2nd item on tablet (Item 1, 3, 5...)
+                        const swapDesktop = rowNumber % 2 !== 0; // Swap every 2nd row on desktop (Row 1, 3...)
 
-                    // Image Cell Component
-                    const ImageCell = (
-                        <div
-                            key={`img-${news.id}`}
-                            style={{
-                                position: "relative",
-                                height: "250px", // Fixed height for consistent grid
-                                overflow: "hidden",
-                                width: "100%"
-                            }}
-                            className="group grid-image-cell"
-                        >
-                            <Image
-                                src={news.image}
-                                alt={news.title}
-                                fill
+                        // Image Cell Component
+                        const ImageCell = (
+                            <div
+                                key={`img-${news.id}`}
                                 style={{
-                                    objectFit: "cover",
-                                    objectPosition: "center",
-                                    transition: "transform 0.5s ease"
+                                    position: "relative",
+                                    height: "250px", // Fixed height for consistent grid
+                                    overflow: "hidden",
+                                    width: "100%"
                                 }}
-                                className="group-hover:scale-110"
-                            />
-                            {/* Overlay */}
-                            <div style={{
-                                position: "absolute",
-                                inset: 0,
-                                background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%)"
-                            }} />
-
-                            {/* Mobile Category Badge (Only show on mobile layout via CSS media query if needed, keeping simple here) */}
-                            <div className="mobile-only-badge" style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}>
-                                <span style={{ backgroundColor: "#DC2626", color: "white", fontSize: "10px", padding: "2px 8px", borderRadius: "10px", fontWeight: "bold", textTransform: "uppercase" }}>
-                                    {news.category}
-                                </span>
-                            </div>
-                        </div>
-                    );
-
-                    // Text Cell Component
-                    const TextCell = (
-                        <div
-                            key={`txt-${news.id}`}
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                padding: "40px 30px",
-                                backgroundColor: "white",
-                                position: "relative",
-                                height: "250px", // Match Image Height
-                                width: "100%"
-                            }}
-                            className="grid-text-cell"
-                        >
-                            <div style={{ marginBottom: "16px" }}>
-                                <span className="desktop-only-badge" style={{
-                                    backgroundColor: "#DC2626",
-                                    color: "white",
-                                    fontSize: "10px",
-                                    fontWeight: "800",
-                                    padding: "4px 10px",
-                                    textTransform: "uppercase",
-                                    borderRadius: "20px",
-                                    display: "inline-block",
-                                    marginRight: "10px"
-                                }}>
-                                    {news.category}
-                                </span>
-                                <span style={{ color: "#656972ff", fontSize: "12px", fontWeight: "700", textTransform: "uppercase" }}>
-                                    {news.date}
-                                </span>
-                            </div>
-
-                            <h3 style={{
-                                fontSize: "18px",
-                                fontWeight: "900",
-                                lineHeight: "1.3",
-                                marginBottom: "12px",
-                                color: "#111827",
-                                textTransform: "uppercase",
-                                display: "-webkit-box",
-                                WebkitLineClamp: 3,
-                                WebkitBoxOrient: "vertical",
-                                overflow: "hidden"
-                            }}>
-                                {news.title}
-                            </h3>
-
-                            <div style={{ marginTop: "20px" }}>
-                                <Link
-                                    href={`/media/berita/${news.id}`}
+                                className="group grid-image-cell"
+                            >
+                                <Image
+                                    src={news.image}
+                                    alt={news.title}
+                                    fill
                                     style={{
+                                        objectFit: "cover",
+                                        objectPosition: "center",
+                                        transition: "transform 0.5s ease"
+                                    }}
+                                    className="group-hover:scale-110"
+                                />
+                                {/* Overlay */}
+                                <div style={{
+                                    position: "absolute",
+                                    inset: 0,
+                                    background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%)"
+                                }} />
+
+                                {/* Mobile Category Badge (Only show on mobile layout via CSS media query if needed, keeping simple here) */}
+                                <div className="mobile-only-badge" style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}>
+                                    <span style={{ backgroundColor: "#DC2626", color: "white", fontSize: "10px", padding: "2px 8px", borderRadius: "10px", fontWeight: "bold", textTransform: "uppercase" }}>
+                                        {news.category}
+                                    </span>
+                                </div>
+                            </div>
+                        );
+
+                        // Text Cell Component
+                        const TextCell = (
+                            <div
+                                key={`txt-${news.id}`}
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    padding: "40px 30px",
+                                    backgroundColor: "white",
+                                    position: "relative",
+                                    height: "250px", // Match Image Height
+                                    width: "100%"
+                                }}
+                                className="grid-text-cell"
+                            >
+                                <div style={{ marginBottom: "16px" }}>
+                                    <span className="desktop-only-badge" style={{
                                         backgroundColor: "#DC2626",
                                         color: "white",
-                                        padding: "8px 16px",
                                         fontSize: "10px",
                                         fontWeight: "800",
+                                        padding: "4px 10px",
                                         textTransform: "uppercase",
-                                        letterSpacing: "1px",
                                         borderRadius: "20px",
                                         display: "inline-block",
-                                        transition: "background 0.3s",
-                                        textDecoration: "none"
-                                    }}
-                                    className="hover:bg-red-800"
-                                >
-                                    Read More
-                                </Link>
-                            </div>
-                        </div>
-                    );
+                                        marginRight: "10px"
+                                    }}>
+                                        {news.category}
+                                    </span>
+                                    <span style={{ color: "#656972ff", fontSize: "12px", fontWeight: "700", textTransform: "uppercase" }}>
+                                        {news.date}
+                                    </span>
+                                </div>
 
-                    // Always render Text then Image in DOM.
-                    // Control visual order via CSS classes on the wrapper.
-                    const wrapperClass = `
+                                <h3 style={{
+                                    fontSize: "18px",
+                                    fontWeight: "900",
+                                    lineHeight: "1.3",
+                                    marginBottom: "12px",
+                                    color: "#111827",
+                                    textTransform: "uppercase",
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 3,
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden"
+                                }}>
+                                    {news.title}
+                                </h3>
+
+                                <div style={{ marginTop: "20px" }}>
+                                    <Link
+                                        href={`/media/berita/${news.id}`}
+                                        style={{
+                                            backgroundColor: "#DC2626",
+                                            color: "white",
+                                            padding: "8px 16px",
+                                            fontSize: "10px",
+                                            fontWeight: "800",
+                                            textTransform: "uppercase",
+                                            letterSpacing: "1px",
+                                            borderRadius: "20px",
+                                            display: "inline-block",
+                                            transition: "background 0.3s",
+                                            textDecoration: "none"
+                                        }}
+                                        className="hover:bg-red-800"
+                                    >
+                                        Read More
+                                    </Link>
+                                </div>
+                            </div>
+                        );
+
+                        // Always render Text then Image in DOM.
+                        // Control visual order via CSS classes on the wrapper.
+                        const wrapperClass = `
                         news-grid-item-wrapper 
                         ${swapTablet ? 'swap-tablet' : ''} 
                         ${swapDesktop ? 'swap-desktop' : ''}
                     `;
 
-                    return (
-                        <div
-                            key={news.id}
-                            style={{
-                                display: "contents",
-                                // @ts-ignore
-                                "--item-order": index * 2
-                            } as React.CSSProperties}
-                            className={wrapperClass}
+                        return (
+                            <div
+                                key={news.id}
+                                style={{
+                                    display: "contents",
+                                    // @ts-ignore
+                                    "--item-order": index * 2
+                                } as React.CSSProperties}
+                                className={wrapperClass}
+                            >
+                                {TextCell}
+                                {ImageCell}
+                            </div>
+                        );
+                    })
+                ) : (
+                    <div style={{ padding: "100px", textAlign: "center", color: "white", width: "100%", gridColumn: "1 / -1" }}>
+                        <h3 style={{ fontSize: "2rem", fontWeight: "bold" }}>Tidak ada berita ditemukan.</h3>
+                        <p style={{ marginTop: "10px", color: "#9CA3AF" }}>Coba kata kunci atau filter lain.</p>
+                        <button
+                            onClick={() => router.push('/media/berita')}
+                            style={{ marginTop: "20px", padding: "10px 20px", backgroundColor: "#DC2626", color: "white", borderRadius: "8px", fontWeight: "bold", border: "none", cursor: "pointer" }}
                         >
-                            {TextCell}
-                            {ImageCell}
-                        </div>
-                    );
-                })}
+                            Reset Filter
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* --- STICKY FILTER BUTTON --- */}
@@ -291,7 +387,29 @@ export default function BeritaContent() {
             >
                 {/* Header */}
                 <div style={{ backgroundColor: "#111827", padding: "25px", display: "flex", justifyContent: "space-between", alignItems: "center", color: "white" }}>
-                    <h3 style={{ fontSize: "20px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "1px" }}>Filter News</h3>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <h3 style={{ fontSize: "20px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "1px" }}>Filter News</h3>
+                        {(activeCategory || activeTag || activeQuery || activeAuthor) && (
+                            <button
+                                onClick={resetAll}
+                                style={{
+                                    fontSize: "12px",
+                                    color: "#FCA5A5",
+                                    background: "none",
+                                    border: "1px solid #7F1D1D",
+                                    padding: "4px 10px",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    textTransform: "uppercase",
+                                    fontWeight: "bold",
+                                    transition: "all 0.2s"
+                                }}
+                                className="hover:bg-red-900 hover:text-white"
+                            >
+                                Reset
+                            </button>
+                        )}
+                    </div>
                     <button onClick={toggleFilter} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
                         <FaTimes size={24} />
                     </button>
@@ -319,10 +437,20 @@ export default function BeritaContent() {
                                     fontWeight: "600",
                                     transition: "border-color 0.3s"
                                 }}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                                 onFocus={(e) => e.target.style.borderColor = "#DC2626"}
                                 onBlur={(e) => e.target.style.borderColor = "transparent"}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        updateFilter('q', searchQuery);
+                                    }
+                                }}
                             />
-                            <button style={{ position: "absolute", right: "15px", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}>
+                            <button
+                                onClick={() => updateFilter('q', searchQuery)}
+                                style={{ position: "absolute", right: "15px", color: "#DC2626", background: "none", border: "none", cursor: "pointer" }}
+                            >
                                 <FaSearch size={18} />
                             </button>
                         </div>
@@ -336,24 +464,28 @@ export default function BeritaContent() {
                         <ul style={{ listStyle: "none", padding: 0 }}>
                             {CATEGORIES.map((cat, idx) => (
                                 <li key={idx} style={{ marginBottom: "10px" }}>
-                                    <a href="#" style={{
-                                        color: "#111827",
-                                        fontWeight: "700",
-                                        fontSize: "15px",
-                                        textTransform: "uppercase",
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        padding: "10px",
-                                        borderRadius: "6px",
-                                        transition: "all 0.2s",
-                                        textDecoration: "none",
-                                    }}
+                                    <div
+                                        onClick={() => updateFilter('category', cat)}
+                                        style={{
+                                            color: activeCategory === cat ? "#DC2626" : "#111827",
+                                            fontWeight: "700",
+                                            fontSize: "15px",
+                                            textTransform: "uppercase",
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            padding: "10px",
+                                            borderRadius: "6px",
+                                            transition: "all 0.2s",
+                                            textDecoration: "none",
+                                            cursor: "pointer",
+                                            backgroundColor: activeCategory === cat ? "#FEF2F2" : "transparent"
+                                        }}
                                         className="category-link"
                                     >
                                         {cat}
-                                        <FaChevronRight size={12} color="#D1D5DB" />
-                                    </a>
+                                        <FaChevronRight size={12} color={activeCategory === cat ? "#DC2626" : "#D1D5DB"} />
+                                    </div>
                                 </li>
                             ))}
                         </ul>
@@ -369,16 +501,17 @@ export default function BeritaContent() {
                                 <span
                                     key={idx}
                                     style={{
-                                        backgroundColor: "white",
-                                        color: "#4B5563",
+                                        backgroundColor: activeTag === tag ? "#DC2626" : "white",
+                                        color: activeTag === tag ? "white" : "#4B5563",
                                         padding: "8px 16px",
                                         borderRadius: "30px",
                                         fontSize: "12px",
                                         fontWeight: "700",
                                         cursor: "pointer",
-                                        border: "1px solid #E5E7EB",
+                                        border: activeTag === tag ? "1px solid #DC2626" : "1px solid #E5E7EB",
                                         transition: "all 0.2s"
                                     }}
+                                    onClick={() => updateFilter('tag', tag)}
                                     className="tag-item"
                                 >
                                     #{tag}

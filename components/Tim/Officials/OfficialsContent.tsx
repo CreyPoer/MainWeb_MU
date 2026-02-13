@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaMedal, FaClock } from "react-icons/fa";
 import { FaFlag } from "react-icons/fa6";
 import Flag from "react-world-flags";
+import { useSearchParams } from "next/navigation";
 
 type TeamKey = "utama" | "akademi";
 
@@ -108,7 +109,11 @@ const teamLabel: Record<TeamKey, string> = {
 };
 
 export default function OfficialsContent() {
-  const [activeTeam, setActiveTeam] = useState<TeamKey>("utama");
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const [activeTeam, setActiveTeam] = useState<TeamKey>(
+    tabParam === "akademi" ? "akademi" : "utama"
+  );
   const gridRef = useRef<HTMLDivElement | null>(null);
 
   const filteredOfficials = useMemo(
@@ -194,9 +199,8 @@ export default function OfficialsContent() {
                       {teamLabel[official.team]}
                     </span>
                     <span
-                      className={`official-role-badge ${
-                        isMainTeam ? "utama" : "akademi"
-                      }`}
+                      className={`official-role-badge ${isMainTeam ? "utama" : "akademi"
+                        }`}
                     >
                       {official.role}
                     </span>

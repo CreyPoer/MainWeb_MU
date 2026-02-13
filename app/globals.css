@@ -148,7 +148,7 @@ body {
     background: #b91c1c;
 }
 
-.mu-philosophy__panel > * {
+.mu-philosophy__panel>* {
     position: relative;
     z-index: 1;
 }
@@ -460,15 +460,27 @@ body {
 }
 
 /* Delay order: after section finishes (section delay 200ms + duration ~1000ms) */
-.mu-homebase__anim--arrow-1 { --mu-hb-delay: 1300ms; }
-.mu-homebase__anim--arrow-2 { --mu-hb-delay: 1450ms; }
-.mu-homebase__anim--card-a { --mu-hb-delay: 1600ms; }
-.mu-homebase__anim--card-b { --mu-hb-delay: 1750ms; }
+.mu-homebase__anim--arrow-1 {
+    --mu-hb-delay: 1300ms;
+}
+
+.mu-homebase__anim--arrow-2 {
+    --mu-hb-delay: 1450ms;
+}
+
+.mu-homebase__anim--card-a {
+    --mu-hb-delay: 1600ms;
+}
+
+.mu-homebase__anim--card-b {
+    --mu-hb-delay: 1750ms;
+}
 
 @media (max-width: 425px) {
     .mu-homebase__arrow--top {
         right: 5%;
     }
+
     .mu-homebase__arrow--bottom {
         left: 1%;
     }
@@ -853,6 +865,7 @@ body {
     .mu-homebase__divider {
         display: none;
     }
+
     .mu-homebase__inner {
         padding: 34px 32px;
     }
@@ -922,20 +935,16 @@ body {
     inset: 0;
     pointer-events: none;
     background:
-        repeating-linear-gradient(
-            135deg,
+        repeating-linear-gradient(135deg,
             rgba(0, 0, 0, 0.18) 0px,
             rgba(0, 0, 0, 0.18) 2px,
             rgba(0, 0, 0, 0) 2px,
-            rgba(0, 0, 0, 0) 14px
-        ),
-        repeating-linear-gradient(
-            45deg,
+            rgba(0, 0, 0, 0) 14px),
+        repeating-linear-gradient(45deg,
             rgba(255, 255, 255, 0.08) 0px,
             rgba(255, 255, 255, 0.08) 1px,
             rgba(255, 255, 255, 0) 1px,
-            rgba(255, 255, 255, 0) 18px
-        );
+            rgba(255, 255, 255, 0) 18px);
     opacity: 0.65;
 }
 
@@ -991,8 +1000,8 @@ body {
 }
 
 .mu-achievements__iconWrap {
-    width:168px;
-    height:168px;
+    width: 168px;
+    height: 168px;
     border-radius: 9999px;
     background: #e5e7eb;
     display: grid;
@@ -1004,8 +1013,8 @@ body {
 }
 
 .mu-achievements__icon {
-    width:152px;
-    height:152px;
+    width: 152px;
+    height: 152px;
     object-fit: contain;
     display: block;
 }
@@ -1015,6 +1024,7 @@ body {
         transform: scale(0.92);
         filter: blur(2px);
     }
+
     to {
         transform: scale(1);
         filter: blur(0);
@@ -1693,6 +1703,18 @@ body {
     }
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 .hero-overlay {
     position: absolute;
     top: 0;
@@ -1736,6 +1758,15 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.hero-subtitle {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+    font-weight: 500;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-title .highlight {
@@ -2098,12 +2129,12 @@ body {
     }
 }
 
-.visi-misi-card + .visi-misi-card {
+.visi-misi-card+.visi-misi-card {
     margin-top: 0.6rem;
 }
 
 @media (min-width: 1024px) {
-    .visi-misi-card + .visi-misi-card {
+    .visi-misi-card+.visi-misi-card {
         margin-top: -0.5rem;
     }
 }

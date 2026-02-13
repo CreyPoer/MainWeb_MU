@@ -9,11 +9,32 @@ export const metadata: Metadata = {
     description: 'Berita terbaru seputar Madura United FC, update pemain, hasil pertandingan, dan info klub terkini.',
 };
 
-export default function BeritaPage() {
+export default async function BeritaPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+    const resolvedSearchParams = await searchParams;
+    const category = resolvedSearchParams?.category;
+    const tag = resolvedSearchParams?.tag;
+    const query = resolvedSearchParams?.q;
+    const author = resolvedSearchParams?.author;
+
+    let heroTitle = "Berita";
+    if (category && typeof category === "string") {
+        heroTitle = `Kategori: ${category}`;
+    } else if (tag && typeof tag === "string") {
+        heroTitle = `Tag: #${tag}`;
+    } else if (query && typeof query === "string") {
+        heroTitle = `Pencarian: "${query}"`;
+    } else if (author && typeof author === "string") {
+        heroTitle = `Penulis: ${author}`;
+    }
+
     return (
         <main className="bg-neutral-900 min-h-screen">
             <CustomHero
-                title="Berita"
+                title={heroTitle}
                 bgImage="/berita.jpg"
                 breadcrumbActive="Berita"
             />

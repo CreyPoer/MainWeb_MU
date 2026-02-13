@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 type TeamKey = "utama" | "akademi";
@@ -224,7 +225,12 @@ const ACADEMY_PLAYERS: Player[] = [
 ];
 
 export default function PemainContent() {
-	const [activeTeam, setActiveTeam] = useState<TeamKey>("utama");
+	const searchParams = useSearchParams();
+	const tabParam = searchParams.get("tab");
+
+	const [activeTeam, setActiveTeam] = useState<TeamKey>(
+		tabParam === "akademi" ? "akademi" : "utama"
+	);
 	const sectionRef = useRef<HTMLElement | null>(null);
 
 	const players = useMemo(
@@ -294,18 +300,16 @@ export default function PemainContent() {
 						<button
 							type="button"
 							onClick={() => setActiveTeam("utama")}
-							className={`tab-button ${
-								activeTeam === "utama" ? "active" : "inactive"
-							}`}
+							className={`tab-button ${activeTeam === "utama" ? "active" : "inactive"
+								}`}
 						>
 							Tim Utama
 						</button>
 						<button
 							type="button"
 							onClick={() => setActiveTeam("akademi")}
-							className={`tab-button ${
-								activeTeam === "akademi" ? "active" : "inactive"
-							}`}
+							className={`tab-button ${activeTeam === "akademi" ? "active" : "inactive"
+								}`}
 						>
 							Akademi
 						</button>
@@ -330,9 +334,8 @@ export default function PemainContent() {
 											key={player.id}
 											type="button"
 											onClick={() => setSelectedPlayer(player)}
-											className={`players-list-item ${
-												isActive ? "active" : ""
-											}`}
+											className={`players-list-item ${isActive ? "active" : ""
+												}`}
 										>
 											<div
 												className={`players-number ${getPositionClass(
@@ -417,9 +420,8 @@ export default function PemainContent() {
 										([label, value], index) => (
 											<div
 												key={label}
-												className={`players-stat ${
-													index === 0 ? "players-stat-main" : ""
-												}`}
+												className={`players-stat ${index === 0 ? "players-stat-main" : ""
+													}`}
 											>
 												<p className="players-stat-label">{label}</p>
 												<p className="players-stat-value">{value}</p>

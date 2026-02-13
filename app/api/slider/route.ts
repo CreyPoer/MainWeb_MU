@@ -6,6 +6,7 @@ export async function GET() {
         {
             id: 1,
             name: "MADURA UNITED FC Sape Kerrab",
+            subtitle: "Berjuang Bersama Untuk Kejayaan Madura",
             image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1920&auto=format&fit=crop",
             link: "/media/berita",
             status: 1
@@ -13,6 +14,7 @@ export async function GET() {
         {
             id: 2,
             name: "SUPPORT YOUR LOCAL TEAM",
+            subtitle: "Dukungan Anda Adalah Semangat Kami",
             image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1920&auto=format&fit=crop",
             link: "/pertandingan/jadwal",
             status: 1

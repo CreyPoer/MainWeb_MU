@@ -2,6 +2,7 @@
 // Updated: 2026-01-29 01:10 - Fully Responsive Fixed
 
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 
 interface MatchResult {
@@ -134,81 +135,91 @@ export default function ResultSection() {
                     }}
                 >
                     {matchResults.map((match, index) => (
-                        <div
+                        <Link
                             key={match.id}
+                            href={`/pertandingan/jadwal/${match.id}`}
                             data-aos="fade-left"
                             data-aos-delay={index * 150}
                             data-aos-offset="200"
                             data-aos-anchor-placement="center-bottom"
                             style={{
-                                backgroundColor: '#FFFFFF',
-                                borderRadius: '1rem',
-                                padding: '1rem',
                                 flex: '0 0 100%', // Each card takes full width on mobile
                                 minWidth: '280px', // Prevent squishing
                                 maxWidth: '100%',
-                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                scrollSnapAlign: 'center' // Snap to center
+                                scrollSnapAlign: 'center', // Snap to center
+                                textDecoration: 'none',
+                                display: 'block'
                             }}
                         >
-                            {/* LEFT: Home Team */}
-                            <div className="flex flex-col items-center gap-2 w-16 md:w-20">
-                                <div style={{ position: 'relative', width: '50px', height: '50px' }}>
-                                    <Image
-                                        src={match.homeLogo}
-                                        alt={match.homeTeam}
-                                        fill
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                </div>
-                                <span style={{ fontSize: '11px', fontWeight: 'bold', textAlign: 'center', color: '#000000', lineHeight: 1.2 }}>
-                                    {match.homeTeam}
-                                </span>
-                            </div>
-
-                            {/* CENTER: Score & Details */}
-                            <div className="flex flex-col items-center flex-1 px-2">
-                                {/* Stadium */}
-                                <div className="flex items-center gap-1 mb-1">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="#EF4444">
-                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                                    </svg>
-                                    <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#111111', whiteSpace: 'nowrap' }}>
-                                        {match.stadium}
+                            <div
+                                style={{
+                                    backgroundColor: '#FFFFFF',
+                                    borderRadius: '1rem',
+                                    padding: '1rem',
+                                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    width: '100%',
+                                    height: '100%'
+                                }}
+                            >
+                                {/* LEFT: Home Team */}
+                                <div className="flex flex-col items-center gap-2 w-16 md:w-20">
+                                    <div style={{ position: 'relative', width: '50px', height: '50px' }}>
+                                        <Image
+                                            src={match.homeLogo}
+                                            alt={match.homeTeam}
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    </div>
+                                    <span style={{ fontSize: '11px', fontWeight: 'bold', textAlign: 'center', color: '#000000', lineHeight: 1.2 }}>
+                                        {match.homeTeam}
                                     </span>
                                 </div>
 
-                                {/* Score Big */}
-                                <div className="flex items-center gap-3">
-                                    <span style={{ fontSize: '32px', fontWeight: 900, color: '#EF4444', lineHeight: 1 }}>{match.homeScore}</span>
-                                    <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#111111', lineHeight: 1 }}>-</span>
-                                    <span style={{ fontSize: '32px', fontWeight: 900, color: '#EF4444', lineHeight: 1 }}>{match.awayScore}</span>
+                                {/* CENTER: Score & Details */}
+                                <div className="flex flex-col items-center flex-1 px-2">
+                                    {/* Stadium */}
+                                    <div className="flex items-center gap-1 mb-1">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="#EF4444">
+                                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                        </svg>
+                                        <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#111111', whiteSpace: 'nowrap' }}>
+                                            {match.stadium}
+                                        </span>
+                                    </div>
+
+                                    {/* Score Big */}
+                                    <div className="flex items-center gap-3">
+                                        <span style={{ fontSize: '32px', fontWeight: 900, color: '#EF4444', lineHeight: 1 }}>{match.homeScore}</span>
+                                        <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#111111', lineHeight: 1 }}>-</span>
+                                        <span style={{ fontSize: '32px', fontWeight: 900, color: '#EF4444', lineHeight: 1 }}>{match.awayScore}</span>
+                                    </div>
+
+                                    {/* Date */}
+                                    <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333333', marginTop: '4px' }}>
+                                        {match.date} - {match.time}
+                                    </span>
                                 </div>
 
-                                {/* Date */}
-                                <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333333', marginTop: '4px' }}>
-                                    {match.date} - {match.time}
-                                </span>
-                            </div>
-
-                            {/* RIGHT: Away Team */}
-                            <div className="flex flex-col items-center gap-2 w-16 md:w-20">
-                                <div style={{ position: 'relative', width: '50px', height: '50px' }}>
-                                    <Image
-                                        src={match.awayLogo}
-                                        alt={match.awayTeam}
-                                        fill
-                                        style={{ objectFit: 'contain' }}
-                                    />
+                                {/* RIGHT: Away Team */}
+                                <div className="flex flex-col items-center gap-2 w-16 md:w-20">
+                                    <div style={{ position: 'relative', width: '50px', height: '50px' }}>
+                                        <Image
+                                            src={match.awayLogo}
+                                            alt={match.awayTeam}
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    </div>
+                                    <span style={{ fontSize: '11px', fontWeight: 'bold', textAlign: 'center', color: '#000000', lineHeight: 1.2 }}>
+                                        {match.awayTeam}
+                                    </span>
                                 </div>
-                                <span style={{ fontSize: '11px', fontWeight: 'bold', textAlign: 'center', color: '#000000', lineHeight: 1.2 }}>
-                                    {match.awayTeam}
-                                </span>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
 
@@ -221,7 +232,7 @@ export default function ResultSection() {
                             flex-wrap: nowrap !important;
                             gap: 1rem !important;
                         }
-                        .scrollbar-hide > div {
+                        .scrollbar-hide > :global(a) {
                             flex: 1 !important;
                             min-width: 0 !important;
                             scroll-snap-align: none !important;

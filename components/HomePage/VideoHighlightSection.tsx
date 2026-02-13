@@ -43,7 +43,7 @@ export default function VideoHighlightSection() {
                 transform: "translateX(-50%)",
                 fontSize: "12vw",
                 fontWeight: "900",
-                color: "rgba(255, 255, 255, 0.84)",
+                color: "rgba(136, 136, 136, 0.84)",
                 whiteSpace: "nowrap",
                 pointerEvents: "none",
                 zIndex: 0

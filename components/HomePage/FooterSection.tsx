@@ -1,16 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 // --- DUMMY DATA ---
 const GALLERY_IMAGES = [
-    "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=400&auto=format&fit=crop",
+    {
+        thumbnail: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=400&auto=format&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop"
+        ]
+    },
+    {
+        thumbnail: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=400&auto=format&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200&auto=format&fit=crop"
+        ]
+    },
+    {
+        thumbnail: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=400&auto=format&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1200&auto=format&fit=crop"
+        ]
+    },
+    {
+        thumbnail: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=400&auto=format&fit=crop", // Intentionally using same thumbnail for demo
+        images: [
+            "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1200&auto=format&fit=crop"
+        ]
+    },
 ];
 
 const ESSENTIAL_LINKS_1 = [
@@ -27,21 +56,69 @@ const ESSENTIAL_LINKS_2 = [
     { label: "Partners", href: "#partners" },
 ];
 
+const ESSENTIAL_LINKS_3 = [
+    { label: "Pertandingan", href: "/pertandingan/jadwal" },
+    { label: "Klasemen", href: "/pertandingan/klasemen" },
+    { label: "Tim Utama", href: "/tim/utama/pemain" },
+    { label: "Tim Akademi", href: "/tim/utama/pemain?tab=akademi" },
+    { label: "Officials", href: "/tim/utama/officials" },
+];
+
+const ESSENTIAL_LINKS_4 = [
+    { label: "Berita", href: "/media/berita" },
+    { label: "Gallery", href: "/media/gallery" },
+    { label: "Video", href: "/media/video" },
+    { label: "Tentang Kami", href: "/klub/tentang" },
+    { label: "MUFA", href: "/mufa" },
+];
+
 export default function FooterSection() {
+    const pathname = usePathname();
+    const isHomepage = pathname === "/";
+
+    const [activeAlbum, setActiveAlbum] = useState<typeof GALLERY_IMAGES[0] | null>(null);
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+    const openModal = (item: typeof GALLERY_IMAGES[0]) => {
+        setActiveAlbum(item);
+        setCurrentSlideIndex(0);
+    };
+
+    const closeModal = () => {
+        setActiveAlbum(null);
+        setCurrentSlideIndex(0);
+    };
+
+    const nextImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (activeAlbum) {
+            setCurrentSlideIndex((prev) => (prev + 1) % activeAlbum.images.length);
+        }
+    };
+
+    const prevImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (activeAlbum) {
+            setCurrentSlideIndex((prev) => (prev - 1 + activeAlbum.images.length) % activeAlbum.images.length);
+        }
+    };
 
     const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault();
-        const targetId = href.replace('#', '');
-        const element = document.getElementById(targetId);
-        if (element) {
-            const headerOffset = 100; // Adjust for fixed navbar
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        // Only prevent default and scroll if it's an anchor link on the homepage
+        if (isHomepage && href.startsWith("#")) {
+            e.preventDefault();
+            const targetId = href.replace('#', '');
+            const element = document.getElementById(targetId);
+            if (element) {
+                const headerOffset = 100; // Adjust for fixed navbar
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            });
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
         }
     };
 
@@ -93,36 +170,69 @@ export default function FooterSection() {
                             <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> Essential Links
                         </h4>
 
-                        <div style={{ display: "flex", gap: "40px" }}>
-                            <ul style={{ listStyle: "none", padding: 0 }}>
-                                {ESSENTIAL_LINKS_1.map((link, idx) => (
-                                    <li key={idx} style={{ marginBottom: "16px" }}>
-                                        <a
-                                            href={link.href}
-                                            className="footer-link"
-                                            onClick={(e) => handleSmoothScroll(e, link.href)}
-                                        >
-                                            <span style={{ width: "6px", height: "6px", backgroundColor: "#4B5563", borderRadius: "50%", display: "inline-block", marginRight: "10px", verticalAlign: "middle" }}></span>
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                            <ul style={{ listStyle: "none", padding: 0 }}>
-                                {ESSENTIAL_LINKS_2.map((link, idx) => (
-                                    <li key={idx} style={{ marginBottom: "16px" }}>
-                                        <a
-                                            href={link.href}
-                                            className="footer-link"
-                                            onClick={(e) => handleSmoothScroll(e, link.href)}
-                                        >
-                                            <span style={{ width: "6px", height: "6px", backgroundColor: "#4B5563", borderRadius: "50%", display: "inline-block", marginRight: "10px", verticalAlign: "middle" }}></span>
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                        {isHomepage ? (
+                            <div style={{ display: "flex", gap: "40px" }}>
+                                <ul style={{ listStyle: "none", padding: 0 }}>
+                                    {ESSENTIAL_LINKS_1.map((link, idx) => (
+                                        <li key={idx} style={{ marginBottom: "16px" }}>
+                                            <a
+                                                href={link.href}
+                                                className="footer-link"
+                                                onClick={(e) => handleSmoothScroll(e, link.href)}
+                                            >
+                                                <span className="link-dot"></span>
+                                                {link.label.toUpperCase()}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <ul style={{ listStyle: "none", padding: 0 }}>
+                                    {ESSENTIAL_LINKS_2.map((link, idx) => (
+                                        <li key={idx} style={{ marginBottom: "16px" }}>
+                                            <a
+                                                href={link.href}
+                                                className="footer-link"
+                                                onClick={(e) => handleSmoothScroll(e, link.href)}
+                                            >
+                                                <span className="link-dot"></span>
+                                                {link.label.toUpperCase()}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : (
+                            <div style={{ display: "flex", gap: "40px" }}>
+                                <ul style={{ listStyle: "none", padding: 0 }}>
+                                    {ESSENTIAL_LINKS_3.map((link, idx) => (
+                                        <li key={idx} style={{ marginBottom: "16px" }}>
+                                            <a
+                                                href={link.href}
+                                                className="footer-link"
+                                                onClick={(e) => handleSmoothScroll(e, link.href)}
+                                            >
+                                                <span className="link-dot"></span>
+                                                {link.label.toUpperCase()}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <ul style={{ listStyle: "none", padding: 0 }}>
+                                    {ESSENTIAL_LINKS_4.map((link, idx) => (
+                                        <li key={idx} style={{ marginBottom: "16px" }}>
+                                            <a
+                                                href={link.href}
+                                                className="footer-link"
+                                                onClick={(e) => handleSmoothScroll(e, link.href)}
+                                            >
+                                                <span className="link-dot"></span>
+                                                {link.label.toUpperCase()}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
 
                     {/* COLUMN 3: GET IN TOUCH */}
@@ -163,14 +273,17 @@ export default function FooterSection() {
                         </h4>
 
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
-                            {GALLERY_IMAGES.map((src, idx) => (
-                                <div key={idx} style={{ position: "relative", aspectRatio: "1/1", borderRadius: "4px", overflow: "hidden" }}>
+                            {GALLERY_IMAGES.map((item, idx) => (
+                                <div key={idx} style={{ position: "relative", aspectRatio: "1/1", borderRadius: "4px", overflow: "hidden", cursor: "pointer" }} onClick={() => openModal(item)}>
                                     <Image
-                                        src={src}
+                                        src={item.thumbnail}
                                         alt={`Gallery ${idx + 1}`}
                                         fill
                                         style={{ objectFit: "cover" }}
                                     />
+                                    <div className="gallery-overlay">
+                                        <div style={{ color: "white", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", border: "1px solid white", padding: "4px 8px" }}>View Album</div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -186,7 +299,125 @@ export default function FooterSection() {
                 </p>
             </div>
 
+            {/* MODAL */}
+            {activeAlbum && (
+                <div className="modal-overlay" onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="close-btn" onClick={closeModal}>
+                            <FaTimes size={24} />
+                        </button>
+
+                        <button className="nav-btn prev" onClick={prevImage}>
+                            <FaChevronLeft size={24} />
+                        </button>
+
+                        <div style={{ position: "relative", width: "100%", height: "100%" }}>
+                            <Image
+                                src={activeAlbum.images[currentSlideIndex]}
+                                alt={`Selected Gallery Image ${currentSlideIndex + 1}`}
+                                fill
+                                style={{ objectFit: "contain" }}
+                            />
+                        </div>
+
+                        <button className="nav-btn next" onClick={nextImage}>
+                            <FaChevronRight size={24} />
+                        </button>
+
+                        {/* Slide Indicator */}
+                        <div style={{ position: "absolute", bottom: "-30px", color: "white", fontSize: "14px" }}>
+                            {currentSlideIndex + 1} / {activeAlbum.images.length}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <style jsx>{`
+                .gallery-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                }
+                div[onClick]:hover .gallery-overlay {
+                    opacity: 1;
+                }
+
+                .modal-overlay {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 9999;
+                    background-color: rgba(0, 0, 0, 0.9);
+                    backdrop-filter: blur(5px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.3s ease-out;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+
+                .modal-content {
+                    position: relative;
+                    width: 90vw;
+                    height: 80vh;
+                    max-width: 1000px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .close-btn {
+                    position: absolute;
+                    top: -40px;
+                    right: 0;
+                    background: none;
+                    border: none;
+                    color: white;
+                    cursor: pointer;
+                    z-index: 100;
+                    transition: transform 0.2s;
+                }
+                .close-btn:hover {
+                    transform: scale(1.1);
+                    color: #DC2626;
+                }
+
+                .nav-btn {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: rgba(255, 255, 255, 0.1);
+                    border: none;
+                    color: white;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    z-index: 50;
+                    transition: all 0.3s;
+                }
+                .nav-btn:hover {
+                    background: rgba(220, 38, 38, 1);
+                }
+                .prev { left: -60px; }
+                .next { right: -60px; }
+
+                @media (max-width: 768px) {
+                    .prev { left: 10px; background: rgba(0,0,0,0.5); }
+                    .next { right: 10px; background: rgba(0,0,0,0.5); }
+                }
+
                 .footer-grid {
                     display: grid;
                     grid-template-columns: 1.2fr 1fr 1fr 0.8fr;
@@ -208,7 +439,7 @@ export default function FooterSection() {
                 .footer-link {
                     color: #9CA3AF;
                     text-decoration: none;
-                    font-size: 13px;
+                    font-size: 15px;
                     font-weight: 600;
                     text-transform: uppercase;
                     transition: color 0.2s;
@@ -216,9 +447,23 @@ export default function FooterSection() {
                     align-items: center;
                 }
                 .footer-link:hover {
-                    color: #DC2626;
+                    color: #DC2626 !important;
                 }
                 .social-link:hover {
+                    background-color: #DC2626 !important;
+                }
+
+                .link-dot {
+                    width: 6px;
+                    height: 6px;
+                    background-color: #4B5563;
+                    border-radius: 50%;
+                    display: inline-block;
+                    margin-right: 10px;
+                    vertical-align: middle;
+                    transition: background-color 0.2s;
+                }
+                .footer-link:hover .link-dot, .footer-link-secondary:hover .link-dot {
                     background-color: #DC2626 !important;
                 }
 
