@@ -24,8 +24,11 @@ interface ContentDetailProps {
         date: string;
         category: string;
         image: string;
+
         content: string[]; // Array of paragraphs
         author: string;
+        penerbit?: string;
+        link_berita?: string;
     };
 }
 
@@ -109,6 +112,12 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                     {paragraph}
                                 </p>
                             ))}
+                            {newsItem.penerbit && newsItem.link_berita && (
+                                <p style={{ marginTop: "20px", fontSize: "14px", fontStyle: "italic", color: "#6B7280" }}>
+                                    Dilansir dari: <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" style={{ color: "#DC2626", textDecoration: "underline" }}>{newsItem.penerbit}</a>
+                                </p>
+                            )}
+
                         </div>
 
                         <hr style={{ margin: "40px 0", borderColor: "#E5E7EB" }} />

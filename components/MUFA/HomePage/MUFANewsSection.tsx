@@ -65,9 +65,10 @@ export default function MUFANewsSection() {
 
         <div className={styles.mufaNewsGrid}>
           {/* Featured */}
-          <article
+          <Link
+            href={`/mufa/berita/${featured.id}`}
             data-aos="fade-right"
-            className="group relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70"
+            className="group block relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70"
           >
             <div className="relative h-72 md:h-[360px]">
               <Image
@@ -90,12 +91,13 @@ export default function MUFANewsSection() {
                 </p>
               </div>
             </div>
-          </article>
+          </Link>
 
           {/* List */}
           <div className="flex flex-col gap-4">
             {rest.map((item, index) => (
-              <article
+              <Link
+                href={`/mufa/berita/${item.id}`}
                 key={item.id}
                 data-aos="fade-left"
                 data-aos-delay={index * 100}
@@ -120,7 +122,7 @@ export default function MUFANewsSection() {
                     {item.excerpt}
                   </p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>

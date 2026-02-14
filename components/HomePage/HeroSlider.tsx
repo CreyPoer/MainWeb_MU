@@ -94,7 +94,7 @@ export default function HeroSlider() {
                         <h1 className="hero-title">
                             {slider.name.split(' ').map((word, i) => {
                                 // Highlight specific words with red background
-                                const highlightWords = ['MADURA', 'UNITED'];
+                                const highlightWords = ['MADURA', 'UNITED','BERSATU','SAPE','KERRAB'];
                                 if (highlightWords.some(hw => word.toUpperCase().includes(hw))) {
                                     return (
                                         <span key={i} className="highlight">

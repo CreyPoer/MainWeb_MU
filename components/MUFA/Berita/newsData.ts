@@ -11,6 +11,8 @@ export type MufaNewsBase = {
 export type MufaNewsDetail = MufaNewsBase & {
   content: string[];
   author: string;
+  penerbit?: string;
+  link_berita?: string;
 };
 
 export const MUFA_NEWS_DETAILS: MufaNewsDetail[] = [

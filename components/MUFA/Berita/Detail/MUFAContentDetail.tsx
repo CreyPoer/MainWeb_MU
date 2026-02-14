@@ -64,6 +64,11 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               {newsItem.content.map((paragraph, idx) => (
                 <p key={idx}>{paragraph}</p>
               ))}
+              {newsItem.penerbit && newsItem.link_berita && (
+                <p className="mt-4 text-sm italic text-gray-400">
+                  Dilansir dari: <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" className="text-red-500 underline hover:text-red-400 transition-colors">{newsItem.penerbit}</a>
+                </p>
+              )}
             </div>
 
             <hr className="mufa-news-detail-divider" />
@@ -275,12 +280,14 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
         <span>Filter</span>
       </button>
 
-      {isSidebarOpen && (
-        <div
-          className="mufa-news-detail-backdrop"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-    </section>
+      {
+        isSidebarOpen && (
+          <div
+            className="mufa-news-detail-backdrop"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )
+      }
+    </section >
   );
 }
