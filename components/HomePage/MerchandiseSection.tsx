@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -11,61 +11,41 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// --- DUMMY DATA ---
-const PRODUCTS = [
-    {
-        id: 1,
-        name: "Home Kit 2024/25",
-        category: "JERSEY",
-        price: "Rp 599.000",
-        images: [
-            "/images/merch/red-jersey.png",
-            "/images/merch/red-jersey.png", // Duplicate for carousel demo
-        ],
-    },
-    {
-        id: 2,
-        name: "Away Kit 2024/25",
-        category: "JERSEY",
-        price: "Rp 599.000",
-        images: [
-            "/images/merch/away-kit.png",
-            "/images/merch/away-kit.png",
-        ],
-    },
-    {
-        id: 3,
-        name: "MUFC Scarf Red",
-        category: "ACCESSORIES",
-        price: "Rp 149.000",
-        images: [
-            "/images/merch/red-scarf.png",
-            "/images/merch/red-scarf.png",
-        ],
-    },
-    {
-        id: 4,
-        name: "Training Jacket",
-        category: "APPAREL",
-        price: "Rp 450.000",
-        images: [
-            "/images/merch/red-jacket.png",
-            "/images/merch/red-jacket.png",
-        ],
-    },
-    {
-        id: 5,
-        name: "Third Kit 2024/25",
-        category: "JERSEY",
-        price: "Rp 599.000",
-        images: [
-            "/images/merch/away-kit.png", // Reuse away kit for demo or duplicate red
-            "/images/merch/red-jersey.png",
-        ],
-    },
-];
+// --- DATA TYPE ---
+interface ProductItem {
+    id: string | number;
+    name: string;
+    category: string;
+    price: string;
+    images: string[];
+}
 
 export default function MerchandiseSection() {
+    const [products, setProducts] = useState<ProductItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setProducts(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch products", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProducts();
+    }, []);
+
+    if (isLoading && products.length === 0) {
+        // Render a loading state or just an empty section with preserved height to minimize CLS
+        return <section style={{ height: '600px', backgroundColor: '#DC2626' }}></section>;
+    }
+
     return (
         <section
             style={{
@@ -132,10 +112,7 @@ export default function MerchandiseSection() {
                 </div>
             </div>
 
-
-
             {/* --- PRODUCT CAROUSEL WRAPPER --- */}
-            {/* Added a dedicated wrapper for layout + navigation buttons */}
             <div className="container mx-auto merch-container-trigger" data-aos="fade-up" style={{ position: "relative", zIndex: 2, paddingLeft: "80px", paddingRight: "80px" }}>
 
                 {/* Custom Navigation Buttons (Placed outside Swiper) */}
@@ -163,7 +140,7 @@ export default function MerchandiseSection() {
                     }}
                     style={{ overflow: "hidden" }} // Force HIDDEN overflow ensuring strict clipping
                 >
-                    {PRODUCTS.map((product, index) => (
+                    {products.map((product, index) => (
                         <SwiperSlide key={product.id}>
                             <div
                                 className="merch-card-custom group"
@@ -173,8 +150,6 @@ export default function MerchandiseSection() {
                                     borderRadius: "16px",
                                     overflow: "hidden",
                                     border: "1px solid rgba(255, 255, 255, 0.2)",
-                                    // Remove inline transition that conflicts with our CSS
-                                    // Use CSS class for base transition
                                     boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                                     position: "relative",
                                 }}
@@ -194,7 +169,7 @@ export default function MerchandiseSection() {
                                             <SwiperSlide key={idx}>
                                                 <div style={{ width: "100%", height: "100%", position: "relative" }}>
                                                     <Image
-                                                        src={img}
+                                                        src={img || '/images/placeholder.png'}
                                                         alt={`${product.name} - ${idx + 1}`}
                                                         fill
                                                         style={{ objectFit: "cover" }}

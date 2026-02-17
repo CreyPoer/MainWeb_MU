@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight, FaTimes, FaPowerOff, FaArrowRight } from "react-icons/fa";
@@ -13,48 +11,35 @@ type Album = {
   images: string[];
 };
 
-const GALLERY_ALBUMS: Album[] = [
-  {
-    id: 1,
-    title: "Latihan Sore di MUTG",
-    cover:
-      "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&q=80&w=1400",
-    images: [
-      "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1600",
-    ],
-  },
-  {
-    id: 2,
-    title: "Team Talk Bersama Coach",
-    cover:
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-    images: [
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&q=80&w=1600",
-    ],
-  },
-  {
-    id: 3,
-    title: "Matchday Experience",
-    cover:
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1400",
-    images: [
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1600",
-    ],
-  },
-];
-
 export default function MUFAGallerySection() {
   const [activeAlbum, setActiveAlbum] = useState<Album | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const res = await fetch("/api/gallery?type=MUFA");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          // Map API data to component structure
+          const mappedAlbums = data.map((item: any) => ({
+            id: item.id,
+            title: item.title,
+            cover: item.thumbnail,
+            images: item.images
+          }));
+          setAlbums(mappedAlbums);
+        }
+      } catch (error) {
+        console.error("Failed to fetch MUFA gallery", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchGallery();
+  }, []);
 
   const openAlbum = (album: Album) => {
     setActiveAlbum(album);
@@ -70,6 +55,15 @@ export default function MUFAGallerySection() {
     if (!activeAlbum) return;
     setSlideIndex((prev) => (prev - 1 + activeAlbum.images.length) % activeAlbum.images.length);
   };
+
+  if (isLoading) {
+    return <div className="py-20 text-center text-white">Loading Gallery...</div>;
+  }
+
+  // If no albums, hide section or show empty state? Let's just return nothing or a placeholder if empty
+  if (albums.length === 0) {
+    return null;
+  }
 
   return (
     <section id="gallery" className={styles.mufaSection}>
@@ -96,11 +90,12 @@ export default function MUFAGallerySection() {
         </div>
 
         <div className={styles.mufaGalleryShell}>
+          {/* Main Feature (First Item) */}
           <div
             className="relative rounded-3xl overflow-hidden min-h-[260px] bg-slate-900 border border-slate-700"
             data-aos="fade-up"
           >
-            {GALLERY_ALBUMS.slice(0, 1).map((album) => (
+            {albums.slice(0, 1).map((album) => (
               <button
                 key={album.id}
                 type="button"
@@ -111,6 +106,7 @@ export default function MUFAGallerySection() {
                   src={album.cover}
                   alt={album.title}
                   fill
+                  unoptimized
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/90 via-black/70 to-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -129,8 +125,9 @@ export default function MUFAGallerySection() {
             ))}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-3">
-            {GALLERY_ALBUMS.slice(1).map((album, index) => (
+          {/* Grid for other items */}
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+            {albums.slice(1, 3).map((album, index) => (
               <button
                 key={album.id}
                 type="button"
@@ -142,6 +139,7 @@ export default function MUFAGallerySection() {
                 <Image
                   src={album.cover}
                   alt={album.title}
+                  unoptimized
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -172,6 +170,7 @@ export default function MUFAGallerySection() {
             <Image
               src={activeAlbum.images[slideIndex]}
               alt={activeAlbum.title}
+              unoptimized
               fill
               className="object-cover"
             />

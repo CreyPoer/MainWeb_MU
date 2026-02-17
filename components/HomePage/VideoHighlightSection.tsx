@@ -1,19 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes } from "react-icons/fa";
 
-// --- DATA ---
-const VIDEO_DATA = [
-    { id: "opya-Ta2PgQ", title: "Highlight Match 1", date: "FEB 28, 2018", duration: "10:30" },
-    { id: "fZDbSj-mUsI", title: "Highlight Match 2", date: "FEB 28, 2018", duration: "08:15" },
-    { id: "avdO-Dyi7Hk", title: "Highlight Match 3", date: "FEB 28, 2018", duration: "12:00" },
-];
+// --- DATA TYPE ---
+interface VideoItem {
+    id: string; // YouTube ID
+    title: string;
+    date: string;
+    duration: string;
+}
 
 export default function VideoHighlightSection() {
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
+    const [videoData, setVideoData] = useState<VideoItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                const res = await fetch('/api/videos');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setVideoData(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch videos", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchVideos();
+    }, []);
 
     // --- HANDLERS ---
     const handleMouseEnter = (id: string) => {
@@ -31,6 +51,11 @@ export default function VideoHighlightSection() {
     const closeModal = () => {
         setModalVideo(null);
     };
+
+    if (isLoading && videoData.length === 0) {
+        // Optional: Render skeleton or maintain height
+        return <div style={{ height: '600px', background: '#151515' }}></div>;
+    }
 
     return (
         <section style={{ background: "linear-gradient(to top, #2a2a2a 0%, #151515 100%)", padding: "80px 0", position: "relative", overflow: "hidden" }}>
@@ -66,7 +91,7 @@ export default function VideoHighlightSection() {
                 {/* GRID LAYOUT */}
                 {/* We use CSS Grid via styled-jsx for responsiveness */}
                 <div className="video-grid">
-                    {VIDEO_DATA.map((video, index) => {
+                    {videoData.map((video, index) => {
                         // First item is large (span 2 cols, 2 rows) if we want that 'Featured' look
                         // But user said "concept like Image 1". Provided image usually has 1 big, others small. 
                         // Let's make the FIRST video BIG.
@@ -74,7 +99,7 @@ export default function VideoHighlightSection() {
 
                         return (
                             <div
-                                key={video.id}
+                                key={video.id + index}
                                 className={`video-card ${isFeatured ? "featured" : ""}`}
                                 data-aos="zoom-in"
                                 data-aos-delay={index * 100}
@@ -110,10 +135,12 @@ export default function VideoHighlightSection() {
                                             {/* OVERLAY for better text reading */}
                                             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}></div>
 
-                                            {/* DURATION BADGE */}
-                                            <div style={{ position: "absolute", top: "16px", left: "16px", backgroundColor: "rgba(220, 38, 38, 0.9)", color: "white", padding: "4px 8px", borderRadius: "4px", fontSize: "12px", fontWeight: "bold", display: "flex", alignItems: "center", gap: "6px" }}>
-                                                <FaPlay size={10} /> {video.duration}
-                                            </div>
+                                            {/* DURATION BADGE (If available) */}
+                                            {video.duration && (
+                                                <div style={{ position: "absolute", top: "16px", left: "16px", backgroundColor: "rgba(220, 38, 38, 0.9)", color: "white", padding: "4px 8px", borderRadius: "4px", fontSize: "12px", fontWeight: "bold", display: "flex", alignItems: "center", gap: "6px" }}>
+                                                    <FaPlay size={10} /> {video.duration}
+                                                </div>
+                                            )}
 
                                             {/* PLAY BUTTON (CENTER) */}
                                             <div className="play-button-wrapper" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
@@ -302,7 +329,6 @@ export default function VideoHighlightSection() {
            }
         }
       `}</style>
-
         </section>
     );
 }

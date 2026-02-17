@@ -1,19 +1,47 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaPlay, FaTimes, FaArrowRight } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
 
-const VIDEOS = [
-  { id: "opya-Ta2PgQ", title: "Highlight Training Session", date: "Jan 2026", duration: "06:24" },
-  { id: "fZDbSj-mUsI", title: "Match Highlights Academy", date: "Jan 2026", duration: "08:12" },
-  { id: "avdO-Dyi7Hk", title: "Behind The Scenes MUFA", date: "Dec 2025", duration: "05:03" },
-];
+interface Video {
+  id: string;
+  title: string;
+  date: string;
+  duration: string;
+}
 
 export default function MUFAVideoSection() {
   const [active, setActive] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const res = await fetch("/api/videos?channel=MUFA");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setVideos(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch MUFA videos", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchVideos();
+  }, []);
+
+  if (isLoading) {
+    return <div className="py-20 text-center text-white">Loading Videos...</div>;
+  }
+
+  // If no videos, do we hide or show empty? 
+  // Let's show empty state or nothing
+  if (videos.length === 0) {
+    return null;
+  }
 
   return (
     <section id="video" className={styles.mufaSection}>
@@ -41,7 +69,7 @@ export default function MUFAVideoSection() {
         </div>
 
         <div className="grid gap-4 md:gap-6 md:grid-cols-3 md:auto-rows-[180px] lg:auto-rows-[220px]">
-          {VIDEOS.map((video, idx) => {
+          {videos.map((video, idx) => {
             const isMain = idx === 0;
             const isHovered = hovered === video.id;
             return (
@@ -85,7 +113,7 @@ export default function MUFAVideoSection() {
                       </span>
                       <span>{video.date}</span>
                     </div>
-                    <h3 className="mt-4 text-sm md:text-lg font-semibold text-white leading-snug max-w-xs">
+                    <h3 className="mt-4 text-left text-sm md:text-lg font-semibold text-white leading-snug max-w-full">
                       {video.title}
                     </h3>
                   </div>

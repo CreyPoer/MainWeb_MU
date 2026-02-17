@@ -1,63 +1,54 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes, FaCalendarAlt } from "react-icons/fa";
 import styles from "../HomePage/MUFAHome.module.css";
 
-const VIDEO_DATA = [
-    {
-        id: "M9jciu0KM7Q",
-        title: "Highlight Pertandingan Minggu Ini",
-        date: "12 Feb 2026",
-        publishedAt: "2026-02-12",
-        duration: "10:00",
-    },
-    {
-        id: "Kp5XSN1LHrU",
-        title: "Latihan Intensif Skuad MUFA",
-        date: "10 Feb 2026",
-        publishedAt: "2026-02-10",
-        duration: "08:30",
-    },
-    {
-        id: "ycZ6adOSUqo",
-        title: "Wawancara Eksklusif Pelatih",
-        date: "08 Feb 2026",
-        publishedAt: "2026-02-08",
-        duration: "15:45",
-    },
-    {
-        id: "pqxLEhDxU6A",
-        title: "Analisis Taktik Pertandingan",
-        date: "05 Feb 2026",
-        publishedAt: "2026-02-05",
-        duration: "12:20",
-    },
-    {
-        id: "FFNNii6ju88",
-        title: "Profil Pemain Muda Berbakat",
-        date: "01 Feb 2026",
-        publishedAt: "2026-02-01",
-        duration: "05:55",
-    },
-    {
-        id: "RbVKb_gXkPk",
-        title: "Keseruan di Balik Layar",
-        date: "28 Jan 2026",
-        publishedAt: "2026-01-28",
-        duration: "09:15",
-    },
-];
+const VIDEO_API_URL = "/api/videos/list";
+
+interface Video {
+    id: string;
+    title: string;
+    date: string;
+    publishedAt: string;
+    duration: string;
+    thumbnail: string;
+    type?: string;
+}
 
 export default function MUFAVideoContent() {
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [videos, setVideos] = useState<Video[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Fetch videos from API
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                const res = await fetch(VIDEO_API_URL);
+                const data = await res.json();
+
+                if (Array.isArray(data)) {
+                    // Filter only MUFA videos
+                    const mufaVideos = data.filter((video: Video) => video.type === 'MUFA');
+                    setVideos(mufaVideos);
+                }
+            } catch (error) {
+                console.error("Failed to fetch MUFA videos:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchVideos();
+    }, []);
 
     const filteredVideos = useMemo(() => {
-        let items = [...VIDEO_DATA];
+        let items = [...videos];
 
         if (startDate) {
             const start = new Date(startDate);
@@ -77,7 +68,7 @@ export default function MUFAVideoContent() {
         );
 
         return items;
-    }, [startDate, endDate]);
+    }, [videos, startDate, endDate]);
 
     return (
         <section className="py-10 md:py-14 bg-slate-950 min-h-screen">
@@ -125,70 +116,80 @@ export default function MUFAVideoContent() {
                     </div>
                 </div>
 
-                {/* VIDEO GRID */}
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {filteredVideos.map((video, index) => (
-                        <div
-                            key={video.id}
-                            className="group relative aspect-video rounded-2xl overflow-hidden cursor-pointer bg-slate-900 border border-slate-800 shadow-lg hover:shadow-red-900/20 hover:border-red-500/50 transition-all duration-300"
-                            data-aos="fade-up"
-                            data-aos-delay={index * 100}
-                            onMouseEnter={() => setHoveredVideo(video.id)}
-                            onMouseLeave={() => setHoveredVideo(null)}
-                            onClick={() => setModalVideo(video.id)}
-                        >
-                            {/* Thumbnail / Preview */}
-                            <div className="absolute inset-0">
-                                {hoveredVideo === video.id ? (
-                                    <iframe
-                                        className="w-full h-full object-cover pointer-events-none scale-110"
-                                        src={`https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0`}
-                                        title={video.title}
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    />
-                                ) : (
-                                    <>
-                                        <Image
-                                            src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
-                                            alt={video.title}
-                                            fill
-                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
+                {/* LOADING STATE */}
+                {isLoading && (
+                    <div className="flex flex-col items-center justify-center py-20 text-slate-500">
+                        <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p>Memuat video MUFA...</p>
+                    </div>
+                )}
 
-                                        {/* Play Button Icon */}
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center pl-1 shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300">
-                                                <FaPlay size={16} />
+                {/* VIDEO GRID */}
+                {!isLoading && (
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {filteredVideos.map((video, index) => (
+                            <div
+                                key={video.id}
+                                className="group relative aspect-video rounded-2xl overflow-hidden cursor-pointer bg-slate-900 border border-slate-800 shadow-lg hover:shadow-red-900/20 hover:border-red-500/50 transition-all duration-300"
+                                data-aos="fade-up"
+                                data-aos-delay={index * 100}
+                                onMouseEnter={() => setHoveredVideo(video.id)}
+                                onMouseLeave={() => setHoveredVideo(null)}
+                                onClick={() => setModalVideo(video.id)}
+                            >
+                                {/* Thumbnail / Preview */}
+                                <div className="absolute inset-0">
+                                    {hoveredVideo === video.id ? (
+                                        <iframe
+                                            className="w-full h-full object-cover pointer-events-none scale-110"
+                                            src={`https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0`}
+                                            title={video.title}
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        />
+                                    ) : (
+                                        <>
+                                            <Image
+                                                src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
+                                                alt={video.title}
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
+
+                                            {/* Play Button Icon */}
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center pl-1 shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300">
+                                                    <FaPlay size={16} />
+                                                </div>
                                             </div>
+                                        </>
+                                    )}
+                                </div>
+
+                                {/* Info Overlay (Only when not hovering or always visible at bottom?) 
+                                    Let's keep it visible at bottom like requested design 
+                                */}
+                                {!hoveredVideo && (
+                                    <div className="absolute bottom-0 left-0 w-full p-4 z-10">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+                                                <FaPlay size={8} /> {video.duration}
+                                            </span>
+                                            <span className="text-slate-300 text-[10px] font-medium flex items-center gap-1">
+                                                <FaCalendarAlt size={10} /> {video.date}
+                                            </span>
                                         </div>
-                                    </>
+                                        <h3 className="text-white font-bold text-sm leading-tight line-clamp-2 group-hover:text-red-400 transition-colors">
+                                            {video.title}
+                                        </h3>
+                                    </div>
                                 )}
                             </div>
+                        ))}
+                    </div>
+                )}
 
-                            {/* Info Overlay (Only when not hovering or always visible at bottom?) 
-                                Let's keep it visible at bottom like requested design 
-                            */}
-                            {!hoveredVideo && (
-                                <div className="absolute bottom-0 left-0 w-full p-4 z-10">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
-                                            <FaPlay size={8} /> {video.duration}
-                                        </span>
-                                        <span className="text-slate-300 text-[10px] font-medium flex items-center gap-1">
-                                            <FaCalendarAlt size={10} /> {video.date}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-white font-bold text-sm leading-tight line-clamp-2 group-hover:text-red-400 transition-colors">
-                                        {video.title}
-                                    </h3>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-
-                {filteredVideos.length === 0 && (
+                {!isLoading && filteredVideos.length === 0 && (
                     <div className="text-center py-20 text-slate-500">
                         <p>Tidak ada video ditemukan untuk rentang tanggal ini.</p>
                     </div>

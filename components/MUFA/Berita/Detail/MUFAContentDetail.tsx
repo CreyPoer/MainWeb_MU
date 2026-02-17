@@ -5,30 +5,37 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaSearch, FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp, FaFilter, FaTimes, FaTag, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { MufaNewsDetail, MUFA_NEWS_LIST } from "../newsData";
+import { FaSearch, FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaWhatsapp, FaFilter, FaTimes, FaTag, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { MufaNewsDetail } from "../newsData";
 
 interface MUFAContentDetailProps {
-  newsItem: MufaNewsDetail;
+  newsItem: any; // MufaNewsDetail; replaced with any to accommodate API structure variation
 }
 
-const SIDEBAR_TAGS = [
-  "academy",
-  "trial",
-  "match",
-  "training",
-  "facility",
-  "mental",
-  "character",
-  "goalkeeper",
-  "experience",
-  "progress",
-];
+// const SIDEBAR_TAGS = ... (We will fetch these or use passed props if we want)
+// For now, let's keep hardcoded or fetch. The plan said "Implement tag fetching". 
+// Let's use state for tags.
 
 export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sidebarTags, setSidebarTags] = useState<string[]>([]);
+
+  React.useEffect(() => {
+    async function fetchTags() {
+      try {
+        const res = await fetch('/api/tags?category=MUFA');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setSidebarTags(data);
+        }
+      } catch (e) {
+        console.error("Failed to fetch tags", e);
+      }
+    }
+    fetchTags();
+  }, []);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -55,15 +62,41 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               />
             </div>
 
-            <div className="mufa-news-detail-meta">
+            <div className="mufa-news-detail-meta" style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
               <span className="mufa-news-detail-category">{newsItem.category}</span>
               <span className="mufa-news-detail-date">{newsItem.date}</span>
+              <div style={{ marginLeft: "auto", display: "flex", gap: "8px", alignItems: "center" }}>
+                {[
+                  { Icon: FaFacebookF, href: "https://www.facebook.com/Maduraunitedfc.official/", bg: "#1877F2" },
+                  { Icon: FaTwitter, href: "https://x.com/MaduraUnitedFC", bg: "#000000" },
+                  { Icon: FaInstagram, href: "https://www.instagram.com/akademimaduraunited?igsh=MWJyZjEzZHI4d2YwMw==", bg: "", gradient: "linear-gradient(45deg, #FFDC80, #FCAF45, #F77737, #F56040, #FD1D1D, #E1306C, #C13584, #833AB4, #405DE6)" },
+                  { Icon: FaYoutube, href: "https://youtube.com/@maduraunitedacademy812?si=flyzuMc19qy9Ai-I", bg: "#FF0000" },
+                ].map(({ Icon, href, bg, gradient }, idx) => (
+                  <a key={idx} href={href} target="_blank" rel="noopener noreferrer" style={{
+                    width: "32px", height: "32px", borderRadius: "50%",
+                    ...(gradient ? { background: gradient } : { backgroundColor: bg }),
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "white", transition: "opacity 0.3s, transform 0.3s",
+                    textDecoration: "none", border: "2px solid white"
+                  }} className="mufa-social-brand-icon">
+                    <Icon size={14} />
+                  </a>
+                ))}
+              </div>
             </div>
 
             <div className="mufa-news-detail-content">
-              {newsItem.content.map((paragraph, idx) => (
-                <p key={idx}>{paragraph}</p>
-              ))}
+              {/* API content is HTML string, usually. If it is array of paragraphs, map it. 
+                  Our API route maps body to 'content'. 
+                  If it comes as HTML string from wysiwyg:
+               */}
+              {typeof newsItem.content === 'string' ? (
+                <div dangerouslySetInnerHTML={{ __html: newsItem.content }} />
+              ) : (
+                Array.isArray(newsItem.content) && newsItem.content.map((paragraph: string, idx: number) => (
+                  <p key={idx}>{paragraph}</p>
+                ))
+              )}
               {newsItem.penerbit && newsItem.link_berita && (
                 <p className="mt-4 text-sm italic text-gray-400">
                   Dilansir dari: <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" className="text-red-500 underline hover:text-red-400 transition-colors">{newsItem.penerbit}</a>
@@ -77,7 +110,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
             <div className="mufa-news-detail-bottomRow">
               <div className="mufa-news-detail-tagsRow">
                 <span className="mufa-news-detail-tagsLabel">TAGS:</span>
-                {newsItem.tags.slice(0, 4).map((tag) => (
+                {newsItem.tags.slice(0, 4).map((tag: string) => (
                   <span key={tag} className="mufa-news-detail-tagPill" onClick={() => handleTagClick(tag)} style={{ cursor: "pointer" }}>
                     #{tag}
                   </span>
@@ -86,13 +119,47 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
 
               <div className="mufa-news-detail-shareRow">
                 <span className="mufa-news-detail-shareLabel">SHARE:</span>
-                {[FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp].map(
-                  (Icon, idx) => (
-                    <button key={idx} className="mufa-news-detail-shareBtn">
-                      <Icon size={14} />
-                    </button>
-                  )
-                )}
+                {[
+                  {
+                    Icon: FaFacebookF,
+                    label: "Share to Facebook",
+                    onClick: () => {
+                      const url = window.location.href;
+                      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+                    }
+                  },
+                  {
+                    Icon: FaTwitter,
+                    label: "Share to Twitter/X",
+                    onClick: () => {
+                      const url = window.location.href;
+                      const text = newsItem.title;
+                      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'width=600,height=400');
+                    }
+                  },
+                  {
+                    Icon: FaInstagram,
+                    label: "Copy link for Instagram",
+                    onClick: () => {
+                      navigator.clipboard.writeText(window.location.href).then(() => {
+                        alert('Link berhasil disalin! Kamu bisa paste di Instagram Story atau DM.');
+                      });
+                    }
+                  },
+                  {
+                    Icon: FaWhatsapp,
+                    label: "Share to WhatsApp",
+                    onClick: () => {
+                      const url = window.location.href;
+                      const text = `${newsItem.title} - ${url}`;
+                      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                    }
+                  },
+                ].map(({ Icon, label, onClick }, idx) => (
+                  <button key={idx} title={label} onClick={onClick} className="mufa-news-detail-shareBtn">
+                    <Icon size={14} />
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -122,9 +189,9 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
             {/* PREVIOUS / NEXT POST NAVIGATION */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8" data-aos="fade-up">
               {/* Previous Post */}
-              {MUFA_NEWS_LIST.find((n) => n.id === newsItem.id - 1) ? (
+              {newsItem.previous ? (
                 <Link
-                  href={`/mufa/berita/${newsItem.id - 1}`}
+                  href={`/mufa/berita/${newsItem.previous.id}`}
                   className="group relative flex flex-col p-6 rounded-2xl bg-red-500 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
@@ -134,7 +201,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                     <span>Previous Post</span>
                   </div>
                   <h4 className="relative z-10 text-sm md:text-base font-bold text-dark-900 group-hover:text-white transition-colors line-clamp-2">
-                    {MUFA_NEWS_LIST.find((n) => n.id === newsItem.id - 1)?.title}
+                    {newsItem.previous.title}
                   </h4>
                 </Link>
               ) : (
@@ -142,9 +209,9 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               )}
 
               {/* Next Post */}
-              {MUFA_NEWS_LIST.find((n) => n.id === newsItem.id + 1) ? (
+              {newsItem.next ? (
                 <Link
-                  href={`/mufa/berita/${newsItem.id + 1}`}
+                  href={`/mufa/berita/${newsItem.next.id}`}
                   className="group relative flex flex-col p-6 rounded-2xl bg-red-500 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 text-right items-end overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
@@ -154,7 +221,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                     <FaChevronRight size={10} />
                   </div>
                   <h4 className="relative z-10 text-sm md:text-base font-bold text-dark-900 group-hover:text-white transition-colors line-clamp-2">
-                    {MUFA_NEWS_LIST.find((n) => n.id === newsItem.id + 1)?.title}
+                    {newsItem.next.title}
                   </h4>
                 </Link>
               ) : (
@@ -164,53 +231,51 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
 
             {/* YOU MAY ALSO LIKE SECTION */}
             <div className="mt-12 md:mt-16" data-aos="fade-up">
-              <h3 className="text-xl md:text-2xl font-extrabold text-slate-900 uppercase tracking-wide mb-6">
+              <h3 className="text-xl md:text-2xl font-extrabold text-slate-500 uppercase tracking-wide mb-6">
                 You May Also Like
               </h3>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-                {MUFA_NEWS_LIST.filter((item) => item.id !== newsItem.id)
-                  .slice(0, 2)
-                  .map((item) => (
-                    <article
-                      key={item.id}
-                      className="group flex flex-col overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-700/70 shadow-[0_18px_45px_rgba(0,0,0,0.65)] hover:border-red-500/70 hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,0,0,0.9)] transition-transform duration-300"
-                    >
-                      <div className="relative h-48 overflow-hidden">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
-                          <span className="inline-flex px-3 py-1 rounded-full bg-red-600/90 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/90">
-                            {item.category}
-                          </span>
-                          <span className="text-[10px] text-slate-200/85 font-medium bg-black/40 px-2 py-1 rounded-full">
-                            {item.date}
-                          </span>
-                        </div>
+                {newsItem.related && newsItem.related.map((item: any) => (
+                  <article
+                    key={item.id}
+                    className="group flex flex-col overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-700/70 shadow-[0_18px_45px_rgba(0,0,0,0.65)] hover:border-red-500/70 hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,0,0,0.9)] transition-transform duration-300"
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={item.image || '/logo.png'}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
+                        <span className="inline-flex px-3 py-1 rounded-full bg-red-600/90 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/90">
+                          {item.category}
+                        </span>
+                        <span className="text-[10px] text-slate-200/85 font-medium bg-black/40 px-2 py-1 rounded-full">
+                          {item.date}
+                        </span>
                       </div>
+                    </div>
 
-                      <div className="flex flex-col flex-1 px-4 pt-4 pb-4 gap-3">
+                    <div className="flex flex-col flex-1 px-4 pt-4 pb-4 gap-3">
+                      <Link
+                        href={`/mufa/berita/${item.id}`}
+                        className="text-sm font-semibold text-white leading-snug line-clamp-2 group-hover:text-red-300 transition"
+                      >
+                        {item.title}
+                      </Link>
+                      <div className="mt-auto pt-2 border-t border-slate-700/70 flex justify-end">
                         <Link
                           href={`/mufa/berita/${item.id}`}
-                          className="text-sm font-semibold text-white leading-snug line-clamp-2 group-hover:text-red-300 transition"
+                          className="inline-flex px-4 py-2 rounded-full bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase hover:bg-red-700 transition"
                         >
-                          {item.title}
+                          Read More
                         </Link>
-                        <div className="mt-auto pt-2 border-t border-slate-700/70 flex justify-end">
-                          <Link
-                            href={`/mufa/berita/${item.id}`}
-                            className="inline-flex px-4 py-2 rounded-full bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase hover:bg-red-700 transition"
-                          >
-                            Read More
-                          </Link>
-                        </div>
                       </div>
-                    </article>
-                  ))}
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -253,7 +318,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                 <div className="mufa-news-detail-widgetHeader">Tags Populer</div>
                 <div className="mufa-news-detail-widgetBody">
                   <div className="mufa-news-detail-tagsCloud">
-                    {SIDEBAR_TAGS.map((tag) => (
+                    {sidebarTags.map((tag: string) => (
                       <button
                         key={tag}
                         className="mufa-news-detail-tagFilter"

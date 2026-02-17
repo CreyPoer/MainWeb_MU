@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,53 +29,38 @@ type Album = {
   images: string[];
 };
 
-const FOOTER_GALLERY: Album[] = [
-  {
-    id: 1,
-    cover: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800",
-    images: [
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1600",
-    ]
-  },
-  {
-    id: 2,
-    cover: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=800",
-    images: [
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&q=80&w=1600",
-    ]
-  },
-  {
-    id: 3,
-    cover: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800",
-    images: [
-      "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1521410843008-dce7a1f4e0f3?auto=format&fit=crop&q=80&w=1600",
-    ]
-  },
-  {
-    id: 4,
-    cover: "https://images.unsplash.com/photo-1521410843008-dce7a1f4e0f3?auto=format&fit=crop&q=80&w=800",
-    images: [
-      "https://images.unsplash.com/photo-1521410843008-dce7a1f4e0f3?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1600",
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1600",
-    ]
-  },
-];
-
 export default function MUFAFooter() {
   const pathname = usePathname();
   const [activeAlbum, setActiveAlbum] = useState<Album | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
+  const [footerGallery, setFooterGallery] = useState<Album[]>([]);
 
   // Check if homepage
   const isHomePage = pathname === "/mufa" || pathname === "/mufa/";
   const filteredNavLinks = isHomePage ? HOME_LINKS : OTHER_LINKS;
+
+  useEffect(() => {
+    const fetchFooterGallery = async () => {
+      try {
+        const res = await fetch('/api/footer-gallery?type=MUFA');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          // Map to Album structure
+          // API returns { thumbnail: string, images: string[] }
+          // We need to add an 'id' - index or something
+          const mapped = data.map((item: any, idx: number) => ({
+            id: idx + 1,
+            cover: item.thumbnail,
+            images: item.images
+          }));
+          setFooterGallery(mapped);
+        }
+      } catch (error) {
+        console.error("Failed to fetch MUFA footer gallery", error);
+      }
+    };
+    fetchFooterGallery();
+  }, []);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!href.startsWith("#")) return;
@@ -168,10 +153,17 @@ export default function MUFAFooter() {
 
               {/* Social Icons */}
               <div style={{ display: "flex", gap: "12px" }}>
-                {[FaInstagram, FaFacebookF, FaTwitter, FaYoutube].map((Icon, idx) => (
+                {[
+                  { Icon: FaInstagram, href: "https://www.instagram.com/akademimaduraunited?igsh=MWJyZjEzZHI4d2YwMw==" },
+                  { Icon: FaFacebookF, href: "https://www.facebook.com/Maduraunitedfc.official/" },
+                  { Icon: FaTwitter, href: "https://x.com/MaduraUnitedFC" },
+                  { Icon: FaYoutube, href: "https://youtube.com/@maduraunitedacademy812?si=flyzuMc19qy9Ai-I" },
+                ].map(({ Icon, href }, idx) => (
                   <a
                     key={idx}
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       width: "40px",
                       height: "40px",
@@ -296,7 +288,7 @@ export default function MUFAFooter() {
               </h4>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
-                {FOOTER_GALLERY.map((album) => (
+                {footerGallery.map((album) => (
                   <button
                     key={album.id}
                     type="button"
@@ -384,13 +376,15 @@ export default function MUFAFooter() {
           >
             {/* Main Image */}
             <div className="relative flex-1 bg-black">
-              <Image
-                src={activeAlbum.images[slideIndex]}
-                alt={`Gallery ${activeAlbum.id} - ${slideIndex + 1}`}
-                fill
-                className="object-contain"
-                quality={90}
-              />
+              {activeAlbum.images.length > 0 && (
+                <Image
+                  src={activeAlbum.images[slideIndex]}
+                  alt={`Gallery ${activeAlbum.id} - ${slideIndex + 1}`}
+                  fill
+                  className="object-contain"
+                  quality={90}
+                />
+              )}
 
               {/* Navigation Buttons */}
               <button

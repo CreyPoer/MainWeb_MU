@@ -115,26 +115,26 @@ export default function MUFANavbar() {
         <div className="flex items-center gap-3">
           <div className="hidden md:flex items-center gap-2 text-slate-100">
             <a
-              href="#"
-              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition"
+              href="https://www.instagram.com/akademimaduraunited?igsh=MWJyZjEzZHI4d2YwMw=="
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition" target="_blank"
             >
               <FaInstagram size={14} />
             </a>
             <a
-              href="#"
-              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition"
+              href="https://www.facebook.com/Maduraunitedfc.official/"
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition" target="_blank"
             >
               <FaFacebookF size={14} />
             </a>
             <a
-              href="#"
-              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition"
+              href="https://x.com/MaduraUnitedFC"
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition" target="_blank"
             >
               <FaTwitter size={14} />
             </a>
             <a
-              href="#"
-              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition"
+              href="https://youtube.com/@maduraunitedacademy812?si=flyzuMc19qy9Ai-I"
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition" target="_blank"
             >
               <FaYoutube size={14} />
             </a>

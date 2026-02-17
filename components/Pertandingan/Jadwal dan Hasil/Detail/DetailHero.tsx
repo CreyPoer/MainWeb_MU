@@ -14,7 +14,7 @@ export default function DetailHero({ homeTeam, awayTeam }: DetailHeroProps) {
     return (
         <section style={{ position: "relative", height: "100vh", minHeight: "500px", width: "100%", overflow: "hidden" }}>
             {/* Background Image */}
-            <div style={{ position: "absolute", inset: 0, zIndex: -1 }}>
+            <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
                 <Image
                     src="/detail_pertandingan.jpg"
                     alt={`Pertandingan ${homeTeam} vs ${awayTeam}`}

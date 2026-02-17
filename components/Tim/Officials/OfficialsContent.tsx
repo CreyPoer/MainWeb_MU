@@ -1,5 +1,35 @@
 "use client";
 
+// Helper to format date to Indonesian format (e.g., 04 Juni 1997)
+const formatDateIndo = (dateString: string) => {
+  if (!dateString) return "-";
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  } catch (e) {
+    return dateString;
+  }
+};
+
+// Helper to get country code for flags (simple mapping)
+const getCountryCode = (country: string) => {
+  const c = country?.toLowerCase() || "";
+  if (c === "indonesia") return "id";
+  if (c === "brazil" || c === "brasil") return "br";
+  if (c === "japan" || c === "jepang") return "jp";
+  if (c === "south korea" || c === "korea selatan") return "kr";
+  if (c === "argentina") return "ar";
+  if (c === "portugal") return "pt";
+  if (c === "spain" || c === "spanyol") return "es";
+  if (c === "iran") return "ir";
+  // Add more as needed, default to unknown
+  return "id";
+};
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { FaMedal, FaClock } from "react-icons/fa";
@@ -12,7 +42,7 @@ type TeamKey = "utama" | "akademi";
 type Official = {
   id: number;
   name: string;
-  role: string;
+  role: string; // "Head Coach", etc.
   team: TeamKey;
   image: string;
   nationality: string;
@@ -21,87 +51,6 @@ type Official = {
   joinYear: string;
   birthDate: string;
 };
-
-const OFFICIALS: Official[] = [
-  {
-    id: 1,
-    name: "Fabiano Oliveira",
-    role: "Head Coach",
-    team: "utama",
-    image:
-      "https://images.pexels.com/photos/399187/pexels-photo-399187.jpeg?auto=compress&cs=tinysrgb&w=600",
-    nationality: "Brasil",
-    countryCode: "BR",
-    license: "UEFA Pro License",
-    joinYear: "2023",
-    birthDate: "12 Mei 1978",
-  },
-  {
-    id: 2,
-    name: "Rudi Hartono",
-    role: "Assistant Coach",
-    team: "utama",
-    image:
-      "https://images.pexels.com/photos/995764/pexels-photo-995764.jpeg?auto=compress&cs=tinysrgb&w=600",
-    nationality: "Indonesia",
-    countryCode: "ID",
-    license: "A AFC Coaching License",
-    joinYear: "2022",
-    birthDate: "3 Februari 1982",
-  },
-  {
-    id: 3,
-    name: "Andi Prasetyo",
-    role: "Goalkeeper Coach",
-    team: "utama",
-    image:
-      "https://images.pexels.com/photos/61135/pexels-photo-61135.jpeg?auto=compress&cs=tinysrgb&w=600",
-    nationality: "Indonesia",
-    countryCode: "ID",
-    license: "B AFC Goalkeeper License",
-    joinYear: "2021",
-    birthDate: "9 Oktober 1980",
-  },
-  {
-    id: 4,
-    name: "M. Rizal Akbar",
-    role: "Team Manager",
-    team: "utama",
-    image:
-      "https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=600",
-    nationality: "Indonesia",
-    countryCode: "ID",
-    license: "Manajemen Klub Profesional",
-    joinYear: "2020",
-    birthDate: "27 Juli 1981",
-  },
-  {
-    id: 5,
-    name: "Ardiansyah Putra",
-    role: "Head Coach U-20",
-    team: "akademi",
-    image:
-      "https://images.pexels.com/photos/399187/pexels-photo-399187.jpeg?auto=compress&cs=tinysrgb&w=600",
-    nationality: "Indonesia",
-    countryCode: "ID",
-    license: "A AFC Youth License",
-    joinYear: "2021",
-    birthDate: "15 Januari 1986",
-  },
-  {
-    id: 6,
-    name: "Junichi Sato",
-    role: "Technical Advisor Akademi",
-    team: "akademi",
-    image:
-      "https://images.pexels.com/photos/995764/pexels-photo-995764.jpeg?auto=compress&cs=tinysrgb&w=600",
-    nationality: "Jepang",
-    countryCode: "JP",
-    license: "JFA / UEFA A License",
-    joinYear: "2024",
-    birthDate: "6 Juni 1979",
-  },
-];
 
 const teamLabel: Record<TeamKey, string> = {
   utama: "Tim Utama",
@@ -116,15 +65,56 @@ export default function OfficialsContent() {
   );
   const gridRef = useRef<HTMLDivElement | null>(null);
 
-  const filteredOfficials = useMemo(
-    () => OFFICIALS.filter((o) => o.team === activeTeam),
-    [activeTeam]
-  );
+  const [officials, setOfficials] = useState<Official[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch Officials Data
+  useEffect(() => {
+    const fetchOfficials = async () => {
+      try {
+        setLoading(true);
+        // Map activeTeam to API role parameter
+        // utama -> main-team, akademi -> academy
+        const roleParam = activeTeam === "utama" ? "main-team" : "academy";
+        const res = await fetch(`https://admin-mu.maduraunitedfc.id/api/v2/officials?role=${roleParam}`);
+
+        if (!res.ok) throw new Error("Failed to fetch officials");
+
+        const data = await res.json();
+
+        // Map API response to Component State
+        const mapped: Official[] = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          role: item.position, // position in DB maps to role in UI
+          team: activeTeam,
+          image: item.photo ? `https://admin-mu.maduraunitedfc.id/storage/${item.photo}` : "https://via.placeholder.com/600x800?text=No+Image",
+          nationality: item.nationality || "Indonesia",
+          countryCode: getCountryCode(item.nationality),
+          license: item.license || "-",
+          joinYear: item.join ? new Date(item.join).getFullYear().toString() : "-",
+          birthDate: formatDateIndo(item.birth_date),
+        }));
+
+        setOfficials(mapped);
+      } catch (error) {
+        console.error("Error fetching officials:", error);
+        setOfficials([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOfficials();
+  }, [activeTeam]);
 
   // Animasi muncul saat card masuk viewport
   useEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;
+
+    // Use a small timeout to ensure DOM is updated after loading
+    if (loading) return;
 
     const cards = Array.from(grid.querySelectorAll<HTMLElement>(".official-card"));
     if (cards.length === 0) return;
@@ -151,7 +141,7 @@ export default function OfficialsContent() {
     return () => {
       observer.disconnect();
     };
-  }, [filteredOfficials]);
+  }, [officials, loading]);
 
   return (
     <section className="officials-section">
@@ -187,7 +177,10 @@ export default function OfficialsContent() {
 
         {/* Grid Cards */}
         <div className="officials-grid" ref={gridRef}>
-          {filteredOfficials.map((official) => {
+          {loading && <p className="text-gray-500 col-span-full text-center py-10">Memuat data officials...</p>}
+          {!loading && officials.length === 0 && <p className="text-gray-500 col-span-full text-center py-10">Tidak ada data officials.</p>}
+
+          {!loading && officials.map((official) => {
             const isMainTeam = official.team === "utama";
 
             return (
@@ -209,15 +202,25 @@ export default function OfficialsContent() {
                   {/* Foto potrait besar di tengah */}
                   <div className="official-photo-block">
                     <div className="official-photo-wrapper">
+                      {/* Background Image */}
+                      <Image
+                        src="/putih.png"
+                        alt="Background"
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 260px, 220px"
+                      />
+
                       <Image
                         src={official.image}
                         alt={official.name}
                         fill
+                        unoptimized
                         sizes="180px"
-                        className="official-photo"
+                        className="official-photo z-10"
                       />
-                      <div className="official-photo-gradient" />
-                      <div className="official-photo-name">
+                      <div className="official-photo-gradient z-20" />
+                      <div className="official-photo-name z-30">
                         <p className="official-name">{official.name}</p>
                       </div>
                     </div>

@@ -1,43 +1,58 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
 
-const NEWS_ITEMS = [
-  {
-    id: 1,
-    title: "Trial Day MUFA: Ratusan Talenta Muda Ikuti Seleksi",
-    excerpt:
-      "Prospek pemain dari berbagai daerah datang ke Pamekasan untuk mengikuti seleksi program MUFA musim baru.",
-    date: "Feb 02, 2026",
-    image:
-      "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=1200",
-  },
-  {
-    id: 2,
-    title: "Sesi Coaching Clinic Bersama Tim Utama Madura United",
-    excerpt:
-      "Peserta MUFA mendapat kesempatan berlatih langsung dengan pemain dan pelatih tim utama di MUTG.",
-    date: "Jan 28, 2026",
-    image:
-      "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?q=80&w=1000&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "U-18 MUFA Menang Besar di Laga Uji Coba",
-    excerpt:
-      "Skuad U-18 menunjukkan progres signifikan dalam uji coba melawan tim akademi lain di Jawa Timur.",
-    date: "Jan 21, 2026",
-    image:
-      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1200",
-  },
-];
+interface NewsItem {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  image: string;
+  author: string;
+}
 
 export default function MUFANewsSection() {
-  const [featured, ...rest] = NEWS_ITEMS;
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch("/api/news?category=MUFA&limit=3");
+        const result = await res.json();
+        const items = Array.isArray(result) ? result : (result.data || []);
+        setNews(items);
+      } catch (error) {
+        console.error("Failed to fetch MUFA news", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section id="berita" className={styles.mufaSection}>
+        <div className={styles.mufaContainer}>
+          <div className="flex justify-center items-center h-64">
+            <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (news.length === 0) {
+    return null; // Or show empty state
+  }
+
+  const [featured, ...rest] = news;
 
   return (
     <section id="berita" className={styles.mufaSection}>
@@ -65,57 +80,61 @@ export default function MUFANewsSection() {
 
         <div className={styles.mufaNewsGrid}>
           {/* Featured */}
-          <Link
-            href={`/mufa/berita/${featured.id}`}
-            data-aos="fade-right"
-            className="group block relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70"
-          >
-            <div className="relative h-72 md:h-[360px]">
-              <Image
-                src={featured.image}
-                alt={featured.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col gap-3">
-                <span className="inline-flex px-3 py-1 rounded-full bg-red-500 text-xs font-semibold tracking-[0.18em] uppercase text-white/90 self-start">
-                  Headline
-                </span>
-                <p className="text-xs text-slate-200/80">{featured.date}</p>
-                <h3 className="text-xl md:text-2xl font-bold text-white leading-snug">
-                  {featured.title}
-                </h3>
-                <p className="hidden md:block text-sm text-slate-200/90 leading-relaxed max-w-2xl">
-                  {featured.excerpt}
-                </p>
+          {featured && (
+            <Link
+              href={`/news/${featured.slug}`}
+              data-aos="fade-right"
+              className="group block relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70 h-full"
+            >
+              <div className="relative h-72 md:h-full md:min-h-[360px]">
+                <Image
+                  src={featured.image}
+                  alt={featured.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  unoptimized // For external images or if domain not configured
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col gap-3">
+                  <span className="inline-flex px-3 py-1 rounded-full bg-red-500 text-xs font-semibold tracking-[0.18em] uppercase text-white/90 self-start">
+                    Headline
+                  </span>
+                  <p className="text-xs text-slate-200/80">{featured.date} | {featured.author}</p>
+                  <h3 className="text-xl md:text-2xl font-bold text-white leading-snug line-clamp-2">
+                    {featured.title}
+                  </h3>
+                  <p className="hidden md:block text-sm text-slate-200/90 leading-relaxed max-w-2xl line-clamp-2">
+                    {featured.excerpt}
+                  </p>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          )}
 
           {/* List */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 h-full">
             {rest.map((item, index) => (
               <Link
-                href={`/mufa/berita/${item.id}`}
+                href={`/news/${item.slug}`}
                 key={item.id}
                 data-aos="fade-left"
                 data-aos-delay={index * 100}
-                className="group flex gap-3 rounded-2xl bg-slate-900/80 border border-slate-700/80 overflow-hidden hover:border-red-500/70 hover:bg-slate-900 transition"
+                className="group flex gap-3 rounded-2xl bg-slate-900/80 border border-slate-700/80 overflow-hidden hover:border-red-500/70 hover:bg-slate-900 transition flex-1"
               >
-                <div className="relative w-28 md:w-32 min-h-[96px]">
+                <div className="relative w-28 md:w-32 min-h-[96px] h-full">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    unoptimized
                   />
                 </div>
-                <div className="flex-1 py-3 pr-4 flex flex-col gap-1">
+                <div className="flex-1 py-3 pr-4 flex flex-col gap-1 justify-center">
                   <p className="text-[11px] md:text-xs text-slate-400 uppercase tracking-[0.18em]">
                     {item.date}
                   </p>
-                  <h3 className="text-sm md:text-base font-semibold text-white leading-snug group-hover:text-red-300">
+                  <h3 className="text-sm md:text-base font-semibold text-white leading-snug group-hover:text-red-300 line-clamp-2">
                     {item.title}
                   </h3>
                   <p className="text-[11px] md:text-xs text-slate-300/90 line-clamp-2 md:line-clamp-3">

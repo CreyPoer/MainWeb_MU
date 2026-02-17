@@ -1,21 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaSearch, FaChevronRight, FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp, FaFilter, FaTimes } from "react-icons/fa";
-
-// --- DUMMY DATA FOR SIDEBAR ---
-const CATEGORIES = [
-    "Football Clubs", "News", "Transfer", "Match Preview", "Interview", "Academy", "Community"
-];
-
-const TAGS = [
-    "champions", "league1", "maduraunited", "sapekerrab", "football", "goal", "highlight", "training", "transfer", "match", "player", "score"
-];
-
-// --- CONTENT COMPONENT ---
+import { FaSearch, FaChevronRight, FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp, FaYoutube, FaFilter, FaTimes } from "react-icons/fa";
 
 interface ContentDetailProps {
     newsItem: {
@@ -24,11 +13,23 @@ interface ContentDetailProps {
         date: string;
         category: string;
         image: string;
-
-        content: string[]; // Array of paragraphs
+        content: string; // HTML String now
         author: string;
+        author_bio?: string;
+        author_image?: string;
+        tags: string[];
         penerbit?: string;
         link_berita?: string;
+        previous?: { id: number; title: string; slug: string } | null;
+        next?: { id: number; title: string; slug: string } | null;
+        related?: {
+            id: number;
+            title: string;
+            image: string;
+            date: string;
+            category: string;
+            author: string;
+        }[];
     };
 }
 
@@ -36,6 +37,31 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
+
+    // Dynamic Filters
+    const [categories, setCategories] = useState<any[]>([]);
+    const [tags, setTags] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [catRes, tagRes] = await Promise.all([
+                    fetch('/api/categories'),
+                    fetch('/api/tags')
+                ]);
+
+                const catData = await catRes.json();
+                const tagData = await tagRes.json();
+
+                if (Array.isArray(catData)) setCategories(catData);
+                if (Array.isArray(tagData)) setTags(tagData);
+
+            } catch (error) {
+                console.error("Failed to fetch sidebar data:", error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
@@ -88,37 +114,58 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                         {/* News Image (In Content) */}
                         <div style={{ position: "relative", width: "100%", height: "400px", marginBottom: "30px", borderRadius: "8px", overflow: "hidden" }}>
                             <Image
-                                src={newsItem.image}
+                                src={newsItem.image || '/logo.png'}
                                 alt={newsItem.title}
                                 fill
+                                unoptimized
                                 style={{ objectFit: "cover" }}
                             />
                         </div>
 
                         {/* Meta Info */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px", fontSize: "14px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "20px", fontSize: "14px", flexWrap: "wrap" }}>
                             <span style={{ backgroundColor: "#DC2626", color: "white", padding: "4px 12px", borderRadius: "20px", fontWeight: "bold", textTransform: "uppercase", fontSize: "12px" }}>
                                 {newsItem.category}
                             </span>
                             <span style={{ color: "#6B7280", fontWeight: "600" }}>
                                 {newsItem.date}
                             </span>
+                            <span style={{ color: "#6B7280", fontWeight: "600" }}>
+                                By {newsItem.author}
+                            </span>
+                            <div style={{ marginLeft: "auto", display: "flex", gap: "8px", alignItems: "center" }}>
+                                {[
+                                    { Icon: FaFacebookF, href: "https://www.facebook.com/Maduraunitedfc.official/", color: "#1877F2" },
+                                    { Icon: FaTwitter, href: "https://x.com/MaduraUnitedFC", color: "#000000" },
+                                    { Icon: FaInstagram, href: "https://www.instagram.com/maduraunited.fc?igsh=bmYxY201MWx6Yjkz", color: "", gradient: "linear-gradient(45deg, #FFDC80, #FCAF45, #F77737, #F56040, #FD1D1D, #E1306C, #C13584, #833AB4, #405DE6)" },
+                                    { Icon: FaYoutube, href: "https://youtube.com/@maduraunitedfc?si=nVakpGhvYmyS3HBb", color: "#FF0000" },
+                                ].map(({ Icon, href, color, gradient }, idx) => (
+                                    <a key={idx} href={href} target="_blank" rel="noopener noreferrer" style={{
+                                        width: "32px", height: "32px", borderRadius: "50%",
+                                        ...(gradient ? { background: gradient } : { backgroundColor: color }),
+                                        display: "flex", alignItems: "center", justifyContent: "center",
+                                        color: "white", transition: "opacity 0.3s, transform 0.3s",
+                                        textDecoration: "none"
+                                    }} className="social-brand-icon">
+                                        <Icon size={14} />
+                                    </a>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Content Paragraphs */}
-                        <div style={{ fontSize: "16px", lineHeight: "1.8", color: "#374151" }}>
-                            {newsItem.content.map((paragraph, idx) => (
-                                <p key={idx} style={{ marginBottom: "20px" }}>
-                                    {paragraph}
-                                </p>
-                            ))}
-                            {newsItem.penerbit && newsItem.link_berita && (
-                                <p style={{ marginTop: "20px", fontSize: "14px", fontStyle: "italic", color: "#6B7280" }}>
-                                    Dilansir dari: <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" style={{ color: "#DC2626", textDecoration: "underline" }}>{newsItem.penerbit}</a>
-                                </p>
-                            )}
+                        {/* Content Paragraphs - RENDER HTML SAFELY */}
+                        <div
+                            style={{ fontSize: "16px", lineHeight: "1.8", color: "#374151" }}
+                            className="prose max-w-none"
+                            dangerouslySetInnerHTML={{ __html: newsItem.content }}
+                        />
 
-                        </div>
+                        {newsItem.penerbit && newsItem.link_berita && (
+                            <p style={{ marginTop: "20px", fontSize: "14px", fontStyle: "italic", color: "#6B7280" }}>
+                                Dilansir dari: <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" style={{ color: "#DC2626", textDecoration: "underline" }}>{newsItem.penerbit}</a>
+                            </p>
+                        )}
+
 
                         <hr style={{ margin: "40px 0", borderColor: "#E5E7EB" }} />
 
@@ -126,28 +173,70 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
 
                             {/* --- LEFT: TAGS --- */}
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <span style={{ fontWeight: "900", textTransform: "uppercase", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>TAGS:</span>
-                                {["articles", "blog"].map((tag, idx) => (
-                                    <span key={idx} style={{
-                                        backgroundColor: "#F3F4F6",
-                                        color: "#6B7280",
-                                        padding: "8px 20px",
-                                        borderRadius: "30px", // Fully rounded pill
-                                        fontSize: "14px",
-                                        fontWeight: "600",
-                                        cursor: "pointer",
-                                    }}>
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
+                            {newsItem.tags && newsItem.tags.length > 0 && (
+                                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                    <span style={{ fontWeight: "900", textTransform: "uppercase", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>TAGS:</span>
+                                    {newsItem.tags.map((tag, idx) => (
+                                        <span key={idx}
+                                            onClick={() => handleTagClick(tag)}
+                                            style={{
+                                                backgroundColor: "#F3F4F6",
+                                                color: "#6B7280",
+                                                padding: "8px 20px",
+                                                borderRadius: "30px", // Fully rounded pill
+                                                fontSize: "14px",
+                                                fontWeight: "600",
+                                                cursor: "pointer",
+                                            }}
+                                            className="hover:bg-red-600 hover:text-white"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
 
                             {/* --- RIGHT: SHARE --- */}
                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                 <span style={{ fontWeight: "900", textTransform: "uppercase", marginRight: "10px", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>SHARE:</span>
-                                {[FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp].map((Icon, idx) => (
-                                    <button key={idx} style={{
+                                {[
+                                    {
+                                        Icon: FaFacebookF,
+                                        label: "Share to Facebook",
+                                        onClick: () => {
+                                            const url = window.location.href;
+                                            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+                                        }
+                                    },
+                                    {
+                                        Icon: FaTwitter,
+                                        label: "Share to Twitter/X",
+                                        onClick: () => {
+                                            const url = window.location.href;
+                                            const text = newsItem.title;
+                                            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'width=600,height=400');
+                                        }
+                                    },
+                                    {
+                                        Icon: FaInstagram,
+                                        label: "Copy link for Instagram",
+                                        onClick: () => {
+                                            navigator.clipboard.writeText(window.location.href).then(() => {
+                                                alert('Link berhasil disalin! Kamu bisa paste di Instagram Story atau DM.');
+                                            });
+                                        }
+                                    },
+                                    {
+                                        Icon: FaWhatsapp,
+                                        label: "Share to WhatsApp",
+                                        onClick: () => {
+                                            const url = window.location.href;
+                                            const text = `${newsItem.title} - ${url}`;
+                                            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                                        }
+                                    },
+                                ].map(({ Icon, label, onClick }, idx) => (
+                                    <button key={idx} title={label} onClick={onClick} style={{
                                         width: "40px", height: "40px", borderRadius: "50%",
                                         backgroundColor: "#111827",
                                         color: "white",
@@ -162,7 +251,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                             </div>
                         </div>
 
-                        {/* --- ABOUT AUTHOR SECTION --- */}
+                        {/* --- ABOUT AUTHOR SECTION (Optional, can be hidden if no author data) --- */}
                         <div style={{
                             backgroundColor: "#0F172A", // Dark Navy/Black
                             padding: "40px",
@@ -176,7 +265,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                             <div style={{ flexShrink: 0 }}>
                                 <div style={{ width: "100px", height: "100px", position: "relative", overflow: "hidden", backgroundColor: "#374151" }}>
                                     <img
-                                        src="/logo.png" // Placeholder for author
+                                        src={newsItem.author_image || "/logo.png"}
                                         alt={newsItem.author}
                                         style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                     />
@@ -194,16 +283,15 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                 }}>
                                     ABOUT {newsItem.author}
                                 </h3>
-                                <p style={{
+                                <div style={{
                                     fontSize: "15px",
                                     lineHeight: "1.8",
                                     color: "#9CA3AF", // Light gray text
                                     marginBottom: "20px"
                                 }}
                                     className="author-desc"
-                                >
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.
-                                </p>
+                                    dangerouslySetInnerHTML={{ __html: newsItem.author_bio || 'Madura United Author' }}
+                                />
                                 <div
                                     onClick={() => handleAuthorClick(newsItem.author)}
                                     style={{
@@ -219,208 +307,171 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                             </div>
                         </div>
 
-                        {/* --- NAVIGATION BUTTONS --- */}
-                        <div className="nav-buttons-container" style={{ display: "flex", gap: "30px", marginTop: "60px" }}>
-
-                            {/* Previous Post */}
-                            <Link href={`/media/berita/${Math.max(1, newsItem.id - 1)}`} style={{
-                                flex: 1,
-                                backgroundColor: "white",
-                                padding: "40px",
-                                textDecoration: "none",
-                                boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                                display: "block",
-                                transition: "all 0.3s"
-                            }}
-                                className="hover:translate-y-[-5px] nav-btn"
-                            >
-                                <div style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: "10px",
-                                    marginBottom: "15px",
-                                    color: "#DC2626",
-                                    fontWeight: "700",
-                                    fontSize: "14px",
-                                    textTransform: "uppercase"
-                                }}
-                                    className="nav-label"
-                                >
-                                    <FaChevronRight style={{ transform: "rotate(180deg)", fontSize: "12px" }} />
-                                    Previous Post
-                                </div>
-                                <h4 style={{
-                                    fontSize: "24px",
-                                    fontWeight: "900",
-                                    color: "#111827",
-                                    lineHeight: "1.3",
-                                    margin: 0,
-                                    textTransform: "uppercase"
-                                }}>
-                                    2018 RATING: WHO’S THE MOST “EXPENSIVE” PLAYER?
-                                </h4>
-                            </Link>
-
-                            {/* Next Post */}
-                            <Link href={`/media/berita/${newsItem.id + 1}`} style={{
-                                flex: 1,
-                                backgroundColor: "white",
-                                padding: "40px",
-                                textDecoration: "none",
-                                boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                                display: "block",
-                                textAlign: "right",
-                                transition: "all 0.3s"
-                            }}
-                                className="hover:translate-y-[-5px] nav-btn"
-                            >
-                                <div style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "flex-end",
-                                    gap: "10px",
-                                    marginBottom: "15px",
-                                    color: "#DC2626",
-                                    fontWeight: "700",
-                                    fontSize: "14px",
-                                    textTransform: "uppercase"
-                                }}
-                                    className="nav-label"
-                                >
-                                    Next Post
-                                    <FaChevronRight style={{ fontSize: "12px" }} />
-                                </div>
-                                <h4 style={{
-                                    fontSize: "24px",
-                                    fontWeight: "900",
-                                    color: "#111827",
-                                    lineHeight: "1.3",
-                                    margin: 0,
-                                    textTransform: "uppercase"
-                                }}>
-                                    WHAT TO EXPECT FROM THE UPCOMING WORLD CUP?
-                                </h4>
-                            </Link>
-                        </div>
-
-                        {/* --- YOU MAY ALSO LIKE SECTION --- */}
-                        <div style={{ marginTop: "60px" }}>
-                            <h3 style={{
-                                fontSize: "24px",
-                                fontWeight: "900",
-                                textTransform: "uppercase",
-                                color: "#111827", // Dark Navy
-                                marginBottom: "30px",
-                                letterSpacing: "1px"
-                            }}>
-                                YOUR MAY ALSO LIKE
-                            </h3>
-
-                            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "30px" }}>
-                                {[
-                                    {
-                                        id: 5,
-                                        title: "2018 LEAGUE REPORT AND HIGHLIGHTS",
-                                        date: "August 1, 2018",
-                                        category: "Football Clubs",
-                                        desc: "If you missed it, we give you a great recap! Follow our news blog",
-                                        image: "/images/dummy/news_match_action_1769655568450.png"
-                                    },
-                                    {
-                                        id: 6,
-                                        title: "THE FASTEST GOAL OF THE WORLD CHAMPIONSHIP",
-                                        date: "November 4, 2018",
-                                        category: "Football Clubs",
-                                        desc: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut",
-                                        image: "/images/dummy/news_training_1769655590311.png"
-                                    }
-                                ].map((item, idx) => (
-                                    <div key={idx} style={{ position: "relative", height: "250px", borderRadius: "8px", overflow: "hidden", display: "flex", alignItems: "flex-end" }}>
-
-                                        {/* Background Image */}
-                                        <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>
-                                            <img
-                                                src={item.image}
-                                                alt={item.title}
-                                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                            />
-                                        </div>
-
-                                        {/* Overlay Gradient */}
-                                        <div style={{
-                                            position: "absolute",
-                                            inset: 0,
-                                            background: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)",
-                                            zIndex: 2
-                                        }}></div>
-
-                                        {/* Content Overlay */}
-                                        <div style={{ position: "relative", zIndex: 3, padding: "30px", color: "white", width: "100%" }}>
-
-                                            <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "15px" }}>
-                                                <span style={{
-                                                    backgroundColor: "#DC2626",
-                                                    color: "white",
-                                                    padding: "4px 12px",
-                                                    borderRadius: "20px",
-                                                    fontWeight: "bold",
-                                                    textTransform: "uppercase",
-                                                    fontSize: "10px"
-                                                }}>
-                                                    {item.category}
-                                                </span>
-                                                <span style={{ fontSize: "12px", fontWeight: "600", color: "#D1D5DB" }}>
-                                                    {item.date}
-                                                </span>
-                                            </div>
-
-                                            <h4 style={{
-                                                fontSize: "20px",
-                                                fontWeight: "900",
-                                                textTransform: "uppercase",
-                                                marginBottom: "10px",
-                                                lineHeight: "1.3"
-                                            }}>
-                                                {item.title}
-                                            </h4>
-
-                                            <p style={{
-                                                fontSize: "14px",
-                                                color: "#E5E7EB",
-                                                marginBottom: "20px",
-                                                lineHeight: "1.6",
-                                                display: "-webkit-box",
-                                                WebkitLineClamp: 2,
-                                                WebkitBoxOrient: "vertical",
-                                                overflow: "hidden"
-                                            }}>
-                                                {item.desc}
-                                            </p>
-
-                                            <Link href={`/media/berita/${item.id}`} style={{
-                                                backgroundColor: "#DC2626",
-                                                color: "white",
-                                                border: "none",
-                                                padding: "10px 25px",
-                                                borderRadius: "30px",
-                                                fontWeight: "800",
-                                                fontSize: "12px",
-                                                textTransform: "uppercase",
-                                                cursor: "pointer",
-                                                transition: "background 0.3s",
-                                                display: "inline-block",
-                                                textDecoration: "none"
-                                            }}
-                                                className="hover:bg-red-700"
-                                            >
-                                                READ MORE
-                                            </Link>
-                                        </div>
+                        {/* --- PREV / NEXT NAVIGATION --- */}
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: "20px", marginTop: "40px" }} className="nav-buttons-container">
+                            {newsItem.previous ? (
+                                <Link href={`/media/berita/${newsItem.previous.id}`} style={{ textDecoration: "none", flex: 1 }}>
+                                    <div style={{
+                                        backgroundColor: "white",
+                                        padding: "30px",
+                                        border: "1px solid #E5E7EB",
+                                        borderRadius: "8px",
+                                        transition: "all 0.3s",
+                                        height: "100%",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center"
+                                    }}
+                                        className="nav-btn hover:border-red-600 group"
+                                    >
+                                        <span className="nav-label" style={{
+                                            fontSize: "12px",
+                                            fontWeight: "800",
+                                            textTransform: "uppercase",
+                                            color: "#9CA3AF",
+                                            marginBottom: "8px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "5px"
+                                        }}>
+                                            <FaChevronRight style={{ transform: "rotate(180deg)" }} /> Previous
+                                        </span>
+                                        <h4 style={{
+                                            fontSize: "16px",
+                                            fontWeight: "900",
+                                            // Color moved to CSS for hover effect
+                                            margin: 0,
+                                            lineHeight: "1.4"
+                                        }}
+                                            className="nav-title transition-colors"
+                                        >
+                                            {newsItem.previous.title}
+                                        </h4>
                                     </div>
-                                ))}
-                            </div>
+                                </Link>
+                            ) : <div style={{ flex: 1 }}></div>}
+
+                            {newsItem.next ? (
+                                <Link href={`/media/berita/${newsItem.next.id}`} style={{ textDecoration: "none", flex: 1 }}>
+                                    <div style={{
+                                        backgroundColor: "white",
+                                        padding: "30px",
+                                        border: "1px solid #E5E7EB",
+                                        borderRadius: "8px",
+                                        transition: "all 0.3s",
+                                        height: "100%",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        alignItems: "flex-end",
+                                        textAlign: "right"
+                                    }}
+                                        className="nav-btn hover:border-red-600 group"
+                                    >
+                                        <span className="nav-label" style={{
+                                            fontSize: "12px",
+                                            fontWeight: "800",
+                                            textTransform: "uppercase",
+                                            color: "#9CA3AF",
+                                            marginBottom: "8px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "5px"
+                                        }}>
+                                            Next <FaChevronRight />
+                                        </span>
+                                        <h4 style={{
+                                            fontSize: "16px",
+                                            fontWeight: "900",
+                                            // Color moved to CSS for hover effect
+                                            margin: 0,
+                                            lineHeight: "1.4"
+                                        }}
+                                            className="nav-title transition-colors"
+                                        >
+                                            {newsItem.next.title}
+                                        </h4>
+                                    </div>
+                                </Link>
+                            ) : <div style={{ flex: 1 }}></div>}
                         </div>
 
+                        {/* --- RELATED NEWS --- */}
+                        {newsItem.related && newsItem.related.length > 0 && (
+                            <div style={{ marginTop: "60px" }}>
+                                <div style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "15px",
+                                    marginBottom: "30px"
+                                }}>
+                                    <div style={{ width: "40px", height: "4px", backgroundColor: "#DC2626" }}></div>
+                                    <h3 style={{
+                                        fontSize: "24px",
+                                        fontWeight: "900",
+                                        textTransform: "uppercase",
+                                        color: "#111827",
+                                        margin: 0
+                                    }}>
+                                        Related News
+                                    </h3>
+                                </div>
+
+                                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "30px" }}>
+                                    {newsItem.related.map((item) => (
+                                        <Link href={`/media/berita/${item.id}`} key={item.id} style={{ textDecoration: "none" }}>
+                                            <div className="group">
+                                                <div style={{
+                                                    position: "relative",
+                                                    height: "200px",
+                                                    marginBottom: "15px",
+                                                    overflow: "hidden",
+                                                    borderRadius: "8px"
+                                                }}>
+                                                    <Image
+                                                        src={item.image || '/logo.png'}
+                                                        alt={item.title}
+                                                        fill
+                                                        unoptimized
+                                                        style={{ objectFit: "cover", transition: "transform 0.5s" }}
+                                                        className="group-hover:scale-110"
+                                                    />
+                                                    <div style={{
+                                                        position: "absolute",
+                                                        top: "10px",
+                                                        left: "10px",
+                                                        backgroundColor: "#DC2626",
+                                                        color: "white",
+                                                        fontSize: "10px",
+                                                        fontWeight: "bold",
+                                                        padding: "4px 8px",
+                                                        borderRadius: "4px",
+                                                        textTransform: "uppercase"
+                                                    }}>
+                                                        {item.category}
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px", fontSize: "12px", color: "#6B7280" }}>
+                                                    <span>{item.date}</span>
+                                                </div>
+                                                <h4 style={{
+                                                    fontSize: "16px",
+                                                    fontWeight: "800",
+                                                    color: "#111827",
+                                                    lineHeight: "1.4",
+                                                    margin: 0,
+                                                    textTransform: "uppercase"
+                                                }}
+                                                    className="group-hover:text-red-600 transition-colors"
+                                                >
+                                                    {item.title}
+                                                </h4>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                     </div>
 
@@ -492,14 +543,14 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                 <WidgetHeader title="Categories" />
                                 <div style={{ padding: "20px 30px" }}>
                                     <ul style={{ listStyle: "none", padding: 0 }}>
-                                        {CATEGORIES.map((cat, idx) => (
+                                        {categories.map((cat, idx) => (
                                             <li key={idx} style={{
                                                 marginBottom: "12px",
-                                                borderBottom: idx !== CATEGORIES.length - 1 ? "1px solid #E5E7EB" : "none",
-                                                paddingBottom: idx !== CATEGORIES.length - 1 ? "12px" : "0"
+                                                borderBottom: idx !== categories.length - 1 ? "1px solid #E5E7EB" : "none",
+                                                paddingBottom: idx !== categories.length - 1 ? "12px" : "0"
                                             }}>
                                                 <div
-                                                    onClick={() => handleCategoryClick(cat)}
+                                                    onClick={() => handleCategoryClick(cat.title)}
                                                     style={{
                                                         display: "block",
                                                         textDecoration: "none",
@@ -513,7 +564,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                     }}
                                                     className="hover:text-red-600"
                                                 >
-                                                    {cat}
+                                                    {cat.title}
                                                 </div>
                                             </li>
                                         ))}
@@ -523,10 +574,10 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
 
                             {/* TAGS WIDGET */}
                             <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-                                <WidgetHeader title="Tags" />
+                                <WidgetHeader title="Popular Tags" />
                                 <div style={{ padding: "30px" }}>
                                     <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                                        {TAGS.map((tag, idx) => (
+                                        {tags.map((tag, idx) => (
                                             <span key={idx}
                                                 onClick={() => handleTagClick(tag)}
                                                 style={{
@@ -608,6 +659,15 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                 .hover\\:bg-red-600:hover { background-color: #DC2626 !important; }
                 .hover\\:text-white:hover { color: white !important; }
                 .hover\\:text-red-600:hover { color: #DC2626 !important; }
+
+                .social-brand-icon:hover {
+                    opacity: 0.85;
+                    transform: scale(1.15);
+                }
+
+                /* NAV BUTTON HOVER OFFSET & COLOR */
+                .nav-title { color: #111827; }
+                .nav-btn:hover .nav-title { color: #DC2626 !important; }
 
                 /* DEFAULT (DESKTOP) */
                 .sidebar-toggle-btn { display: none; }

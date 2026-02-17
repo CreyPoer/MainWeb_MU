@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import styles from "./KomunitasSuporterSection.module.css";
@@ -21,7 +21,26 @@ export default function KomunitasSuporterSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [sectionAnimDone, setSectionAnimDone] = useState(false);
   const [gridInView, setGridInView] = useState(false);
+  const [communities, setCommunities] = useState<SupporterCommunity[]>([]);
+  const [loading, setLoading] = useState(true);
   const startCards = sectionAnimDone && gridInView;
+
+  useEffect(() => {
+    async function fetchCommunities() {
+      try {
+        const res = await fetch("/api/community");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setCommunities(data);
+        }
+      } catch (err) {
+        console.error("Error fetching communities:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCommunities();
+  }, []);
 
   const sectionVariants: Variants = useMemo(
     () => ({
@@ -44,7 +63,6 @@ export default function KomunitasSuporterSection() {
       show: {
         opacity: 1,
         transition: {
-          // Slower + clearer stagger
           staggerChildren: 0.28,
         },
       },
@@ -53,7 +71,6 @@ export default function KomunitasSuporterSection() {
   );
 
   const cardVariants: Variants = useMemo(() => {
-    // 4 cards: make each entrance animation slightly different.
     const presets = [
       { x: -56, y: 40, rotate: -4, scale: 0.94 },
       { x: 56, y: 36, rotate: 4, scale: 0.94 },
@@ -91,44 +108,6 @@ export default function KomunitasSuporterSection() {
       },
     };
   }, [shouldReduceMotion]);
-
-  const communities: SupporterCommunity[] = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "K-Conk Mania",
-        image: "/kconk.png",
-        link: "https://www.facebook.com/madura4rt/",
-        description:
-          "K-Conk Mania adalah kelompok suporter Madura United yang berbasis di Bangkalan.",
-      },
-      {
-        id: 2,
-        name: "Trunojoyo Mania",
-        image: "/trunojoyo.png",
-        link: "https://id-id.facebook.com/Truman.id",
-        description:
-          "Trunojoyo Mania adalah basis suporter Madura United yang mewakili wilayah Sampang.",
-      },
-      {
-        id: 3,
-        name: "Taretan Dhibi'",
-        image: "/taretan.png",
-        link: "https://www.facebook.com/Taretandhibi/",
-        description:
-          "Taretan Dhibi' adalah komunitas suporter yang mengedepankan persaudaraan di Pamekasan.",
-      },
-      {
-        id: 4,
-        name: "Peccot Mania",
-        image: "/peccot.png",
-        link: "https://www.facebook.com/PeccotManiaSoengenep/",
-        description:
-          "Peccot Mania adalah kelompok suporter militan dari ujung timur pulau Madura, Sumenep.",
-      },
-    ],
-    []
-  );
 
   return (
     <motion.section
@@ -170,70 +149,81 @@ export default function KomunitasSuporterSection() {
           <div className={styles.rule} aria-hidden="true" />
         </header>
 
-        <motion.div
-          className={styles.grid}
-          initial="hidden"
-          animate={startCards ? "show" : "hidden"}
-          variants={gridVariants}
-          viewport={{ once: true, amount: 0.2 }}
-          onViewportEnter={() => setGridInView(true)}
-        >
-          {communities.map((item, index) => (
-            <motion.a
-              key={item.id}
-              href={item.link}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.card}
-              custom={index}
-              variants={cardVariants}
-              whileHover={shouldReduceMotion ? undefined : "hover"}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
-              aria-label={`Buka ${item.name} di Facebook`}
-            >
-              {/* Hover accent bottom line */}
-              <motion.div
-                className={styles.accent}
-                variants={{
-                  hover: { opacity: 1, scaleX: 1 },
-                  show: { opacity: 0, scaleX: 0 },
-                }}
-                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                aria-hidden="true"
-              />
-
-              <div className={styles.logoWrap}>
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "3rem 0", color: "#888" }}>
+            Memuat data komunitas...
+          </div>
+        ) : communities.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "3rem 0", color: "#888" }}>
+            Belum ada data komunitas.
+          </div>
+        ) : (
+          <motion.div
+            className={styles.grid}
+            initial="hidden"
+            animate={startCards ? "show" : "hidden"}
+            variants={gridVariants}
+            viewport={{ once: true, amount: 0.2 }}
+            onViewportEnter={() => setGridInView(true)}
+          >
+            {communities.map((item, index) => (
+              <motion.a
+                key={item.id}
+                href={item.link}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.card}
+                custom={index}
+                variants={cardVariants}
+                whileHover={shouldReduceMotion ? undefined : "hover"}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
+                aria-label={`Buka ${item.name}`}
+              >
+                {/* Hover accent bottom line */}
                 <motion.div
-                  className="relative"
+                  className={styles.accent}
                   variants={{
-                    hover: { scale: 1.1 },
-                    show: { scale: 1 },
+                    hover: { opacity: 1, scaleX: 1 },
+                    show: { opacity: 0, scaleX: 0 },
                   }}
-                  transition={{ type: "spring", stiffness: 420, damping: 28, mass: 0.7 }}
-                >
-                  <Image
-                    src={item.image}
-                    alt={`Logo ${item.name}`}
-                    width={160}
-                    height={160}
-                    className={styles.logo}
-                    sizes="96px"
-                    quality={100}
-                    loading="lazy"
-                    priority={false}
-                  />
-                </motion.div>
-              </div>
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  aria-hidden="true"
+                />
 
-              <h3 className={styles.cardTitle}>
-                {item.name}
-              </h3>
-              <p className={styles.cardDesc}>
-                {item.description}
-              </p>
-            </motion.a>
-          ))}
-        </motion.div>
+                <div className={styles.logoWrap}>
+                  <motion.div
+                    className="relative"
+                    variants={{
+                      hover: { scale: 1.1 },
+                      show: { scale: 1 },
+                    }}
+                    transition={{ type: "spring", stiffness: 420, damping: 28, mass: 0.7 }}
+                  >
+                    <Image
+                      src={item.image || "/placeholder.png"}
+                      alt={`Logo ${item.name}`}
+                      width={160}
+                      height={160}
+                      className={styles.logo}
+                      sizes="96px"
+                      quality={100}
+                      loading="lazy"
+                      priority={false}
+                      unoptimized
+                    />
+                  </motion.div>
+                </div>
+
+                <h3 className={styles.cardTitle}>
+                  {item.name}
+                </h3>
+                <p className={styles.cardDesc}>
+                  {item.description}
+                </p>
+              </motion.a>
+            ))}
+          </motion.div>
+        )}
       </div>
     </motion.section>
   );

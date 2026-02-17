@@ -1,10 +1,11 @@
-export type Category = "Pertandingan" | "Latihan" | "Lain-lain";
+export type Category = string;
 
 export interface GalleryItem {
     id: number;
     title: string;
     date: string;
     category: Category;
+    categoryId?: string | number;
     thumbnail: string;
     images: string[];
 }

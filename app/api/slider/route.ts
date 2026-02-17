@@ -1,25 +1,48 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
-    // Return mock data immediately - no external fetch
-    const mockSliders = [
-        {
-            id: 1,
-            name: "MADURA UNITED FC Sape Kerrab",
-            subtitle: "Berjuang Bersama Untuk Kejayaan Madura",
-            image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1920&auto=format&fit=crop",
-            link: "/media/berita",
-            status: 1
-        },
-        {
-            id: 2,
-            name: "SUPPORT YOUR LOCAL TEAM",
-            subtitle: "Dukungan Anda Adalah Semangat Kami",
-            image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1920&auto=format&fit=crop",
-            link: "/pertandingan/jadwal",
-            status: 1
+export async function GET(request: NextRequest) {
+    try {
+        const searchParams = request.nextUrl.searchParams;
+        const type = searchParams.get('type');
+
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin-mu.maduraunitedfc.id/api';
+        const storageUrl = baseUrl.replace('/api', '');
+
+        // Use V1 Slider Endpoint which returns ALL active sliders
+        const response = await fetch(`${baseUrl}/slider-home`, {
+            cache: 'no-store'
+        });
+        const data = await response.json();
+
+        // V1 returns { status: 'OK', title: '...', result: [...] }
+        if (data.status === 'OK' && Array.isArray(data.result)) {
+            let rawSliders = data.result;
+
+            // Filter locally if type is specified
+            if (type) {
+                rawSliders = rawSliders.filter((s: any) => s.type === type);
+            }
+
+            const sliders = rawSliders.map((item: any) => {
+                let imageUrl = item.image ? (item.image.startsWith('http') ? item.image : `${storageUrl}/storage/${item.image}`) : '';
+                if (imageUrl) {
+                    imageUrl = imageUrl.replace('maduraunitedfc.com', 'maduraunitedfc.id');
+                }
+                return {
+                    id: item.id,
+                    name: item.title || item.name || '',
+                    subtitle: item.subjudul || '',
+                    image: imageUrl,
+                    link: item.link || '',
+                    status: item.status
+                };
+            });
+            return NextResponse.json(sliders);
         }
-    ];
 
-    return NextResponse.json(mockSliders);
+        return NextResponse.json([]);
+    } catch (error) {
+        console.error('Error fetching sliders:', error);
+        return NextResponse.json([]);
+    }
 }

@@ -626,6 +626,11 @@ body {
     transform: translateY(-2px);
 }
 
+.mufa-social-brand-icon:hover {
+    opacity: 0.85;
+    transform: scale(1.15);
+}
+
 .mufa-news-detail-author {
     margin-top: 48px;
     padding: 24px 22px;
@@ -1762,7 +1767,7 @@ body {
 
 .hero-subtitle {
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 1rem;
     margin-bottom: 2rem;
     animation: fadeInUp 0.8s ease-out 0.3s both;
     font-weight: 500;
@@ -1820,8 +1825,8 @@ body {
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.5);
     color: rgba(255, 255, 255, 0.7);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     font-weight: 700;
     font-size: 0.8rem;

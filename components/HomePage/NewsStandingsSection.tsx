@@ -1,72 +1,19 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight, FaArrowRight } from "react-icons/fa";
 
-// --- DUMMY DATA ---
-
-const NEWS_DATA = [
-    {
-        id: 1,
-        title: "Madura United Secure Big Win Against Persib",
-        description: "Laskar Sape Kerrab showed dominance in a thrilling match at home, securing three crucial points in the title race.",
-        image: "/images/dummy/news_match_action_1769655568450.png",
-        date: "29 Jan 2026",
-    },
-    {
-        id: 2,
-        title: "Training Intensity Ramps Up Ahead of Derby",
-        description: "The squad is being put through their paces as the coaching staff prepares for the intense derby clash next week.",
-        image: "/images/dummy/news_training_1769655590311.png",
-        date: "28 Jan 2026",
-    },
-    {
-        id: 3,
-        title: "Coach Praises Team Spirit After Comeback",
-        description: "Despite an early setback, the team showed resilience and tactical discipline to turn the game around.",
-        image: "/images/dummy/news_coach_1769655607248.png",
-        date: "27 Jan 2026",
-    },
-    {
-        id: 4,
-        title: "Goal of the Month: Amazing Strike by Lulinha",
-        description: "A stunning long-range effort has been voted as the club's goal of the month by fans.",
-        image: "/images/dummy/news_goal_1769655624953.png",
-        date: "25 Jan 2026",
-    },
-    {
-        id: 5,
-        title: "Academy Players Shine in Friendly Match",
-        description: "Young prospects from the academy impressed the first-team staff during a mid-week friendly.",
-        image: "/images/dummy/news_training_1769655590311.png", // Reusing image
-        date: "24 Jan 2026",
-    },
-];
-
-// 18 Teams for BRI Liga 1 2025/2026 (Dummy Data based on real teams)
-const STANDINGS_DATA = [
-    { id: "arema", name: "Arema FC", played: 16, w: 10, d: 3, l: 3, gd: 16, pts: 33, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/4/40/Logo_Arema_FC_2017_logo.svg/250px-Logo_Arema_FC_2017_logo.svg.png" },
-    { id: "borneo", name: "Borneo FC", played: 16, w: 9, d: 4, l: 3, gd: 14, pts: 31, logo: "https://upload.wikimedia.org/wikipedia/id/4/4d/Logo_Borneo_FC.svg" },
-    { id: "persib", name: "Persib Bandung", played: 16, w: 9, d: 3, l: 4, gd: 12, pts: 30, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/0/0d/Logo_Persib_Bandung.png/330px-Logo_Persib_Bandung.png" },
-    { id: "persebaya", name: "Persebaya Surabaya", played: 16, w: 8, d: 5, l: 3, gd: 8, pts: 29, logo: "https://upload.wikimedia.org/wikipedia/en/thumb/e/e6/Persebaya_Surabaya_logo.svg/1200px-Persebaya_Surabaya_logo.svg.png" },
-    { id: "psis", name: "PSIS Semarang", played: 16, w: 8, d: 4, l: 4, gd: 5, pts: 28, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/7/7b/PSIS_Semarang_Logo_2019.svg/1200px-PSIS_Semarang_Logo_2019.svg.png" },
-    { id: "persija", name: "Persija Jakarta", played: 16, w: 7, d: 6, l: 3, gd: 4, pts: 27, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/1/1d/Logo_Persija_Jakarta.svg/1200px-Logo_Persija_Jakarta.svg.png" },
-    { id: "bali", name: "Bali United", played: 16, w: 7, d: 5, l: 4, gd: 6, pts: 26, logo: "https://upload.wikimedia.org/wikipedia/en/thumb/3/36/Bali_United_FC_logo.svg/1200px-Bali_United_FC_logo.svg.png" },
-    { id: "dewa", name: "Dewa United", played: 16, w: 6, d: 7, l: 3, gd: 3, pts: 25, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/5/53/Dewa_United_FC_logo.svg/1200px-Dewa_United_FC_logo.svg.png" },
-    { id: "madura", name: "Madura United FC", played: 16, w: 6, d: 5, l: 5, gd: 2, pts: 23, logo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png" },
-    { id: "persik", name: "Persik Kediri", played: 16, w: 6, d: 4, l: 6, gd: 0, pts: 22, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/e/e6/Persik_Kediri_Logo_2019.svg/1200px-Persik_Kediri_Logo_2019.svg.png" },
-    { id: "psm", name: "PSM Makassar", played: 16, w: 5, d: 6, l: 5, gd: -1, pts: 21, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/1/1f/Logo_PSM_Makassar.svg/1200px-Logo_PSM_Makassar.svg.png" },
-    { id: "persita", name: "Persita Tangerang", played: 16, w: 5, d: 4, l: 7, gd: -3, pts: 19, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/6/6b/Logo_Persita_Tangerang_2020.svg/1200px-Logo_Persita_Tangerang_2020.svg.png" },
-    { id: "barito", name: "Barito Putera", played: 16, w: 4, d: 5, l: 7, gd: -5, pts: 17, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/5/53/Logo_Barito_Putera.svg/1200px-Logo_Barito_Putera.svg.png" },
-    { id: "pss", name: "PSS Sleman", played: 16, w: 4, d: 4, l: 8, gd: -7, pts: 16, logo: "https://upload.wikimedia.org/wikipedia/en/thumb/3/32/PSS_Sleman_logo.svg/1200px-PSS_Sleman_logo.svg.png" },
-    { id: "persis", name: "Persis Solo", played: 16, w: 3, d: 5, l: 8, gd: -9, pts: 14, logo: "https://upload.wikimedia.org/wikipedia/id/thumb/7/7b/Logo_Persis_Solo.svg/1200px-Logo_Persis_Solo.svg.png" },
-    { id: "malut", name: "Malut United", played: 16, w: 3, d: 4, l: 9, gd: -10, pts: 13, logo: "https://upload.wikimedia.org/wikipedia/id/archive/0/08/20230605151528%21Malut_United_FC_Logo.png" },
-    { id: "psbs", name: "PSBS Biak", played: 16, w: 2, d: 4, l: 10, gd: -12, pts: 10, logo: "https://upload.wikimedia.org/wikipedia/id/9/9b/Logo_PSBS_Biak_baru.png" },
-    { id: "semen", name: "Semen Padang", played: 16, w: 1, d: 5, l: 10, gd: -15, pts: 8, logo: "https://upload.wikimedia.org/wikipedia/id/1/1e/Semen_Padang_FC.png" },
-];
+interface NewsItem {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    date: string;
+    slug?: string;
+}
 
 interface StandingsRow {
     id: string | number;
@@ -84,14 +31,75 @@ interface StandingsRow {
 
 export default function NewsStandingsSection() {
     const [newsIndex, setNewsIndex] = useState(0);
+    const [newsData, setNewsData] = useState<NewsItem[]>([]);
+    const [standingsData, setStandingsData] = useState<StandingsRow[]>([]);
+    const [isLoadingNews, setIsLoadingNews] = useState(true);
+    const [isLoadingStandings, setIsLoadingStandings] = useState(true);
+
+    useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                const res = await fetch('/api/news');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setNewsData(data);
+                } else if (data.data && Array.isArray(data.data)) {
+                    setNewsData(data.data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch news", error);
+            } finally {
+                setIsLoadingNews(false);
+            }
+        };
+
+        const fetchStandings = async () => {
+            try {
+                const res = await fetch('/api/standings');
+                const data = await res.json();
+                let tableData: any[] = [];
+
+                if (Array.isArray(data)) {
+                    tableData = data;
+                } else if (data.data && Array.isArray(data.data)) {
+                    tableData = data.data;
+                }
+
+                if (tableData.length > 0) {
+                    const mapped = tableData.map((item: any, index: number) => ({
+                        id: item.team, // Use team name as ID
+                        name: item.team,
+                        played: parseInt(item.play),
+                        w: parseInt(item.w),
+                        d: parseInt(item.d),
+                        l: parseInt(item.l),
+                        gd: parseInt(item.gd),
+                        pts: parseInt(item.pt),
+                        logo: item.logo || '',
+                        rank: index + 1
+                    }));
+                    setStandingsData(mapped);
+                }
+            } catch (error) {
+                console.error("Failed to fetch standings", error);
+            } finally {
+                setIsLoadingStandings(false);
+            }
+        };
+
+        fetchNews();
+        fetchStandings();
+    }, []);
 
     // --- NEWS LOGIC ---
     const handleNextNews = () => {
-        setNewsIndex((prev) => (prev + 1) % NEWS_DATA.length);
+        if (newsData.length === 0) return;
+        setNewsIndex((prev) => (prev + 1) % newsData.length);
     };
 
     const handlePrevNews = () => {
-        setNewsIndex((prev) => (prev - 1 + NEWS_DATA.length) % NEWS_DATA.length);
+        if (newsData.length === 0) return;
+        setNewsIndex((prev) => (prev - 1 + newsData.length) % newsData.length);
     };
 
     const maxVisible = 4;
@@ -100,51 +108,133 @@ export default function NewsStandingsSection() {
         start = newsIndex - maxVisible + 1;
     }
     // Clamp start
-    if (start > NEWS_DATA.length - maxVisible) start = NEWS_DATA.length - maxVisible;
+    if (start > newsData.length - maxVisible) start = newsData.length - maxVisible;
     if (start < 0) start = 0;
 
-    const visibleItems = NEWS_DATA.slice(start, start + maxVisible);
+    const visibleItems = newsData.slice(start, start + maxVisible);
 
-    // --- STANDINGS LOGIC (Concept 2: Top 3 ... MU ... Bottom 2) ---
     const standingsRows = useMemo(() => {
-        const muIndex = STANDINGS_DATA.findIndex((t) => t.id === "madura");
-        const total = STANDINGS_DATA.length;
+        if (standingsData.length === 0) return [];
+
+        const total = standingsData.length;
+        // Robust finding of Madura United
+        const muIndex = standingsData.findIndex((t) =>
+            t.name.toLowerCase().includes("madura united") ||
+            t.name.toLowerCase() === "madura united fc" ||
+            t.name.toLowerCase() === "madura united"
+        );
 
         let rowsToDisplay: StandingsRow[] = [];
+        const seenIds = new Set<string | number>();
 
+        // Helper to push row if unique
         const pushRow = (idx: number) => {
-            rowsToDisplay.push({ ...STANDINGS_DATA[idx], rank: idx + 1, type: "data" });
+            if (idx >= 0 && idx < total) {
+                const item = standingsData[idx];
+                if (!seenIds.has(item.id)) {
+                    rowsToDisplay.push({ ...item, type: "data" });
+                    seenIds.add(item.id);
+                }
+            }
         };
+
         const pushSeparator = () => {
-            rowsToDisplay.push({ id: "sep-" + Math.random(), name: "...", rank: 0, played: 0, w: 0, d: 0, l: 0, gd: 0, pts: 0, logo: "", type: "separator" });
+            if (rowsToDisplay.length > 0 && rowsToDisplay[rowsToDisplay.length - 1].type !== "separator") {
+                rowsToDisplay.push({ id: "sep-" + Math.random(), name: "...", rank: 0, played: 0, w: 0, d: 0, l: 0, gd: 0, pts: 0, logo: "", type: "separator" });
+            }
         };
 
-        // Show Top 3
-        [0, 1, 2].forEach(i => pushRow(i));
+        // Always show Top 3
+        pushRow(0);
+        pushRow(1);
+        pushRow(2);
 
-        pushSeparator();
+        // If MU not found, show Top 3 ... Bottom 3
+        if (muIndex === -1) {
+            pushSeparator();
+            pushRow(total - 3);
+            pushRow(total - 2);
+            pushRow(total - 1);
+            return rowsToDisplay;
+        }
 
-        // Show MU
-        pushRow(muIndex);
+        // Logic based on MU Position
 
-        pushSeparator();
+        // CASE 1: MU in Top 3 (Index < 3) 
+        // OR 
+        // CASE 3: MU in Bottom 3 (Index >= total - 3)
+        // -> Show Top 3 ... Bottom 3
+        if (muIndex < 3 || muIndex >= total - 3) {
+            // Gap between Top 3 and Bottom 3?
+            if (total > 6) {
+                pushSeparator();
+            }
+            // Show Bottom 3
+            // Ensure we don't duplicate if total is small (e.g. 5 teams)
+            // Indices: 0,1,2 ... total-3, total-2, total-1
+            pushRow(total - 3);
+            pushRow(total - 2);
+            pushRow(total - 1);
+        }
 
-        // Show Bottom 2
-        const startBottom = total - 2;
-        for (let i = startBottom; i < total; i++) {
-            pushRow(i);
+        // CASE 2: MU in Middle
+        // (Index >= 3 AND Index < total - 3)
+        else {
+            // Check connectivity to Top 3 (Index 2)
+            // If MU is Rank 4 (Index 3), needed direct connection?
+            // "kalo tim madura united fc berada di klasemen 4 itu kan masuk konsep 2 nah "..." diatas barid miliki ... tidak perlu di tampilkan"
+            if (muIndex === 3) {
+                // Direct append (no separator)
+                pushRow(muIndex);
+            } else {
+                // Gap
+                pushSeparator();
+                pushRow(muIndex);
+            }
+
+            // Check connectivity to Bottom
+            // Concept 2 says: Show Bottom 2 (total-2, total-1)
+            // Check relationship between muIndex and total-2
+
+            // "begitupun kalo tim madura united fc berada di klasmeen nomor 4 dari yang terbawah tu "..." dibawah baris data ... tidak perlu di tampilkan"
+            // Rank 4 from bottom is Index = total - 4.
+            // Next items are total-3, total-2, total-1.
+            // Concept 2 usually shows Bottom 2 (total-2).
+            // Gap is total-3.
+
+            if (muIndex === total - 4) {
+                // Connect directly to bottom
+                // Fill gap (total-3)
+                pushRow(total - 3);
+                // Then Bottom 2
+                pushRow(total - 2);
+                pushRow(total - 1);
+            } else {
+                // Gap
+                pushSeparator();
+                // Show Bottom 2
+                pushRow(total - 2);
+                pushRow(total - 1);
+            }
         }
 
         return rowsToDisplay;
 
-    }, []);
+    }, [standingsData]);
+
+    if (isLoadingNews && isLoadingStandings) {
+        return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
+    }
+
+    const currentNews = newsData[newsIndex] || { id: 0, title: '', description: '', image: '', date: '' };
 
     return (
         <section
+            className="news-standings-section"
             style={{
                 maxWidth: '1280px',
                 margin: '0 auto',
-                paddingTop: '100px', // REDUCED from 200px to 140px
+                paddingTop: '100px',
                 paddingBottom: '50px',
             }}
         >
@@ -171,7 +261,6 @@ export default function NewsStandingsSection() {
                     {/* Widget Card */}
                     <div style={{
                         backgroundColor: '#ffffff',
-                        // EXPLICIT PADDING PROPERTIES to avoid conflict errors
                         paddingTop: '16px',
                         paddingBottom: '16px',
                         paddingLeft: '16px',
@@ -187,71 +276,72 @@ export default function NewsStandingsSection() {
 
                         {/* Main Content (Left) */}
                         <div className="news-main-image" style={{ flex: '1', position: 'relative', overflow: 'hidden', borderRadius: '8px', height: '100%' }}>
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={NEWS_DATA[newsIndex].id}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.3 }}
-                                    style={{ position: 'relative', width: '100%', height: '100%' }}
-                                >
-                                    <Image
-                                        src={NEWS_DATA[newsIndex].image}
-                                        alt={NEWS_DATA[newsIndex].title}
-                                        fill
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                    {/* Overlay */}
-                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)' }} />
+                            {newsData.length > 0 && (
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={currentNews.id}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.3 }}
+                                        style={{ position: 'relative', width: '100%', height: '100%' }}
+                                    >
+                                        <Image
+                                            src={currentNews.image || '/images/placeholder.png'}
+                                            alt={currentNews.title}
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                        {/* Overlay */}
+                                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent)' }} />
 
-                                    {/* Text */}
-                                    <div style={{ position: 'absolute', bottom: 0, left: 0, padding: '32px', width: '100%', color: 'white', zIndex: 10 }}>
-                                        <motion.h3
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.1, duration: 0.3 }}
-                                            style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '16px', lineHeight: 1.1 }}
-                                        >
-                                            {NEWS_DATA[newsIndex].title}
-                                        </motion.h3>
-                                        <motion.p
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.2, duration: 0.3 }}
-                                            style={{ fontSize: '16px', color: '#e5e7eb', marginBottom: '24px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
-                                        >
-                                            {NEWS_DATA[newsIndex].description}
-                                        </motion.p>
-                                        <Link href={`/media/berita/${NEWS_DATA[newsIndex].id}`} passHref>
-                                            <motion.button
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                style={{
-                                                    backgroundColor: '#DC2626', color: 'white', padding: '12px 28px',
-                                                    fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase',
-                                                    borderRadius: '9999px', border: 'none', cursor: 'pointer',
-                                                    boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)'
-                                                }}
+                                        {/* Text */}
+                                        <div style={{ position: 'absolute', bottom: 0, left: 0, padding: '32px', width: '100%', color: 'white', zIndex: 10 }}>
+                                            <motion.h3
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.1, duration: 0.3 }}
+                                                style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '16px', lineHeight: 1.1 }}
                                             >
-                                                Read More
-                                            </motion.button>
-                                        </Link>
-                                    </div>
-                                </motion.div>
-                            </AnimatePresence>
+                                                {currentNews.title}
+                                            </motion.h3>
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.2, duration: 0.3 }}
+                                                style={{ fontSize: '16px', color: '#e5e7eb', marginBottom: '24px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                                                dangerouslySetInnerHTML={{ __html: currentNews.description }}
+                                            />
+                                            <Link href={`/media/berita/${currentNews.slug || currentNews.id}`} passHref>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    style={{
+                                                        backgroundColor: '#DC2626', color: 'white', padding: '12px 28px',
+                                                        fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase',
+                                                        borderRadius: '9999px', border: 'none', cursor: 'pointer',
+                                                        boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)'
+                                                    }}
+                                                >
+                                                    Read More
+                                                </motion.button>
+                                            </Link>
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
+                            )}
                         </div>
 
                         {/* Thumbnails List (Right) */}
                         <div className="news-list" style={{ width: '30%', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             <div className="news-thumbnails-inner" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px', overflow: 'hidden' }}>
                                 {visibleItems.map((item) => {
-                                    const isActive = item.id === NEWS_DATA[newsIndex].id;
+                                    const isActive = item.id === currentNews.id;
                                     return (
                                         <div
                                             key={item.id}
                                             className="news-thumbnail-item"
-                                            onClick={() => setNewsIndex(NEWS_DATA.findIndex(n => n.id === item.id))}
+                                            onClick={() => setNewsIndex(newsData.findIndex(n => n.id === item.id))}
                                             style={{
                                                 position: 'relative',
                                                 cursor: 'pointer',
@@ -265,7 +355,7 @@ export default function NewsStandingsSection() {
                                         >
                                             <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                                                 <Image
-                                                    src={item.image}
+                                                    src={item.image || '/images/placeholder.png'}
                                                     alt={item.title}
                                                     fill
                                                     style={{ objectFit: 'cover' }}
@@ -322,7 +412,7 @@ export default function NewsStandingsSection() {
                         height: '600px',
                         width: '100%',
                         overflow: 'hidden'
-                    }} data-aos="fade-up" data-aos-delay="200">
+                    }} className="standings-widget-card" data-aos="fade-up" data-aos-delay="200">
                         <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', overflowX: 'auto' }}>
                             <table style={{ width: '100%', fontSize: '14px', borderCollapse: 'collapse' }}>
                                 <thead style={{ backgroundColor: '#B91C1C', color: 'white', height: '56px', position: 'sticky', top: 0, zIndex: 10 }}>
@@ -345,21 +435,21 @@ export default function NewsStandingsSection() {
                                                 </tr>
                                             )
                                         }
-                                        const isMU = row.id === "madura";
-                                        const rowStyle = isMU ? { backgroundColor: '#FEF2F2', borderLeft: '6px solid #DC2626' } : { borderBottom: '1px solid #F3F4F6' };
+                                        const isMU = row.name.toLowerCase().includes("madura united") || row.name.toLowerCase() === "madura united fc";
+                                        const rowStyle = isMU ? { backgroundColor: '#FEE2E2', borderLeft: '6px solid #B91C1C' } : { borderBottom: '1px solid #F3F4F6', backgroundColor: idx % 2 === 0 ? '#FFFFFF' : '#F9FAFB' };
 
                                         return (
                                             <tr key={row.id} style={rowStyle}>
-                                                <td style={{ padding: '16px 8px', textAlign: 'center', fontWeight: 'bold', fontSize: '16px' }}>{row.rank}</td>
-                                                <td style={{ padding: '16px 8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                    <div style={{ width: '32px', height: '32px', position: 'relative', flexShrink: 0 }}>
+                                                <td className="standings-cell-rank" style={{ padding: '16px 8px', textAlign: 'center', fontWeight: 'bold', fontSize: '16px' }}>{row.rank}</td>
+                                                <td className="standings-cell-team" style={{ padding: '16px 8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                    <div className="team-logo" style={{ width: '32px', height: '32px', position: 'relative', flexShrink: 0 }}>
                                                         {row.logo && (row.logo.startsWith("http") || row.logo.startsWith("/")) ? (
                                                             <Image src={row.logo} alt={row.name} fill style={{ objectFit: 'contain' }} />
                                                         ) : (
                                                             <div style={{ width: '100%', height: '100%', backgroundColor: '#E5E7EB', borderRadius: '50%', fontSize: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{row.name.substring(0, 2)}</div>
                                                         )}
                                                     </div>
-                                                    <span style={{
+                                                    <span className="team-name" style={{
                                                         color: isMU ? '#B91C1C' : '#111827',
                                                         fontWeight: '800',
                                                         fontSize: '14px',
@@ -367,16 +457,16 @@ export default function NewsStandingsSection() {
                                                         whiteSpace: 'nowrap',
                                                         overflow: 'hidden',
                                                         textOverflow: 'ellipsis',
-                                                        maxWidth: '120px'
+                                                        maxWidth: '170px'
                                                     }}>
                                                         {row.name}
                                                     </span>
                                                 </td>
-                                                <td style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.played}</td>
-                                                <td style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.w}</td>
-                                                <td style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.d}</td>
-                                                <td style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.l}</td>
-                                                <td style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '900', fontSize: '16px' }}>{row.pts}</td>
+                                                <td className="standings-cell-stat" style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.played}</td>
+                                                <td className="standings-cell-stat" style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.w}</td>
+                                                <td className="standings-cell-stat" style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.d}</td>
+                                                <td className="standings-cell-stat" style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '600' }}>{row.l}</td>
+                                                <td className="standings-cell-pts" style={{ padding: '16px 8px', textAlign: 'center', fontWeight: '900', fontSize: '16px' }}>{row.pts}</td>
                                             </tr>
                                         )
                                     })}
@@ -429,6 +519,9 @@ export default function NewsStandingsSection() {
                 height: 300px !important;
                 flex: none !important;
             }
+            .team-name {
+                max-width: 220px !important;
+            }
             .news-list {
                 width: 100% !important;
                 height: auto !important;
@@ -437,10 +530,50 @@ export default function NewsStandingsSection() {
             .news-thumbnails-inner {
                 flex-direction: row !important;
                 gap: 8px !important;
+                height: auto !important;
             }
             .news-thumbnail-item {
                  flex: 1 !important;
                  height: 80px !important;
+                 width: auto !important;
+            }
+            /* Override flex: 1 for thumbnails on mobile to make them visible and equal width */
+        }
+
+        @media (max-width: 425px) {
+            .news-standings-section {
+                padding-top: 140px !important;
+            }
+            
+            /* Table Adjustments for Mobile */
+            th, 
+            .standings-cell-rank,
+            .standings-cell-team,
+            .standings-cell-stat,
+            .standings-cell-pts {
+                padding: 8px 4px !important;
+                font-size: 11px !important;
+            }
+            
+            .team-logo {
+                width: 24px !important;
+                height: 24px !important;
+            }
+
+            .team-name {
+                font-size: 10px !important;
+                max-width: 150px !important;
+            }
+            
+            .standings-cell-rank {
+                font-size: 12px !important;
+            }
+            
+            .standings-cell-pts {
+                font-size: 12px !important;
+            }
+            .standings-widget-card {
+                height: auto !important;
             }
         }
       `}</style>

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,53 +5,51 @@ import styles from "./MUFAHome.module.css";
 
 interface Slide {
   id: number;
-  title: string;
+  name: string;
   subtitle: string;
   image: string;
-  tag: string;
+  link: string;
 }
 
-const SLIDES: Slide[] = [
-  {
-    id: 1,
-    title: "THE PATHWAY TO PRO",
-    subtitle:
-      "Program pembinaan terstruktur dari usia muda menuju tim profesional Madura United FC.",
-    image:
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1600",
-    tag: "Elite Youth Development",
-  },
-  {
-    id: 2,
-    title: "LATIHAN BERSTANDAR PROFESIONAL",
-    subtitle:
-      "Metode latihan modern dengan fasilitas lengkap, fokus pada teknik, taktik, dan mental juara.",
-    image:
-      "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1920&auto=format&fit=crop",
-    tag: "High Performance Training",
-  },
-  {
-    id: 3,
-    title: "DIDAMPINGI COACH BERPENGALAMAN",
-    subtitle:
-      "Tim pelatih berlisensi yang siap mendampingi setiap langkah perjalanan karier sepak bola Anda.",
-    image:
-      "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&q=80&w=1600",
-    tag: "Professional Coaching Staff",
-  },
-];
-
 export default function MUFAHeroSection() {
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [index, setIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % SLIDES.length);
-    }, 6000);
-    return () => clearInterval(timer);
+    const fetchSlides = async () => {
+      try {
+        const res = await fetch("/api/slider?type=MUFA");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setSlides(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch MUFA slides", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchSlides();
   }, []);
 
-  const current = SLIDES[index];
+  useEffect(() => {
+    if (slides.length === 0) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [slides]);
+
+  if (isLoading) {
+    return <div className="h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
+  }
+
+  if (slides.length === 0) {
+    return null; // Or some fallback
+  }
+
+  const current = slides[index];
 
   return (
     <section id="home" className={`${styles.mufaSection} ${styles.mufaHero}`}>
@@ -63,10 +59,11 @@ export default function MUFAHeroSection() {
           <div className={styles.mufaHeroFrame}>
             <Image
               src={current.image}
-              alt={current.title}
+              alt={current.name}
               fill
               priority
               className={`${styles.mufaHeroImage} object-cover`}
+              key={current.id} // Force re-render for animation if needed
             />
             {/* Dark + red theme overlays */}
             <div className="absolute inset-0">
@@ -82,7 +79,7 @@ export default function MUFAHeroSection() {
                 data-aos-delay="100"
                 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight uppercase"
               >
-                {current.title}
+                {current.name}
               </h1>
 
               <p
@@ -116,13 +113,13 @@ export default function MUFAHeroSection() {
 
           {/* Dots */}
           <div className={styles.mufaHeroDots}>
-            {SLIDES.map((slide, i) => (
+            {slides.map((slide, i) => (
               <button
                 key={slide.id}
                 type="button"
                 className={`${styles.mufaHeroDot} ${i === index ? styles.mufaHeroDotActive : ""}`}
                 onClick={() => setIndex(i)}
-                aria-label={slide.title}
+                aria-label={slide.name}
               />
             ))}
           </div>

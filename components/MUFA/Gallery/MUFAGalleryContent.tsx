@@ -1,22 +1,69 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPowerOff, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import styles from "../HomePage/MUFAHome.module.css";
-import { GALLERY_DATA, GalleryItem, Category } from "./galleryData";
-
-const FILTERS: (Category | "All")[] = ["All", "Pertandingan", "Latihan", "Lain-lain"];
+import { GalleryItem, Category } from "./galleryData";
 
 export default function MUFAGalleryContent() {
-    const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
+    const [activeFilter, setActiveFilter] = useState<string>("All");
     const [modalData, setModalData] = useState<GalleryItem | null>(null);
     const [sliderIndex, setSliderIndex] = useState(0);
+    const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch Categories and Gallery Items in parallel
+                const [catRes, galleryRes] = await Promise.all([
+                    fetch("/api/gallery/categories"),
+                    fetch("/api/gallery?type=MUFA")
+                ]);
+
+                const catData = await catRes.json();
+                const galleryData = await galleryRes.json();
+
+                let validCategories: { id: number; category: string }[] = [];
+                if (Array.isArray(catData)) {
+                    validCategories = catData;
+                    // Extract unique category names for the filter list
+                    const uniqueNames = Array.from(new Set(catData.filter((c: any) => c.category).map((c: any) => c.category))) as string[];
+                    setCategories(uniqueNames);
+                }
+
+                if (Array.isArray(galleryData)) {
+                    const mappedGallery = galleryData.map((item: any) => {
+                        // Map categoryId to category name
+                        // Ensure loose equality for string/number match
+                        const foundCat = validCategories.find((c) => c.id == item.categoryId);
+                        return {
+                            ...item,
+                            // Use found category name, or fallback to item.category if available and not 'Lain-lain', 
+                            // otherwise 'Lain-lain' defaults.
+                            category: foundCat ? foundCat.category : (item.category && item.category !== 'Lain-lain' ? item.category : 'Lain-lain')
+                        };
+                    });
+                    setGalleryItems(mappedGallery);
+                }
+            } catch (error) {
+                console.error("Failed to fetch gallery data", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const filters = useMemo(() => ["All", ...categories], [categories]);
 
     const filteredData = useMemo(() => {
-        if (activeFilter === "All") return GALLERY_DATA;
-        return GALLERY_DATA.filter((item) => item.category === activeFilter);
-    }, [activeFilter]);
+        if (activeFilter === "All") return galleryItems;
+        return galleryItems.filter((item) => item.category === activeFilter);
+    }, [activeFilter, galleryItems]);
 
     const openModal = (item: GalleryItem) => {
         setModalData(item);
@@ -37,6 +84,14 @@ export default function MUFAGalleryContent() {
         setSliderIndex((prev) => (prev - 1 + modalData.images.length) % modalData.images.length);
     };
 
+    if (isLoading) {
+        return (
+            <section className="py-10 md:py-14 bg-slate-950 min-h-screen flex items-center justify-center">
+                <div className="text-white text-xl">Loading Gallery...</div>
+            </section>
+        );
+    }
+
     return (
         <section className="py-10 md:py-14 bg-slate-950 min-h-screen">
             <div className={styles.mufaContainer}>
@@ -52,7 +107,7 @@ export default function MUFAGalleryContent() {
                     </div>
 
                     <div className="flex flex-wrap gap-2 md:gap-3">
-                        {FILTERS.map((filter) => {
+                        {filters.map((filter) => {
                             const isActive = activeFilter === filter;
                             return (
                                 <button

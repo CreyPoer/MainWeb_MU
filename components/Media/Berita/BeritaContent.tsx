@@ -8,75 +8,20 @@ import { FaFilter, FaTimes, FaSearch, FaChevronRight } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-// --- DUMMY DATA ---
-const NEWS_DATA = [
-    {
-        id: 1,
-        title: "MADURA UNITED FC SIAP HADAPI MUSIM BARU",
-        date: "04 Februari 2026",
-        category: "Tim Utama",
-        excerpt: "Persiapan matang telah dilakukan oleh skuad Laskar Sape Kerrab menyambut musim kompetisi yang akan segera bergulir dengan target papan atas.",
-        image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop", // Football text match
-        author: "Admin",
-    },
-    {
-        id: 2,
-        title: "AKADEMI U-20 MENUNJUKKAN PERFORMA GEMILANG",
-        date: "02 Februari 2026",
-        category: "Academy",
-        excerpt: "Para pemain muda Madura United U-20 berhasil mencatatkan kemenangan beruntun dalam laga uji coba terakhir mereka.",
-        image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1000&auto=format&fit=crop", // Football match
-        author: "Reporter 1",
-    },
-    {
-        id: 3,
-        title: "REKAP HASIL PERTANDINGAN: MENANG DI KANDANG",
-        date: "30 Januari 2026",
-        category: "Pertandingan",
-        excerpt: "Madura United berhasil mengamankan 3 poin penuh di kandang setelah mengalahkan tamunya dengan skor meyakinkan 2-0.",
-        image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45?q=80&w=1000&auto=format&fit=crop",
-        author: "Admin",
-    },
-    {
-        id: 4,
-        title: "WAWANCARA EKSKLUSIF: PERJALANAN KAPTEN TIM",
-        date: "25 Januari 2026",
-        category: "Wawancara",
-        excerpt: "Simak kisah inspiratif dari kapten tim Madura United tentang perjalanan karirnya hingga memimpin laskar Sape Kerrab.",
-        image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=1000&auto=format&fit=crop",
-        author: "Reporter 2",
-    },
-    {
-        id: 5,
-        title: "PROGRAM LATIHAN KHUSUS PENJAGA GAWANG",
-        date: "20 Januari 2026",
-        category: "Latihan",
-        excerpt: "Pelatih kiper Madura United menerapkan metode latihan baru untuk meningkatkan refleks dan distribusi bola para penjaga gawang.",
-        image: "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?q=80&w=1000&auto=format&fit=crop",
-        author: "Admin",
-    },
-    {
-        id: 6,
-        title: "FANS CLUB MADURA UNITED GELAR BAKTI SOSIAL",
-        date: "15 Januari 2026",
-        category: "Klub",
-        excerpt: "K-Conk Mania dan elemen suporter lainnya menggelar aksi sosial sebagai bentuk kepedulian terhadap masyarakat sekitar.",
-        image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1000&auto=format&fit=crop",
-        author: "Admin",
-    }
-];
 
-const CATEGORIES = [
-    "Football Clubs", "News", "Transfer", "Match Preview", "Interview", "Academy", "Community"
-];
 
-const TAGS = [
-    "champions", "league1", "maduraunited", "sapekerrab", "football", "goal", "highlight", "training", "transfer"
-];
+
+
+
 
 export default function BeritaContent() {
+    const [newsData, setNewsData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -86,32 +31,82 @@ export default function BeritaContent() {
     const activeQuery = searchParams.get("q");
     const activeAuthor = searchParams.get("author");
 
-    // Filter Logic
-    const filteredNews = useMemo(() => {
-        return NEWS_DATA.filter((news) => {
-            // 1. Filter by Category
-            if (activeCategory && news.category.toLowerCase() !== activeCategory.toLowerCase()) {
-                return false;
+    const [categories, setCategories] = useState<any[]>([]);
+    const [tags, setTags] = useState<string[]>([]);
+
+    // Fetch Categories and Tags
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [catRes, tagRes] = await Promise.all([
+                    fetch('/api/categories'),
+                    fetch('/api/tags')
+                ]);
+
+                const catData = await catRes.json();
+                const tagData = await tagRes.json();
+
+                if (Array.isArray(catData)) setCategories(catData);
+                if (Array.isArray(tagData)) setTags(tagData);
+
+            } catch (error) {
+                console.error("Failed to fetch filter data:", error);
             }
-            // 2. Filter by Search Query
-            if (activeQuery && !news.title.toLowerCase().includes(activeQuery.toLowerCase())) {
-                return false;
-            }
-            // 3. Filter by Tag
-            if (activeTag) {
-                const content = `${news.title} ${news.excerpt} ${news.category}`.toLowerCase();
-                if (!content.includes(activeTag.toLowerCase())) {
-                    return false;
+        };
+        fetchData();
+    }, []);
+
+    // Fetch News Data
+    const fetchNews = async (pageNum: number, isNewFilter: boolean = false) => {
+        try {
+            setLoading(true);
+            const params = new URLSearchParams();
+            params.set("page", pageNum.toString());
+            if (activeCategory) params.set("category", activeCategory); // Sending title or slug
+            if (activeTag) params.set("tag", activeTag);
+            if (activeQuery) params.set("q", activeQuery);
+            if (activeAuthor) params.set("author", activeAuthor);
+
+            const res = await fetch(`/api/news?${params.toString()}`);
+            const data = await res.json();
+
+            if (data.data) {
+                if (isNewFilter) {
+                    setNewsData(data.data);
+                } else {
+                    setNewsData(prev => [...prev, ...data.data]);
+                }
+
+                // Check if we have more pages
+                if (data.meta && data.meta.current_page >= data.meta.last_page) {
+                    setHasMore(false);
+                } else {
+                    setHasMore(true);
                 }
             }
-            // 4. Filter by Author
-            // @ts-ignore
-            if (activeAuthor && news.author && news.author.toLowerCase() !== activeAuthor.toLowerCase()) {
-                return false;
-            }
-            return true;
-        });
+        } catch (error) {
+            console.error("Failed to fetch news:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Reset and fetch when filters change
+    useEffect(() => {
+        setPage(1);
+        setHasMore(true);
+        fetchNews(1, true);
     }, [activeCategory, activeTag, activeQuery, activeAuthor]);
+
+    // Load More Handler
+    const handleLoadMore = () => {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        fetchNews(nextPage, false);
+    };
+
+    // Filter Logic - Replaced by API fetching, so just use newsData directly
+    const filteredNews = newsData;
 
     useEffect(() => {
         AOS.init({
@@ -195,9 +190,10 @@ export default function BeritaContent() {
                                 className="group grid-image-cell"
                             >
                                 <Image
-                                    src={news.image}
+                                    src={news.image || '/logo.png'}
                                     alt={news.title}
                                     fill
+                                    unoptimized
                                     style={{
                                         objectFit: "cover",
                                         objectPosition: "center",
@@ -462,12 +458,12 @@ export default function BeritaContent() {
                             Categories
                         </h4>
                         <ul style={{ listStyle: "none", padding: 0 }}>
-                            {CATEGORIES.map((cat, idx) => (
+                            {categories.map((cat, idx) => (
                                 <li key={idx} style={{ marginBottom: "10px" }}>
                                     <div
-                                        onClick={() => updateFilter('category', cat)}
+                                        onClick={() => updateFilter('category', cat.title)}
                                         style={{
-                                            color: activeCategory === cat ? "#DC2626" : "#111827",
+                                            color: activeCategory === cat.title ? "#DC2626" : "#111827",
                                             fontWeight: "700",
                                             fontSize: "15px",
                                             textTransform: "uppercase",
@@ -479,12 +475,12 @@ export default function BeritaContent() {
                                             transition: "all 0.2s",
                                             textDecoration: "none",
                                             cursor: "pointer",
-                                            backgroundColor: activeCategory === cat ? "#FEF2F2" : "transparent"
+                                            backgroundColor: activeCategory === cat.title ? "#FEF2F2" : "transparent"
                                         }}
                                         className="category-link"
                                     >
-                                        {cat}
-                                        <FaChevronRight size={12} color={activeCategory === cat ? "#DC2626" : "#D1D5DB"} />
+                                        {cat.title}
+                                        <FaChevronRight size={12} color={activeCategory === cat.title ? "#DC2626" : "#D1D5DB"} />
                                     </div>
                                 </li>
                             ))}
@@ -497,7 +493,7 @@ export default function BeritaContent() {
                             Popular Tags
                         </h4>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                            {TAGS.map((tag, idx) => (
+                            {tags.map((tag, idx) => (
                                 <span
                                     key={idx}
                                     style={{

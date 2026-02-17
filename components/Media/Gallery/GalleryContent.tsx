@@ -1,118 +1,77 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { FaPowerOff, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
-
-type Category = "Pertandingan" | "Latihan" | "Lain-lain";
 
 interface GalleryItem {
     id: string;
     title: string;
     date: string;
-    category: Category;
+    category: string;
+    category_id?: number;
     thumbnail: string;
     images: string[];
 }
 
-const GALLERY_DATA: GalleryItem[] = [
-    {
-        id: "1",
-        title: "Match Day: Home Stadium Warm Up",
-        date: "08 Februari 2026",
-        category: "Pertandingan",
-        thumbnail:
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=900",
-        images: [
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1400",
-        ],
-    },
-    {
-        id: "2",
-        title: "Kick Off Moment: Laskar Sape Kerrab",
-        date: "05 Februari 2026",
-        category: "Pertandingan",
-        thumbnail:
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=900",
-        images: [
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1400",
-        ],
-    },
-    {
-        id: "3",
-        title: "Intense Training: Finishing Session",
-        date: "02 Februari 2026",
-        category: "Latihan",
-        thumbnail:
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=900",
-        images: [
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-        ],
-    },
-    {
-        id: "4",
-        title: "Goalkeeper Special Drills",
-        date: "30 Januari 2026",
-        category: "Latihan",
-        thumbnail:
-            "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?auto=format&fit=crop&q=80&w=900",
-        images: [
-            "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1400",
-        ],
-    },
-    {
-        id: "5",
-        title: "Fans Moment: Celebration with K-Conk",
-        date: "28 Januari 2026",
-        category: "Lain-lain",
-        thumbnail:
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=900",
-        images: [
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-        ],
-    },
-    {
-        id: "6",
-        title: "Club Activities: Community Program",
-        date: "22 Januari 2026",
-        category: "Lain-lain",
-        thumbnail:
-            "https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&q=80&w=900",
-        images: [
-            "https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1400",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1400",
-        ],
-    },
-];
-
-const FILTERS: (Category | "All")[] = ["All", "Pertandingan", "Latihan", "Lain-lain"];
+interface CategoryItem {
+    id: number;
+    category: string;
+}
 
 export default function GalleryContent() {
-    const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
+    const [activeFilter, setActiveFilter] = useState<number | "All">("All");
+    const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
+    const [categories, setCategories] = useState<CategoryItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [modalData, setModalData] = useState<GalleryItem | null>(null);
     const [sliderIndex, setSliderIndex] = useState(0);
 
-    const filteredData = useMemo(() => {
-        if (activeFilter === "All") return GALLERY_DATA;
-        return GALLERY_DATA.filter((item) => item.category === activeFilter);
+    // Fetch Categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await fetch('/api/gallery/categories');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setCategories(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch categories", error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    // Fetch Gallery Data
+    const fetchGallery = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const params = new URLSearchParams();
+            params.append('type', 'MUFC'); // Hardcode type as per requirement
+
+            if (activeFilter !== "All") {
+                params.append('category', activeFilter.toString());
+            }
+
+            const res = await fetch(`/api/gallery/all?${params.toString()}`);
+            const data = await res.json();
+
+            if (Array.isArray(data)) {
+                setGalleryData(data);
+            } else {
+                setGalleryData([]);
+            }
+        } catch (error) {
+            console.error("Failed to fetch gallery data", error);
+        } finally {
+            setIsLoading(false);
+        }
     }, [activeFilter]);
+
+    useEffect(() => {
+        fetchGallery();
+    }, [fetchGallery]);
 
     const openModal = (item: GalleryItem) => {
         setModalData(item);
@@ -186,6 +145,7 @@ export default function GalleryContent() {
                 padding: "80px 0 100px",
                 position: "relative",
                 overflow: "hidden",
+                minHeight: "80vh"
             }}
         >
             <div
@@ -224,13 +184,40 @@ export default function GalleryContent() {
                     </div>
 
                     <div className="gallery-filters">
-                        {FILTERS.map((filter) => {
-                            const isActive = activeFilter === filter;
+                        <button
+                            key="All"
+                            onClick={() => {
+                                setActiveFilter("All");
+                                setModalData(null);
+                            }}
+                            style={{
+                                padding: "8px 18px",
+                                borderRadius: "999px",
+                                border: activeFilter === "All" ? "none" : "1px solid #E5E7EB",
+                                backgroundColor: activeFilter === "All" ? "#DC2626" : "#FFFFFF",
+                                color: activeFilter === "All" ? "#FFFFFF" : "#4B5563",
+                                fontSize: "12px",
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.06em",
+                                cursor: "pointer",
+                                boxShadow: activeFilter === "All"
+                                    ? "0 10px 20px rgba(220,38,38,0.3)"
+                                    : "0 2px 4px rgba(0,0,0,0.04)",
+                                transition:
+                                    "background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
+                                transform: activeFilter === "All" ? "translateY(-1px)" : "translateY(0)",
+                            }}
+                        >
+                            All
+                        </button>
+                        {categories.map((cat) => {
+                            const isActive = activeFilter === cat.id;
                             return (
                                 <button
-                                    key={filter}
+                                    key={cat.id}
                                     onClick={() => {
-                                        setActiveFilter(filter);
+                                        setActiveFilter(cat.id);
                                         setModalData(null);
                                     }}
                                     style={{
@@ -252,7 +239,7 @@ export default function GalleryContent() {
                                         transform: isActive ? "translateY(-1px)" : "translateY(0)",
                                     }}
                                 >
-                                    {filter === "All" ? "All" : filter}
+                                    {cat.category}
                                 </button>
                             );
                         })}
@@ -260,40 +247,55 @@ export default function GalleryContent() {
                 </div>
 
                 {/* GRID */}
-                <div className="gallery-grid">
-                    {filteredData.map((item, index) => (
-                        <div
-                            key={item.id}
-                            className="gallery-card fade-in-card"
-                            data-aos="zoom-in-up"
-                            data-aos-delay={index * 80}
-                            onClick={() => openModal(item)}
-                        >
-                            <div className="image-wrapper">
-                                <Image
-                                    src={item.thumbnail}
-                                    alt={item.title}
-                                    fill
-                                    style={{ objectFit: "cover" }}
-                                    className="gallery-img"
-                                />
+                {isLoading ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+                        <div className="loading-spinner"></div>
+                    </div>
+                ) : (
+                    <div className="gallery-grid">
+                        {galleryData.length > 0 ? (
+                            galleryData.map((item, index) => (
+                                <div
+                                    key={item.id}
+                                    className="gallery-card fade-in-card"
+                                    data-aos="zoom-in-up"
+                                    data-aos-delay={index * 80}
+                                    onClick={() => openModal(item)}
+                                >
+                                    <div className="image-wrapper">
+                                        <Image
+                                            src={item.thumbnail}
+                                            alt={item.title}
+                                            fill
+                                            unoptimized
+                                            style={{ objectFit: "cover" }}
+                                            className="gallery-img"
+                                        />
 
-                                <div className="hover-overlay">
-                                    <div className="overlay-inner">
-                                        <div className="power-btn">
-                                            <FaPowerOff size={20} color="#FFD700" />
-                                        </div>
-                                        <div className="overlay-content">
-                                            <p className="overlay-date">{item.date}</p>
-                                            <h3 className="overlay-title">{item.title}</h3>
-                                            <span className="overlay-category">{item.category}</span>
+                                        <div className="hover-overlay">
+                                            <div className="overlay-inner">
+                                                <div className="power-btn">
+                                                    <FaPowerOff size={20} color="#FFD700" />
+                                                </div>
+                                                <div className="overlay-content">
+                                                    <p className="overlay-date">{item.date}</p>
+                                                    <h3 className="overlay-title">{item.title}</h3>
+                                                    <span className="overlay-category">
+                                                        {item.category || categories.find(c => c.id === item.category_id)?.category || 'Gallery'}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#6B7280" }}>
+                                <p>No items found for this category.</p>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* MODAL */}
@@ -308,34 +310,45 @@ export default function GalleryContent() {
                         </button>
 
                         <div className="slider-container">
-                            <button className="nav-btn prev" onClick={prevSlide}>
-                                <FaChevronLeft size={30} />
-                            </button>
-                            <button className="nav-btn next" onClick={nextSlide}>
-                                <FaChevronRight size={30} />
-                            </button>
+                            {modalData.images.length > 1 && (
+                                <>
+                                    <button className="nav-btn prev" onClick={prevSlide}>
+                                        <FaChevronLeft size={30} />
+                                    </button>
+                                    <button className="nav-btn next" onClick={nextSlide}>
+                                        <FaChevronRight size={30} />
+                                    </button>
+                                </>
+                            )}
+
 
                             <div className="slides-wrapper">
-                                {modalData.images.map((img, i) => {
-                                    const style = getSlideStyle(i);
-                                    return (
-                                        <div
-                                            key={i}
-                                            className="slide-item"
-                                            style={style}
-                                        >
-                                            <Image
-                                                src={img}
-                                                alt={`Slide ${i}`}
-                                                fill
-                                                style={{
-                                                    objectFit: "cover",
-                                                    borderRadius: "12px",
-                                                }}
-                                            />
-                                        </div>
-                                    );
-                                })}
+                                {modalData.images.length > 0 ? (
+                                    modalData.images.map((img, i) => {
+                                        const style = getSlideStyle(i);
+                                        return (
+                                            <div
+                                                key={i}
+                                                className="slide-item"
+                                                style={style}
+                                            >
+                                                <Image
+                                                    src={img}
+                                                    alt={`Slide ${i}`}
+                                                    fill
+                                                    style={{
+                                                        objectFit: "cover",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                            </div>
+                                        );
+                                    })
+                                ) : (
+                                    <div className="slide-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                                        <p>No images available</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -358,6 +371,20 @@ export default function GalleryContent() {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 12px;
+                }
+
+                .loading-spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 4px solid #f3f3f3;
+                    border-top: 4px solid #DC2626;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
                 }
 
                 @media (min-width: 768px) {
@@ -593,12 +620,12 @@ export default function GalleryContent() {
                 }
 
                 .slides-wrapper {
-                    position: relative;
-                    width: 60%;
-                    height: 80%;
+                    width: 35%;
+                    height: 100%;
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    position: relative; /* Changed from absolute in some contexts to relative for flux */
                 }
 
                 .slide-item {

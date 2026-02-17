@@ -54,7 +54,7 @@ export default function StandingsTable({ data }: StandingsTableProps) {
                                         <td style={{ padding: "16px" }}>
                                             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                                                 <div style={{ width: "36px", height: "36px", position: "relative" }}>
-                                                    <Image src={team.logo} alt={team.name} fill style={{ objectFit: "contain" }} />
+                                                    <Image src={team.logo} alt={team.name} fill style={{ objectFit: "contain" }} unoptimized />
                                                 </div>
                                                 <span style={{ fontWeight: "800", textTransform: "uppercase", color: isMadura ? "#B91C1C" : "#111827" }}>
                                                     {team.name}
@@ -75,7 +75,7 @@ export default function StandingsTable({ data }: StandingsTableProps) {
                                         {/* FORM COLUMN */}
                                         <td style={{ padding: "16px", textAlign: "center" }}>
                                             <div style={{ display: "flex", justifyContent: "center", gap: "6px" }}>
-                                                {team.form.map((result, i) => {
+                                                {team.form ? team.form.map((result, i) => {
                                                     let bgColor = "#9CA3AF";
                                                     if (result === 'W') bgColor = "#22C55E"; // Green
                                                     if (result === 'L') bgColor = "#EF4444"; // Red
@@ -96,15 +96,21 @@ export default function StandingsTable({ data }: StandingsTableProps) {
                                                             {result}
                                                         </div>
                                                     )
-                                                })}
+                                                }) : (
+                                                    <span style={{ color: "#9CA3AF", fontSize: "12px" }}>-</span>
+                                                )}
                                             </div>
                                         </td>
 
                                         {/* NEXT MATCH COLUMN */}
                                         <td style={{ padding: "16px", textAlign: "center" }}>
-                                            <div style={{ width: "32px", height: "32px", position: "relative", margin: "0 auto" }} title={`vs ${team.nextMatch.opponentName}`}>
-                                                <Image src={team.nextMatch.opponentLogo} alt="Opponent" fill style={{ objectFit: "contain" }} />
-                                            </div>
+                                            {team.nextMatch ? (
+                                                <div style={{ width: "32px", height: "32px", position: "relative", margin: "0 auto" }} title={`vs ${team.nextMatch.opponentName}`}>
+                                                    <Image src={team.nextMatch.opponentLogo} alt="Opponent" fill style={{ objectFit: "contain" }} unoptimized />
+                                                </div>
+                                            ) : (
+                                                <span style={{ color: "#9CA3AF", fontSize: "12px" }}>-</span>
+                                            )}
                                         </td>
                                     </tr>
                                 )

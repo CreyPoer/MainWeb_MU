@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./StrukturOrganisasiSection.module.css";
 
@@ -8,7 +8,7 @@ type OrgPerson = {
   id: number;
   name: string;
   position: string;
-  sequence: 1 | 2 | 4;
+  sequence: number;
   photo: string;
 };
 
@@ -19,51 +19,6 @@ const CARD_STAGGER_MS = 120;
 type OrgCardStyleVars = React.CSSProperties & {
   "--mu-org-delay"?: string;
 };
-
-const ORGANIZATION_DATA: OrgPerson[] = [
-  {
-    id: 1,
-    name: "Achsanul Qosasi",
-    position: "Presiden Klub",
-    sequence: 1,
-    photo: "/officials.jpg",
-  },
-  {
-    id: 2,
-    name: "Zia Ulhaq Abdurrahim",
-    position: "Komisaris",
-    sequence: 2,
-    photo: "/officials.jpg",
-  },
-  {
-    id: 3,
-    name: "Annisa Zhafarina Qosasi",
-    position: "Direktur",
-    sequence: 2,
-    photo: "/officials.jpg",
-  },
-  {
-    id: 4,
-    name: "Ferdiansyah Alifurrahman",
-    position: "Head of Media",
-    sequence: 4,
-    photo: "/officials.jpg",
-  },
-  {
-    id: 5,
-    name: "Umar Wachdin",
-    position: "Manager",
-    sequence: 4,
-    photo: "/officials.jpg",
-  },
-  {
-    id: 6,
-    name: "Hendra Widodo Cahyono P",
-    position: "Assisten Manajer",
-    sequence: 4,
-    photo: "/officials.jpg",
-  },
-];
 
 function ProfileCard({
   person,
@@ -87,27 +42,45 @@ function ProfileCard({
           : ({ "--mu-org-delay": `${animDelayMs}ms` } as OrgCardStyleVars)
       }
     >
-      <div
-        className={styles.photo}
-      >
-        <Image
-          src={person.photo}
-          alt={`${person.name} - ${person.position}`}
-          fill
-          className="object-cover"
-          sizes={
-            variant === "lg"
-              ? "(min-width: 1024px) 220px, 60vw"
-              : variant === "md"
-                ? "(min-width: 1024px) 200px, 50vw"
-                : "(min-width: 1024px) 180px, 45vw"
-          }
-          priority={false}
-        />
-      </div>
+      <div className={styles.cardInner}>
+        {/* Front Face */}
+        <div className={styles.cardFront}>
+          <div className={styles.photo}>
+            <Image
+              src={person.photo}
+              alt={`${person.name} - ${person.position}`}
+              fill
+              unoptimized
+              className="object-cover"
+              sizes={
+                variant === "lg"
+                  ? "(min-width: 1024px) 220px, 60vw"
+                  : variant === "md"
+                    ? "(min-width: 1024px) 200px, 50vw"
+                    : "(min-width: 1024px) 180px, 45vw"
+              }
+              priority={false}
+            />
+          </div>
 
-      <p className={`${styles.name} ${nameSize}`}>{person.name}</p>
-      <p className={`${styles.role} ${roleSize}`}>{person.position}</p>
+          <p className={`${styles.name} ${nameSize}`}>{person.name}</p>
+          <p className={`${styles.role} ${roleSize}`}>{person.position}</p>
+        </div>
+
+        {/* Back Face */}
+        <div className={styles.cardBack}>
+          <div className={styles.backLogo}>
+            <Image
+              src="/logo.png"
+              alt="Madura United FC"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </div>
+          <p className={styles.backPosition}>{person.position}</p>
+        </div>
+      </div>
 
       <span className={styles.srOnly}>Tier {person.sequence}</span>
     </article>
@@ -116,10 +89,43 @@ function ProfileCard({
 
 export default function StrukturOrganisasiSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [orgData, setOrgData] = useState<OrgPerson[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch organization structure data from API
+  useEffect(() => {
+    const fetchStructures = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("https://admin-mu.maduraunitedfc.id/api/v2/structures");
+        if (!res.ok) throw new Error("Failed to fetch structures");
+        const data = await res.json();
+
+        const mapped: OrgPerson[] = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          position: item.position,
+          sequence: parseInt(item.sequence, 10),
+          photo: item.photo
+            ? `https://admin-mu.maduraunitedfc.id/storage/${item.photo}`
+            : "/officials.jpg",
+        }));
+
+        setOrgData(mapped);
+      } catch (error) {
+        console.error("Error fetching organization structures:", error);
+        setOrgData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStructures();
+  }, []);
 
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el) return;
+    if (!el || loading) return;
 
     const rect = el.getBoundingClientRect();
     const initiallyInView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
@@ -145,14 +151,31 @@ export default function StrukturOrganisasiSection() {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [loading]);
 
-  const { tier1, tier2, tier3 } = useMemo(() => {
-    const tier1 = ORGANIZATION_DATA.filter((p) => p.sequence === 1);
-    const tier2 = ORGANIZATION_DATA.filter((p) => p.sequence === 2);
-    const tier3 = ORGANIZATION_DATA.filter((p) => p.sequence === 4);
-    return { tier1, tier2, tier3 };
-  }, []);
+  // Group by unique sequence values (ascending) for pyramid layout
+  const tiers = useMemo(() => {
+    if (orgData.length === 0) return [];
+
+    const sequenceSet = [...new Set(orgData.map((p) => p.sequence))].sort((a, b) => a - b);
+    return sequenceSet.map((seq) => orgData.filter((p) => p.sequence === seq));
+  }, [orgData]);
+
+  // Calculate cumulative card count for stagger animation delay
+  const getCumulativeCount = (tierIndex: number) => {
+    let count = 0;
+    for (let i = 0; i < tierIndex; i++) {
+      count += tiers[i].length;
+    }
+    return count;
+  };
+
+  // Pick grid style based on tier index (0 = top of pyramid)
+  const getTierGridClass = (tierIndex: number) => {
+    if (tierIndex === 0) return null; // tier1 uses special wrap
+    if (tierIndex === 1) return styles.gridTier2;
+    return styles.gridTier3;
+  };
 
   return (
     <section
@@ -169,43 +192,54 @@ export default function StrukturOrganisasiSection() {
         </header>
 
         <div className={styles.body}>
-          {/* Tier 1 */}
-          <div className={styles.tier1Wrap}>
-            <div className={styles.tier1Inner}>
-              {tier1.map((person, idx) => (
-                <ProfileCard
-                  key={person.id}
-                  person={person}
-                  variant="sm"
-                  animDelayMs={AFTER_SECTION_DELAY_MS + idx * CARD_STAGGER_MS}
-                />
-              ))}
-            </div>
-          </div>
+          {loading && (
+            <p style={{ textAlign: "center", color: "#6b7280", padding: "2rem 0" }}>
+              Memuat data struktur organisasi...
+            </p>
+          )}
 
-          {/* Tier 2 */}
-          <div className={styles.gridTier2}>
-            {tier2.map((person, idx) => (
-              <ProfileCard
-                key={person.id}
-                person={person}
-                variant="sm"
-                animDelayMs={AFTER_SECTION_DELAY_MS + (tier1.length + idx) * CARD_STAGGER_MS}
-              />
-            ))}
-          </div>
+          {!loading && orgData.length === 0 && (
+            <p style={{ textAlign: "center", color: "#6b7280", padding: "2rem 0" }}>
+              Tidak ada data struktur organisasi.
+            </p>
+          )}
 
-          {/* Tier 3 */}
-          <div className={styles.gridTier3}>
-            {tier3.map((person, idx) => (
-              <ProfileCard
-                key={person.id}
-                person={person}
-                variant="sm"
-                animDelayMs={AFTER_SECTION_DELAY_MS + (tier1.length + tier2.length + idx) * CARD_STAGGER_MS}
-              />
-            ))}
-          </div>
+          {!loading && tiers.map((tierPersons, tierIdx) => {
+            const cumulativeCount = getCumulativeCount(tierIdx);
+
+            // First tier (smallest sequence) — centered single / few cards
+            if (tierIdx === 0) {
+              return (
+                <div key={tierIdx} className={styles.tier1Wrap}>
+                  <div className={styles.tier1Inner}>
+                    {tierPersons.map((person, idx) => (
+                      <ProfileCard
+                        key={person.id}
+                        person={person}
+                        variant="sm"
+                        animDelayMs={AFTER_SECTION_DELAY_MS + (cumulativeCount + idx) * CARD_STAGGER_MS}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            // Remaining tiers
+            const gridClass = getTierGridClass(tierIdx);
+            return (
+              <div key={tierIdx} className={gridClass || undefined}>
+                {tierPersons.map((person, idx) => (
+                  <ProfileCard
+                    key={person.id}
+                    person={person}
+                    variant="sm"
+                    animDelayMs={AFTER_SECTION_DELAY_MS + (cumulativeCount + idx) * CARD_STAGGER_MS}
+                  />
+                ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

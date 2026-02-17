@@ -11,8 +11,8 @@ export interface StandingTeam {
     goalsAgainst: number;
     goalDifference: number;
     points: number;
-    form: ("W" | "D" | "L")[];
-    nextMatch: {
+    form?: ("W" | "D" | "L")[];
+    nextMatch?: {
         opponentName: string;
         opponentLogo: string;
     };

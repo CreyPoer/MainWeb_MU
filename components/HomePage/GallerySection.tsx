@@ -1,57 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPowerOff, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 
-// --- DUMMY DATA ---
-const GALLERY_DATA = [
-    {
-        id: "1",
-        title: "Training Session Setup",
-        date: "JAN 28, 2026",
-        thumbnail: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=800",
-        images: [
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=1200"
-        ]
-    },
-    {
-        id: "2",
-        title: "Match Day Preparation",
-        date: "JAN 25, 2026",
-        thumbnail: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800",
-        images: [
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=1200"
-        ]
-    },
-    {
-        id: "3",
-        title: "Victory Celebration",
-        date: "JAN 20, 2026",
-        thumbnail: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=800",
-        images: [
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=1200",
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=1200"
-        ]
-    },
-];
+// --- DATA TYPE ---
+interface GalleryItem {
+    id: string;
+    title: string;
+    date: string;
+    thumbnail: string;
+    images: string[];
+}
 
 export default function GallerySection() {
-    const [modalData, setModalData] = useState<null | typeof GALLERY_DATA[0]>(null);
+    const [modalData, setModalData] = useState<null | GalleryItem>(null);
     const [sliderIndex, setSliderIndex] = useState(0);
+    const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const openModal = (item: typeof GALLERY_DATA[0]) => {
+    useEffect(() => {
+        const fetchGallery = async () => {
+            try {
+                const res = await fetch('/api/gallery');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setGalleryData(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch gallery", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchGallery();
+    }, []);
+
+    const openModal = (item: GalleryItem) => {
         setModalData(item);
         setSliderIndex(0); // Reset to first image
     };
@@ -62,36 +47,28 @@ export default function GallerySection() {
 
     // --- SLIDER LOGIC ---
     const nextSlide = () => {
-        if (!modalData) return;
+        if (!modalData || modalData.images.length === 0) return;
         setSliderIndex((prev) => (prev + 1) % modalData.images.length);
     };
 
     const prevSlide = () => {
-        if (!modalData) return;
+        if (!modalData || modalData.images.length === 0) return;
         setSliderIndex((prev) => (prev - 1 + modalData.images.length) % modalData.images.length);
     };
 
     const getSlideStyle = (index: number) => {
-        // Matches the "greyscale-infinite-swiper" logic slightly adapted for React
-        // We need 5 items visible ideally: active, prev, next, prev-prev, next-next
-        // But for simplicity and matching the reference visual:
-        // Center: Scale 1, Color
-        // Side: Scale 0.8, Grayscale
-
         if (!modalData) return {};
-
         const totalSlides = modalData.images.length;
-        // Calculate position relative to active index
-        // We want circular distance
+        if (totalSlides === 0) return {};
+
         let diff = index - sliderIndex;
-        // Adjust for wrapping
         if (diff > totalSlides / 2) diff -= totalSlides;
         if (diff < -totalSlides / 2) diff += totalSlides;
 
         let scale = 0.6;
         let opacity = 0.5;
         let zIndex = 1;
-        let translateX = diff * 50; // Percent spacing
+        let translateX = diff * 50;
         let grayscale = 100;
 
         if (diff === 0) {
@@ -105,16 +82,15 @@ export default function GallerySection() {
             opacity = 0.8;
             zIndex = 5;
             grayscale = 70;
-            translateX = 50; // Positive for right
+            translateX = 50;
         } else if (diff === -1) {
             scale = 0.8;
             opacity = 0.8;
             zIndex = 5;
             grayscale = 70;
-            translateX = -50; // Negative for left
+            translateX = -50;
         }
 
-        // Hide distant slides to prevent clutter or overflow issues if not handled by hidden overflow
         const isVisible = Math.abs(diff) <= 2;
 
         return {
@@ -122,10 +98,13 @@ export default function GallerySection() {
             opacity: isVisible ? opacity : 0,
             filter: `grayscale(${grayscale}%)`,
             zIndex: zIndex,
-            pointerEvents: diff === 0 ? 'auto' : 'none' // only click active?
+            pointerEvents: diff === 0 ? 'auto' : 'none'
         };
     };
 
+    if (isLoading && galleryData.length === 0) {
+        return <div style={{ height: '500px', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Gallery...</div>;
+    }
 
     return (
         <section style={{ background: "#ffffffff", padding: "80px 0", position: "relative", overflow: "hidden" }}>
@@ -143,11 +122,11 @@ export default function GallerySection() {
 
                 {/* GRID */}
                 <div className="gallery-grid">
-                    {GALLERY_DATA.map((item, index) => {
+                    {galleryData.slice(0, 3).map((item, index) => {
                         const isTopRow = index < 3;
                         return (
                             <div
-                                key={item.id}
+                                key={item.id + index}
                                 className="gallery-card"
                                 data-aos="flip-left"
                                 data-aos-delay={index * 100}
@@ -155,7 +134,7 @@ export default function GallerySection() {
                             >
                                 <div className="image-wrapper">
                                     <Image
-                                        src={item.thumbnail}
+                                        src={item.thumbnail || '/images/placeholder.png'}
                                         alt={item.title}
                                         fill
                                         style={{ objectFit: "cover" }}
@@ -190,27 +169,35 @@ export default function GallerySection() {
                         {/* SLIDER CONTAINER */}
                         <div className="slider-container">
                             {/* NAVIGATION */}
-                            <button className="nav-btn prev" onClick={prevSlide}><FaChevronLeft size={30} /></button>
-                            <button className="nav-btn next" onClick={nextSlide}><FaChevronRight size={30} /></button>
+                            {modalData.images.length > 1 && (
+                                <>
+                                    <button className="nav-btn prev" onClick={prevSlide}><FaChevronLeft size={30} /></button>
+                                    <button className="nav-btn next" onClick={nextSlide}><FaChevronRight size={30} /></button>
+                                </>
+                            )}
 
                             <div className="slides-wrapper">
-                                {modalData.images.map((img, i) => {
-                                    const style: any = getSlideStyle(i);
-                                    return (
-                                        <div
-                                            key={i}
-                                            className="slide-item"
-                                            style={style}
-                                        >
-                                            <Image
-                                                src={img}
-                                                alt={`Slide ${i}`}
-                                                fill
-                                                style={{ objectFit: "cover", borderRadius: "12px" }}
-                                            />
-                                        </div>
-                                    )
-                                })}
+                                {modalData.images.length > 0 ? (
+                                    modalData.images.map((img, i) => {
+                                        const style: any = getSlideStyle(i);
+                                        return (
+                                            <div
+                                                key={i}
+                                                className="slide-item"
+                                                style={style}
+                                            >
+                                                <Image
+                                                    src={img}
+                                                    alt={`Slide ${i}`}
+                                                    fill
+                                                    style={{ objectFit: "cover", borderRadius: "12px" }}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                ) : (
+                                    <div style={{ color: 'white' }}>No images available</div>
+                                )}
                             </div>
 
                         </div>
@@ -274,7 +261,7 @@ export default function GallerySection() {
                 }
                 .gallery-card:hover .from-top-right {
                     opacity: 1;
-                     transform: translate(0, 0);
+                    transform: translate(0, 0);
                 }
 
 
@@ -367,8 +354,8 @@ export default function GallerySection() {
 
                 .slides-wrapper {
                     position: relative;
-                    width: 60%; /* Active slide width roughly */
-                    height: 80%;
+                    width: 35%; /* Active slide width roughly */
+                    height: 100%;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -407,6 +394,12 @@ export default function GallerySection() {
                      .prev { left: 10px; }
                      .next { right: 10px; }
                      .slides-wrapper { width: 90%; }
+                }
+
+                @media (min-width: 425px) and (max-width: 768px) {
+                    .gallery-card:nth-child(3) {
+                        display: none;
+                    }
                 }
 
             `}</style>

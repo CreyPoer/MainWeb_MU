@@ -153,12 +153,12 @@ export default function MatchSection() {
                         {/* Competition Logo - WHITE CIRCLE FORCED */}
                         {nextMatch.competition_logo && (
                             <div className="mb-4 shadow-lg flex items-center justify-center transform hover:scale-105 transition-all duration-300"
-                                style={{ backgroundColor: '#ffffff', borderRadius: '50%', padding: 'clamp(4px, 1.5vw, 8px)' }}>
-                                <Image
+                                style={{ backgroundColor: '#ffffff', borderRadius: '20%', padding: 'clamp(4px, 1.5vw, 8px)' }}>
+                                <img
                                     src={nextMatch.competition_logo}
                                     alt="Competition Logo"
-                                    width={60}
-                                    height={60}
+                                    width="60"
+                                    height="60"
                                     className="object-contain"
                                     style={{ width: 'clamp(24px, 5vw, 50px)', height: 'clamp(24px, 5vw, 50px)' }}
                                 />

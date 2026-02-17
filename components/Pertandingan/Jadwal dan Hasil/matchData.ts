@@ -1,198 +1,170 @@
+export interface MatchStatistics {
+    possession?: { home: number; away: number };
+    shots_total?: { home: number; away: number }; // Added
+    shots_on_target?: { home: number; away: number };
+    shots_off_target?: { home: number; away: number };
+    corners?: { home: number; away: number };
+    fouls?: { home: number; away: number };
+    yellow_cards_count?: { home: number; away: number };
+    red_cards_count?: { home: number; away: number };
+    offsides?: { home: number; away: number };
+    free_kicks?: { home: number; away: number }; // Added
+    throw_ins?: { home: number; away: number }; // Added
+}
+
+export interface MatchEvent {
+    minute: string;
+    team: 'home' | 'away';
+    player: string;
+    type: 'goal' | 'yellow' | 'red' | 'subst';
+    assist?: string;
+    sub?: string; // Player IN for substitution
+    score?: string;
+}
+
 export interface MatchData {
     id: number;
     homeTeam: string;
     homeLogo: string;
-    homeScore?: number;
+    homeScore?: number | string; // API might return string scores or null
     awayTeam: string;
     awayLogo: string;
-    awayScore?: number;
+    awayScore?: number | string;
     stadium: string;
     date: string;
     time: string;
+    events: MatchEvent[];
+    statistics?: MatchStatistics;
 }
 
-// --- DUMMY DATA: SENIOR TEAM ---
-export const RESULTS_DATA_SENIOR: MatchData[] = [
-    {
-        id: 1,
-        homeTeam: "Madura United",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        homeScore: 3,
-        awayTeam: "Man City",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
-        awayScore: 1,
-        stadium: "Gelora Ratu Pamelingan",
-        date: "23.02.2024",
-        time: "06.00 PM"
-    },
-    {
-        id: 2,
-        homeTeam: "Wolves",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/en/f/fc/Wolverhampton_Wanderers.svg",
-        homeScore: 2,
-        awayTeam: "Madura United",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayScore: 2,
-        stadium: "Molineux Stadium",
-        date: "15.02.2024",
-        time: "08.30 PM"
-    },
-    {
-        id: 3,
-        homeTeam: "West Ham",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/en/c/c2/West_Ham_United_FC_logo.svg",
-        homeScore: 1,
-        awayTeam: "Madura United",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayScore: 0,
-        stadium: "London Stadium",
-        date: "09.02.2024",
-        time: "08.00 PM"
-    }
-];
+// API Response Interface mapping to Backend MatchSchedule model
+export interface APIMatch {
+    id: number;
+    home_team: string; // Attribute
+    home_team_logo: string; // Attribute
+    away_team: string; // Attribute
+    away_team_logo: string; // Attribute
+    score: number;
+    oppponent_score: number;
+    stadium: string;
+    date: string; // Y-m-d
+    kickoff_time: string; // H:i
+    match_status: number; // 0=Next, 1=Finished, 2=Live
+    statistics?: MatchStatistics & {
+        events?: {
+            goals?: any[];
+            yellow_cards?: any[];
+            red_cards?: any[];
+            substitutions?: any[];
+        };
+    };
+}
 
-export const UPCOMING_DATA_SENIOR: MatchData[] = [
-    {
-        id: 1,
-        homeTeam: "Man City",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
-        awayTeam: "Madura United",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        stadium: "Etihad Stadium",
-        date: "March 6, 2024",
-        time: "06.00 PM"
-    },
-    {
-        id: 2,
-        homeTeam: "Wolves",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/en/f/fc/Wolverhampton_Wanderers.svg",
-        awayTeam: "Madura United",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        stadium: "Molineux Stadium",
-        date: "March 29, 2024",
-        time: "05.30 PM"
-    },
-    {
-        id: 3,
-        homeTeam: "Madura United",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayTeam: "Wolves",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/en/f/fc/Wolverhampton_Wanderers.svg",
-        stadium: "Gelora Ratu Pamelingan",
-        date: "March 11, 2024",
-        time: "08.30 PM"
-    },
-    {
-        id: 4,
-        homeTeam: "Madura United",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayTeam: "Man City",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
-        stadium: "Gelora Ratu Pamelingan",
-        date: "April 6, 2024",
-        time: "04.00 PM"
-    },
-    {
-        id: 5,
-        homeTeam: "Liverpool",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png",
-        awayTeam: "Madura United",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        stadium: "Anfield",
-        date: "March 15, 2024",
-        time: "06.30 PM"
-    }
-];
+export const transformMatchData = (apiMatch: APIMatch, teamRole?: number): MatchData => {
+    let homeTeam = apiMatch.home_team;
+    let awayTeam = apiMatch.away_team;
 
-// --- DUMMY DATA: ACADEMY U20 ---
-export const RESULTS_DATA_ACADEMY: MatchData[] = [
-    {
-        id: 1,
-        homeTeam: "Madura U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        homeScore: 4,
-        awayTeam: "Persija U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        awayScore: 2,
-        stadium: "Training Ground",
-        date: "20.02.2024",
-        time: "03.00 PM"
-    },
-    {
-        id: 2,
-        homeTeam: "Persebaya U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        homeScore: 1,
-        awayTeam: "Madura U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayScore: 1,
-        stadium: "Gelora 10 Nov",
-        date: "12.02.2024",
-        time: "03.30 PM"
-    },
-    {
-        id: 3,
-        homeTeam: "Madura U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        homeScore: 2,
-        awayTeam: "Arema U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        awayScore: 0,
-        stadium: "Training Ground",
-        date: "05.02.2024",
-        time: "03.00 PM"
+    // Custom logic for Academy Team Name
+    if (teamRole === 2) {
+        if (homeTeam.toUpperCase() === "MADURA UNITED FC") {
+            homeTeam = "MADURA UNITED FC U20";
+        }
+        if (awayTeam.toUpperCase() === "MADURA UNITED FC") {
+            awayTeam = "MADURA UNITED FC U20";
+        }
     }
-];
 
-export const UPCOMING_DATA_ACADEMY: MatchData[] = [
-    {
-        id: 1,
-        homeTeam: "Bali Utd U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        awayTeam: "Madura U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        stadium: "Dipta Stadium",
-        date: "March 5, 2024",
-        time: "03.00 PM"
-    },
-    {
-        id: 2,
-        homeTeam: "Madura U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayTeam: "Persib U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        stadium: "Training Ground",
-        date: "March 12, 2024",
-        time: "03.30 PM"
-    },
-    {
-        id: 3,
-        homeTeam: "PSIS U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        awayTeam: "Madura U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        stadium: "Jatidiri",
-        date: "March 19, 2024",
-        time: "03.00 PM"
-    },
-    {
-        id: 4,
-        homeTeam: "Madura U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        awayTeam: "Borneo U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        stadium: "Training Ground",
-        date: "March 26, 2024",
-        time: "03.00 PM"
-    },
-    {
-        id: 5,
-        homeTeam: "PSS U20",
-        homeLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png", // Placeholder
-        awayTeam: "Madura U20",
-        awayLogo: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
-        stadium: "Maguwoharjo",
-        date: "April 2, 2024",
-        time: "03.30 PM"
+    // Transform Events
+    let events: MatchEvent[] = [];
+    if (apiMatch.statistics && apiMatch.statistics.events) {
+        const rawEvents = apiMatch.statistics.events;
+
+        // Helper to parse minute string "45+2'" -> 47 for sorting
+        const parseMinute = (m: string) => {
+            if (!m) return 0;
+            return parseInt(m.replace("'", "").replace("+", "")) || 0;
+        };
+
+        // 1. Goals
+        if (rawEvents.goals && Array.isArray(rawEvents.goals)) {
+            rawEvents.goals.forEach((g: any) => {
+                events.push({
+                    minute: g.minute,
+                    team: g.team === 'home' ? 'home' : 'away',
+                    player: g.player,
+                    type: 'goal',
+                    score: g.score
+                });
+            });
+        }
+
+        // 2. Yellow Cards
+        if (rawEvents.yellow_cards && Array.isArray(rawEvents.yellow_cards)) {
+            rawEvents.yellow_cards.forEach((c: any) => {
+                events.push({
+                    minute: c.minute,
+                    team: c.team === 'home' ? 'home' : 'away',
+                    player: c.player,
+                    type: 'yellow'
+                });
+            });
+        }
+
+        // 3. Red Cards
+        if (rawEvents.red_cards && Array.isArray(rawEvents.red_cards)) {
+            rawEvents.red_cards.forEach((c: any) => {
+                events.push({
+                    minute: c.minute,
+                    team: c.team === 'home' ? 'home' : 'away',
+                    player: c.player,
+                    type: 'red'
+                });
+            });
+        }
+
+        // 4. Substitutions
+        if (rawEvents.substitutions && Array.isArray(rawEvents.substitutions)) {
+            rawEvents.substitutions.forEach((s: any) => {
+                events.push({
+                    minute: s.minute,
+                    team: s.team === 'home' ? 'home' : 'away',
+                    player: s.out, // Player OUT
+                    sub: s.in,     // Player IN
+                    type: 'subst'
+                });
+            });
+        }
+
+        // Sort by minute
+        events.sort((a, b) => parseMinute(a.minute) - parseMinute(b.minute));
     }
-];
+
+    // Remove events from statistics object to keep it clean
+    const { events: _, ...statsOnly } = apiMatch.statistics || {};
+
+    return {
+        id: apiMatch.id,
+        homeTeam: homeTeam,
+        homeLogo: apiMatch.home_team_logo,
+        homeScore: apiMatch.score,
+        awayTeam: awayTeam,
+        awayLogo: apiMatch.away_team_logo,
+        awayScore: apiMatch.oppponent_score,
+        stadium: apiMatch.stadium || "Stadion Gelora Ratu Pamelingan", // Fallback if null
+        date: formatDate(apiMatch.date),
+        time: apiMatch.kickoff_time,
+        events: events,
+        statistics: apiMatch.statistics ? statsOnly : undefined
+    };
+};
+
+// Helper to format date if needed (e.g. 2024-02-23 -> 23.02.2024 or similar to match design)
+const formatDate = (dateString: string): string => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    // Format: DD.MM.YYYY
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+};

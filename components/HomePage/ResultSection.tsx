@@ -1,7 +1,7 @@
 'use client';
 // Updated: 2026-01-29 01:10 - Fully Responsive Fixed
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -19,33 +19,29 @@ interface MatchResult {
 }
 
 export default function ResultSection() {
-    // Dummy data dengan logo dari internet
-    const matchResults: MatchResult[] = [
-        {
-            id: 1,
-            homeTeam: 'Kicks Academy',
-            homeLogo: 'https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png',
-            homeScore: 3,
-            awayTeam: 'Soccer Club',
-            awayLogo: 'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg',
-            awayScore: 1,
-            stadium: 'Golden Stadium',
-            date: '10.03.22',
-            time: '06.00 PM'
-        },
-        {
-            id: 2,
-            homeTeam: 'Wolves Soccer',
-            homeLogo: 'https://upload.wikimedia.org/wikipedia/en/f/fc/Wolverhampton_Wanderers.svg',
-            homeScore: 2,
-            awayTeam: 'Kicks Academy',
-            awayLogo: 'https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png',
-            awayScore: 2,
-            stadium: 'Winner Stadium',
-            date: '10.03.15',
-            time: '08.30 PM'
-        }
-    ];
+    const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchResults = async () => {
+            try {
+                const res = await fetch('/api/results');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setMatchResults(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch match results", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchResults();
+    }, []);
+
+    // Don't render if no results (or keep empty container to avoid layout shift?)
+    // Keeping it hidden until data loads is better for this floating widget
+    if (isLoading || matchResults.length === 0) return null;
 
     return (
         <section className="relative h-0 z-10 pointer-events-none">
@@ -136,7 +132,7 @@ export default function ResultSection() {
                 >
                     {matchResults.map((match, index) => (
                         <Link
-                            key={match.id}
+                            key={match.id || index}
                             href={`/pertandingan/jadwal/${match.id}`}
                             data-aos="fade-left"
                             data-aos-delay={index * 150}
@@ -236,6 +232,17 @@ export default function ResultSection() {
                             flex: 1 !important;
                             min-width: 0 !important;
                             scroll-snap-align: none !important;
+                            display: block !important;
+                        }
+                    }
+
+                    @media (max-width: 767px) {
+                        /* On mobile, only show the first item */
+                        .scrollbar-hide > :global(a):not(:first-child) {
+                            display: none !important;
+                        }
+                        .scrollbar-hide {
+                             display: block !important; /* Remove flex to avoid scroll logic if we just want one */
                         }
                     }
                 `}</style>

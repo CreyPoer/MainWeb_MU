@@ -1,87 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaArrowUp } from "react-icons/fa";
 
-// --- DUMMY DATA ---
-const PARTNERS_DATA = [
-    {
-        id: "main-1",
-        name: "Kangean Energy",
-        type: "MAIN SPONSOR",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
-        isMain: true,
-        link: "https://www.kangean-energy.co.id",
-    },
-    {
-        id: "p-1",
-        name: "Warrior",
-        type: "APPAREL PARTNER",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
-        isMain: false,
-        link: "https://www.warrior.com",
-    },
-    {
-        id: "p-2",
-        name: "Vidio",
-        type: "OFFICIAL BROADCASTER",
-        logo: "https://upload.wikimedia.org/wikipedia/id/4/49/Logo_Vidio_Apps.png",
-        isMain: false,
-        link: "https://www.vidio.com",
-    },
-    {
-        id: "p-3",
-        name: "POIN BET",
-        type: "OFFICIAL PARTNER",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png",
-        isMain: false,
-        link: "#",
-    },
-    {
-        id: "p-4",
-        name: "Coca Cola",
-        type: "OFFICIAL DRINK",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/960px-Coca-Cola_logo.svg.png",
-        isMain: false,
-        link: "https://www.coca-cola.co.id",
-    },
-    {
-        id: "p-5",
-        name: "BCA",
-        type: "OFFICIAL BANK",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
-        isMain: false,
-        link: "https://www.bca.co.id",
-    },
-    {
-        id: "p-6",
-        name: "Lion Air",
-        type: "OFFICIAL AIRLINE",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
-        isMain: false,
-        link: "https://www.lionair.co.id",
-    },
-    {
-        id: "p-7",
-        name: "Extra Joss",
-        type: "ENERGY PARTNER",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
-        isMain: false,
-        link: "https://www.extrajoss.co.id",
-    },
-    {
-        id: "p-8",
-        name: "Extra Joss",
-        type: "ENERGY PARTNER",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png",
-        isMain: false,
-        link: "https://www.extrajoss.co.id",
-    },
-];
+// --- DATA TYPE ---
+interface PartnerItem {
+    id: string | number;
+    name: string;
+    type: string;
+    logo: string;
+    isMain: boolean;
+    link: string;
+}
 
 export default function PartnerSection() {
-    const [hoveredId, setHoveredId] = useState<string | null>(null);
+    const [hoveredId, setHoveredId] = useState<string | number | null>(null);
+    const [partnersData, setPartnersData] = useState<PartnerItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPartners = async () => {
+            try {
+                const res = await fetch('/api/partners');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setPartnersData(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch partners", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchPartners();
+    }, []);
 
     return (
         <section style={{
@@ -104,7 +56,7 @@ export default function PartnerSection() {
                         fontSize: '14px',
                         marginBottom: '8px'
                     }}>
-                        Online Store
+                        Partnership
                     </h5>
                     <h2 style={{
                         fontSize: '36px',
@@ -121,17 +73,14 @@ export default function PartnerSection() {
 
                 {/* BENTO GRID */}
                 <div className="partner-grid" data-aos="fade-up">
-                    {PARTNERS_DATA.map((partner, index) => {
+                    {partnersData.map((partner, index) => {
                         const isHovered = hoveredId === partner.id;
                         const hasHover = hoveredId !== null;
                         const isDimmed = hasHover && !isHovered;
 
-                        const isMain = partner.isMain;
+                        const isMain = index === 0;
 
-                        // Calculate Initial Transform State (The "Off" state)
-                        // If it's hovered, we shouldn't worry about entry animation because it's already entered (presumably).
-                        // BUT, to be safe, we rely on the CSS !important override for the "Active" state.
-                        // Here we define the "Hidden" state values.
+                        // Calculate Initial Transform State
                         let initialTransform = '';
                         if (isMain) {
                             initialTransform = 'scale(0.5) translateY(30px)'; // Pop up
@@ -141,14 +90,6 @@ export default function PartnerSection() {
                             initialTransform = 'translateX(-50px) rotate(-5deg)'; // From Left
                         }
 
-                        // Determine final transform style
-                        // If AOS is active (we can't easily check JS state for AOS), we rely on CSS !important.
-                        // However, we must provide the base style here.
-                        // The CSS rule `:global(.partner-grid.aos-animate) .partner-card-custom` will override this `transform`.
-                        // EXCEPT inline styles usually beat CSS classes.
-                        // WE WILL USE A CSS VARIABLE to get around this cleanly or rely on !important in CSS.
-                        // Since I added !important in the CSS block, it will override this inline style when active.
-
                         return (
                             <a
                                 key={partner.id}
@@ -156,20 +97,15 @@ export default function PartnerSection() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`partner-card partner-card-custom ${isMain ? 'main-sponsor' : ''}`}
-                                // Remove individual data-aos
                                 style={{
                                     // Use CSS Variables for the animation start state
                                     "--initial-transform": initialTransform,
                                     "--initial-opacity": 0,
 
                                     // On Hover, we apply a specific transform inline.
-                                    // If NOT hovered, we want to fallback to the CSS class behavior (which uses variables or 'none' based on AOS).
-                                    // So we only emit 'transform' key if hovered.
                                     ...(isHovered ? { transform: "translateY(-4px) scale(1.01)" } : {}),
 
-                                    // For dimming, same logic. If dimmed, specific opacity.
-                                    // If active (aos-animate), opacity is 1.
-                                    // If dimmed, we want 0.4. Inline beats CSS.
+                                    // For dimming
                                     ...(isDimmed ? { opacity: 0.4 } : {}),
 
                                     // Other props
@@ -195,11 +131,12 @@ export default function PartnerSection() {
 
                                     {/* LOGO */}
                                     <div className="logo-container" style={{
-                                        width: partner.isMain ? '220px' : '140px',
-                                        height: partner.isMain ? '220px' : '140px',
+                                        width: isMain ? '280px' : '140px',
+                                        height: isMain ? '280px' : '140px',
+                                        position: 'relative'
                                     }}>
                                         <Image
-                                            src={partner.logo}
+                                            src={partner.logo || '/images/placeholder.png'}
                                             alt={partner.name}
                                             fill
                                             style={{
@@ -211,9 +148,6 @@ export default function PartnerSection() {
                                             }}
                                         />
                                     </div>
-
-                                    {/* TYPE LABEL */}
-
 
                                 </div>
                             </a>

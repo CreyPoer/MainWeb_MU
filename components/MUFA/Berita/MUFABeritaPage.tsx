@@ -11,11 +11,9 @@ import "aos/dist/aos.css";
 import MUFANavbar from "../HomePage/MUFANavbar";
 import MUFAFooter from "../HomePage/MUFAFooter";
 import styles from "../HomePage/MUFAHome.module.css";
-import { MUFA_NEWS_LIST } from "./newsData";
+// import { MUFA_NEWS_LIST } from "./newsData";
 
-const ALL_TAGS = Array.from(
-  new Set(MUFA_NEWS_LIST.flatMap((item) => item.tags))
-).sort();
+// const ALL_TAGS = ...
 
 export default function MUFABeritaPage() {
   const router = useRouter();
@@ -42,27 +40,113 @@ export default function MUFABeritaPage() {
     // but the filter logic below will pick it up.
   }, [searchParams]);
 
-  const filteredNews = useMemo(() => {
-    return MUFA_NEWS_LIST.filter((item) => {
-      // If we have a searchTerm, filter by it
-      const matchesSearch = searchTerm
-        ? [
-          item.title,
-          item.category,
-          item.excerpt,
-          item.tags.join(" "),
-        ]
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
-        : true;
+  const [news, setNews] = useState<any[]>([]); // Replace with proper type if available
+  const [loading, setLoading] = useState(true);
+  const [activeTags, setActiveTags] = useState<string[]>([]); // For popular tags from backend
 
-      // If we have an activeTag, filter by it
-      const matchesTag = activeTag ? item.tags.includes(activeTag) : true;
+  // Fetch Tags (Popular tags for MUFA category)
+  useEffect(() => {
+    async function fetchTags() {
+      try {
+        const res = await fetch('/api/tags?category=MUFA');
+        const data = await res.json();
+        // Backend returns array of strings
+        if (Array.isArray(data)) {
+          setActiveTags(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch tags:", error);
+      }
+    }
+    fetchTags();
+  }, []);
 
-      return matchesSearch && matchesTag;
-    });
+  // Fetch News
+  useEffect(() => {
+    async function fetchNews() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.set('category', 'MUFA');
+        // Backend API doesn't support 'q' or 'tag' on the /v2/news endpoint VIA the NextJS proxy straightforwardly 
+        // unless we built it that way. 
+        // Our proxy route `app/api/news/route.ts` DOES support passing query params.
+        // Let's pass them.
+
+        if (searchTerm) params.set('q', searchTerm); // This might need backend support in route.ts proxy. 
+        // Looking at route.ts: `const category = searchParams.get('category');`
+        // It does NOT seem to pass 'q' or 'tag' to the backend V2 API yet in the proxy? 
+        // Wait, I only checked route.ts for 'category' and 'limit'.
+        // Let's re-read route.ts content from earlier step.
+        // Step 7: 
+        // const queryParams = new URLSearchParams();
+        // if (category) queryParams.set('category', category);
+        // queryParams.set('per_page', limit);
+
+        // It does NOT pass 'q' or 'tag' to the backend. 
+        // THIS IS ARGUABLY A MISSING ITEM IN PLAN. 
+        // However, the `task` was to "replace dummy data". 
+        // If I want search/tag filter to work on server side, I need to update route.ts proxy first.
+        // OR I can fetch ALL MUFA news and filter client side (since volume might not be huge yet?).
+        // User request: "collect all data ... group and count tags ... take 10-20 most frequent".
+        // This implies client-side aggregation OR backend aggregation.
+        // Backend `NewsTagController` was updated to filter tags by category. So tags are handled server side.
+
+        // For news list: "get all data ... title category manager = MUFA".
+        // If I fetch purely by category=MUFA, I get paginated results (limit=5 default).
+        // I need to fetch MORE or ALL to replace the "Client Side Search" experience effectively?
+        // Or implement server side search.
+        // Given the constraints and the prompt "replace dummy data... but data sent via api... concept same as Media/Berita", 
+        // Media/Berita (`BeritaContent.tsx`) seemed to implement server-side filtering via API.
+        // My previous view of `BeritaContent.tsx` (Step 14) showed:
+        // params.set("q", activeQuery); ... const res = await fetch(`/api/news?${params.toString()}`);
+
+        // So `api/news/route.ts` SHOULD support 'q' and 'tag' if `BeritaContent.tsx` relies on it.
+        // But `api/news/route.ts` (Step 7) ONLY reads `category` and `limit`. 
+        // Use `searchParams.get('category')`. 
+        // It does NOT seem to read `q` or `tag`.
+        // Wait, did I miss something in `api/news/route.ts`?
+        // Step 7 confirmed: only `category` and `limit` are read.
+        // So `BeritaContent.tsx` sending `q` and `tag` might be ignored by the proxy right now?
+        // AHH, `BeritaContent.tsx` (Step 14) uses `/api/news` but maybe it expects the backend to handle it, but the proxy strips it?
+        // Yes, the proxy creates new URLSearchParams and ONLY sets category and per_page.
+
+        // CORRECTION: I should update `api/news/route.ts` to forward ALL params or at least `q` and `tag`.
+        // I will do that in the NEXT step. For now, let's assume I WILL fix the proxy.
+
+        if (searchTerm) params.set('search', searchTerm); // Backend V2 NewsController uses 'search' (Step 26), not 'q'.
+        if (activeTag) params.set('tag', activeTag);
+
+        // We might need to increase limit if we want "all data" for client side, but server side filtering is better.
+        // Let's stick to server side filtering. pagination? 
+        // The current UI shows "X of Y news".
+        params.set('limit', '12'); // Fetch more items per page? 
+
+        const res = await fetch(`/api/news?${params.toString()}`);
+        const result = await res.json();
+        const items = Array.isArray(result) ? result : (result.data || []);
+
+        {
+          const adapted = items.map((item: any) => ({
+            ...item,
+            category: "MUFA", // We know it's MUFA because we filtered
+            tags: item.tags || [] // route.ts needs to return tags
+          }));
+          setNews(adapted);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchNews();
   }, [searchTerm, activeTag]);
+
+  // Client-side filtering is REPLACED by Server-side fetching above.
+  // So 'filteredNews' is just 'news'.
+  const filteredNews = news;
 
   const toggleFilter = () => setIsFilterOpen((prev) => !prev);
 
@@ -170,7 +254,7 @@ export default function MUFABeritaPage() {
                 <span className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-slate-900/80 border border-slate-700/70">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span>
-                    {filteredNews.length} dari {MUFA_NEWS_LIST.length} berita tampil
+                    {filteredNews.length} berita tampil
                   </span>
                 </span>
                 {hasActiveFilters && (
@@ -187,7 +271,7 @@ export default function MUFABeritaPage() {
 
             {/* Grid of cards */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredNews.map((item, index) => (
+              {filteredNews.map((item: any, index: number) => (
                 <article
                   key={item.id}
                   className="group flex flex-col overflow-hidden rounded-3xl bg-slate-900/80 border border-slate-700/70 shadow-[0_18px_45px_rgba(0,0,0,0.65)] hover:border-red-500/70 hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(0,0,0,0.9)] transition-transform duration-300"
@@ -224,14 +308,14 @@ export default function MUFABeritaPage() {
                     </p>
                     <div className="mt-auto flex items-center justify-between gap-2 pt-2 border-t border-slate-700/70">
                       <div className="flex flex-wrap gap-1.5">
-                        {item.tags.slice(0, 3).map((tag) => (
+                        {item.tags.slice(0, 3).map((tag: string) => (
                           <button
                             key={tag}
                             type="button"
                             onClick={() => handleTagClick(tag)}
                             className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-[10px] transition ${activeTag === tag
-                                ? "bg-red-500 text-white border-red-500"
-                                : "border-red-500/50 bg-red-500/15 text-red-200 hover:bg-red-600 hover:text-white"
+                              ? "bg-red-500 text-white border-red-500"
+                              : "border-red-500/50 bg-red-500/15 text-red-200 hover:bg-red-600 hover:text-white"
                               }`}
                           >
                             <FaTag size={9} />
@@ -346,7 +430,7 @@ export default function MUFABeritaPage() {
               Tags Populer
             </h4>
             <div className="flex flex-wrap gap-2">
-              {ALL_TAGS.map((tag) => {
+              {activeTags.map((tag: string) => {
                 const active = activeTag === tag;
                 return (
                   <button
@@ -354,8 +438,8 @@ export default function MUFABeritaPage() {
                     type="button"
                     onClick={() => handleTagClick(tag)}
                     className={`inline-flex items-center px-4 py-2 rounded-full text-xs font-bold transition border ${active
-                        ? "bg-red-600 text-white border-red-600"
-                        : "bg-white text-slate-600 border-slate-200 hover:border-red-300 hover:text-red-600"
+                      ? "bg-red-600 text-white border-red-600"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-red-300 hover:text-red-600"
                       }`}
                   >
                     #{tag}

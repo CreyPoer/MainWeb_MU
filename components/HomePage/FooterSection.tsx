@@ -1,46 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-// --- DUMMY DATA ---
-const GALLERY_IMAGES = [
-    {
-        thumbnail: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=400&auto=format&fit=crop",
-        images: [
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop"
-        ]
-    },
-    {
-        thumbnail: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=400&auto=format&fit=crop",
-        images: [
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200&auto=format&fit=crop"
-        ]
-    },
-    {
-        thumbnail: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=400&auto=format&fit=crop",
-        images: [
-            "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1200&auto=format&fit=crop"
-        ]
-    },
-    {
-        thumbnail: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=400&auto=format&fit=crop", // Intentionally using same thumbnail for demo
-        images: [
-            "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1200&auto=format&fit=crop"
-        ]
-    },
-];
+// --- DATA TYPE ---
+interface GalleryAlbum {
+    thumbnail: string;
+    images: string[];
+}
 
 const ESSENTIAL_LINKS_1 = [
     { label: "Home", href: "#home" },
@@ -76,10 +46,26 @@ export default function FooterSection() {
     const pathname = usePathname();
     const isHomepage = pathname === "/";
 
-    const [activeAlbum, setActiveAlbum] = useState<typeof GALLERY_IMAGES[0] | null>(null);
+    const [galleryImages, setGalleryImages] = useState<GalleryAlbum[]>([]);
+    const [activeAlbum, setActiveAlbum] = useState<GalleryAlbum | null>(null);
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-    const openModal = (item: typeof GALLERY_IMAGES[0]) => {
+    useEffect(() => {
+        const fetchGallery = async () => {
+            try {
+                const res = await fetch('/api/footer-gallery');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setGalleryImages(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch footer gallery", error);
+            }
+        };
+        fetchGallery();
+    }, []);
+
+    const openModal = (item: GalleryAlbum) => {
         setActiveAlbum(item);
         setCurrentSlideIndex(0);
     };
@@ -152,8 +138,13 @@ export default function FooterSection() {
 
                         {/* Social Icons */}
                         <div style={{ display: "flex", gap: "12px" }}>
-                            {[FaFacebookF, FaTwitter, FaInstagram, FaYoutube].map((Icon, idx) => (
-                                <a key={idx} href="#" style={{
+                            {[
+                                { Icon: FaFacebookF, href: "https://www.facebook.com/Maduraunitedfc.official/" },
+                                { Icon: FaTwitter, href: "https://x.com/MaduraUnitedFC" },
+                                { Icon: FaInstagram, href: "https://www.instagram.com/maduraunited.fc?igsh=bmYxY201MWx6Yjkz" },
+                                { Icon: FaYoutube, href: "https://youtube.com/@maduraunitedfc?si=nVakpGhvYmyS3HBb" },
+                            ].map(({ Icon, href }, idx) => (
+                                <a key={idx} href={href} target="_blank" rel="noopener noreferrer" style={{
                                     width: "40px", height: "40px", borderRadius: "50%", backgroundColor: "#1F2937",
                                     display: "flex", alignItems: "center", justifyContent: "center", color: "white",
                                     transition: "background-color 0.3s"
@@ -273,10 +264,10 @@ export default function FooterSection() {
                         </h4>
 
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
-                            {GALLERY_IMAGES.map((item, idx) => (
+                            {galleryImages.map((item, idx) => (
                                 <div key={idx} style={{ position: "relative", aspectRatio: "1/1", borderRadius: "4px", overflow: "hidden", cursor: "pointer" }} onClick={() => openModal(item)}>
                                     <Image
-                                        src={item.thumbnail}
+                                        src={item.thumbnail || '/logo.png'}
                                         alt={`Gallery ${idx + 1}`}
                                         fill
                                         style={{ objectFit: "cover" }}
@@ -307,22 +298,30 @@ export default function FooterSection() {
                             <FaTimes size={24} />
                         </button>
 
-                        <button className="nav-btn prev" onClick={prevImage}>
-                            <FaChevronLeft size={24} />
-                        </button>
+                        {activeAlbum.images.length > 1 && (
+                            <button className="nav-btn prev" onClick={prevImage}>
+                                <FaChevronLeft size={24} />
+                            </button>
+                        )}
 
                         <div style={{ position: "relative", width: "100%", height: "100%" }}>
-                            <Image
-                                src={activeAlbum.images[currentSlideIndex]}
-                                alt={`Selected Gallery Image ${currentSlideIndex + 1}`}
-                                fill
-                                style={{ objectFit: "contain" }}
-                            />
+                            {activeAlbum.images.length > 0 ? (
+                                <Image
+                                    src={activeAlbum.images[currentSlideIndex]}
+                                    alt={`Selected Gallery Image ${currentSlideIndex + 1}`}
+                                    fill
+                                    style={{ objectFit: "contain" }}
+                                />
+                            ) : (
+                                <div style={{ color: 'white' }}>No images available</div>
+                            )}
                         </div>
 
-                        <button className="nav-btn next" onClick={nextImage}>
-                            <FaChevronRight size={24} />
-                        </button>
+                        {activeAlbum.images.length > 1 && (
+                            <button className="nav-btn next" onClick={nextImage}>
+                                <FaChevronRight size={24} />
+                            </button>
+                        )}
 
                         {/* Slide Indicator */}
                         <div style={{ position: "absolute", bottom: "-30px", color: "white", fontSize: "14px" }}>

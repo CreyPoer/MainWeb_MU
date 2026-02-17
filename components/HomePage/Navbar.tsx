@@ -160,16 +160,16 @@ export default function Navbar() {
 
                 {/* Right Side Icons */}
                 <div className="navbar-icons">
-                    <a href="https://instagram.com/maduraunited.fc" target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <a href="https://www.instagram.com/maduraunited.fc?igsh=bmYxY201MWx6Yjkz" target="_blank" rel="noopener noreferrer" className="social-icon">
                         <FaInstagram />
                     </a>
-                    <a href="https://facebook.com/maduraunited.fc" target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <a href="https://www.facebook.com/Maduraunitedfc.official/" target="_blank" rel="noopener noreferrer" className="social-icon">
                         <FaFacebookF />
                     </a>
-                    <a href="https://twitter.com/maduraunited_fc" target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <a href="https://x.com/MaduraUnitedFC" target="_blank" rel="noopener noreferrer" className="social-icon">
                         <FaTwitter />
                     </a>
-                    <a href="https://youtube.com/@maduraunitedfc" target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <a href="https://youtube.com/@maduraunitedfc?si=nVakpGhvYmyS3HBb" target="_blank" rel="noopener noreferrer" className="social-icon">
                         <FaYoutube />
                     </a>
                     <button onClick={toggleLanguage} className="language-switcher">

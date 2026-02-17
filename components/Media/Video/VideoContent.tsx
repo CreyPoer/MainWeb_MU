@@ -1,66 +1,44 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes } from "react-icons/fa";
 
-const VIDEO_DATA = [
-    {
-        id: "CwvqXAubVqU",
-        title: "Video Resmi Madura United 1",
-        date: "Video terbaru",
-        publishedAt: "2025-02-07",
-        duration: "10:00",
-    },
-    {
-        id: "6czLFqhYtRA",
-        title: "Video Resmi Madura United 2",
-        date: "Video terbaru",
-        publishedAt: "2025-02-05",
-        duration: "09:30",
-    },
-    {
-        id: "WO39_kF08-8",
-        title: "Video Resmi Madura United 3",
-        date: "Video terbaru",
-        publishedAt: "2025-02-03",
-        duration: "08:45",
-    },
-    {
-        id: "SBQ1A1vUk_E",
-        title: "Video Resmi Madura United 4",
-        date: "Video terbaru",
-        publishedAt: "2025-02-01",
-        duration: "11:10",
-    },
-    {
-        id: "A0RgyQTL1mk",
-        title: "Video Resmi Madura United 5",
-        date: "Video terbaru",
-        publishedAt: "2025-01-30",
-        duration: "07:50",
-    },
-    {
-        id: "dRkP1QsND-0",
-        title: "Video Resmi Madura United 6",
-        date: "Video terbaru",
-        publishedAt: "2025-01-28",
-        duration: "10:20",
-    },
-    {
-        id: "bTVxqli7AcE",
-        title: "Video Resmi Madura United 7",
-        date: "Video terbaru",
-        publishedAt: "2025-01-25",
-        duration: "09:05",
-    },
-];
+// --- DATA TYPE ---
+interface VideoItem {
+    id: string; // YouTube ID
+    title: string;
+    date: string; // Formatted date string for display
+    publishedAt: string; // ISO date string for sorting/filtering
+    duration: string;
+    type: string;
+}
 
 export default function VideoContent() {
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [selectedType, setSelectedType] = useState("Semua");
+    const [videoData, setVideoData] = useState<VideoItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                const res = await fetch('/api/videos/list');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setVideoData(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch videos", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchVideos();
+    }, []);
 
     const handleMouseEnter = (id: string) => {
         setHoveredVideo(id);
@@ -79,7 +57,11 @@ export default function VideoContent() {
     };
 
     const filteredVideos = useMemo(() => {
-        let items = [...VIDEO_DATA];
+        let items = [...videoData];
+
+        if (selectedType !== "Semua") {
+            items = items.filter((video) => video.type === selectedType);
+        }
 
         if (startDate) {
             const start = new Date(startDate);
@@ -88,10 +70,13 @@ export default function VideoContent() {
 
         if (endDate) {
             const end = new Date(endDate);
-            items = items.filter((video) => new Date(video.publishedAt) <= end);
+            // End date should include the whole day, so set time to 23:59:59
+            const endDateTime = new Date(endDate);
+            endDateTime.setHours(23, 59, 59, 999);
+            items = items.filter((video) => new Date(video.publishedAt) <= endDateTime);
         }
 
-        // Sort terbaru ke terlama
+        // Sort terbaru ke terlama (assuming API returns unsorted or we want to enforce it)
         items.sort(
             (a, b) =>
                 new Date(b.publishedAt).getTime() -
@@ -99,7 +84,18 @@ export default function VideoContent() {
         );
 
         return items;
-    }, [startDate, endDate]);
+    }, [startDate, endDate, selectedType, videoData]);
+
+    // Check if any filter is active
+    const isFilterActive = startDate !== "" || endDate !== "" || selectedType !== "Semua";
+
+    if (isLoading && videoData.length === 0) {
+        return (
+            <div style={{ height: '600px', backgroundColor: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <p>Loading videos...</p>
+            </div>
+        );
+    }
 
     return (
         <section
@@ -171,6 +167,31 @@ export default function VideoContent() {
 
                     <div className="video-filter">
                         <div className="video-filter-group">
+                            <span className="video-filter-label">Tipe</span>
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
+                                <select
+                                    className="video-filter-input"
+                                    value={selectedType}
+                                    onChange={(e) => setSelectedType(e.target.value)}
+                                    style={{
+                                        minWidth: '100px',
+                                        cursor: 'pointer',
+                                        paddingRight: '40px', // Extra space for arrow
+                                        appearance: 'none',   // Remove default arrow
+                                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3F%3E%3C/svg%3E")`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'right 12px center',
+                                        backgroundSize: '16px',
+                                    }}
+                                >
+                                    <option value="Semua">Semua</option>
+                                    <option value="MUFA">MUFA</option>
+                                    <option value="MUTV">MUTV</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="video-filter-group">
                             <span className="video-filter-label">Dari</span>
                             <input
                                 type="date"
@@ -188,16 +209,20 @@ export default function VideoContent() {
                                 onChange={(e) => setEndDate(e.target.value)}
                             />
                         </div>
-                        <button
-                            type="button"
-                            className="video-filter-reset"
-                            onClick={() => {
-                                setStartDate("");
-                                setEndDate("");
-                            }}
-                        >
-                            Reset
-                        </button>
+
+                        {isFilterActive && (
+                            <button
+                                type="button"
+                                className="video-filter-reset"
+                                onClick={() => {
+                                    setStartDate("");
+                                    setEndDate("");
+                                    setSelectedType("Semua");
+                                }}
+                            >
+                                Reset
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -205,7 +230,7 @@ export default function VideoContent() {
                     {filteredVideos.map((video, index) => {
                         return (
                             <div
-                                key={video.id}
+                                key={video.id + index}
                                 className="video-card"
                                 data-aos="zoom-in"
                                 data-aos-delay={index * 100}
@@ -277,25 +302,27 @@ export default function VideoContent() {
                                                 }}
                                             ></div>
 
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "16px",
-                                                    left: "16px",
-                                                    backgroundColor:
-                                                        "rgba(220, 38, 38, 0.9)",
-                                                    color: "white",
-                                                    padding: "4px 8px",
-                                                    borderRadius: "4px",
-                                                    fontSize: "12px",
-                                                    fontWeight: "bold",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    gap: "6px",
-                                                }}
-                                            >
-                                                <FaPlay size={10} /> {video.duration}
-                                            </div>
+                                            {video.duration && (
+                                                <div
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "16px",
+                                                        left: "16px",
+                                                        backgroundColor:
+                                                            "rgba(220, 38, 38, 0.9)",
+                                                        color: "white",
+                                                        padding: "4px 8px",
+                                                        borderRadius: "4px",
+                                                        fontSize: "12px",
+                                                        fontWeight: "bold",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: "6px",
+                                                    }}
+                                                >
+                                                    <FaPlay size={10} /> {video.duration}
+                                                </div>
+                                            )}
 
                                             <div
                                                 className="play-button-wrapper"
@@ -549,3 +576,4 @@ export default function VideoContent() {
         </section>
     );
 }
+
