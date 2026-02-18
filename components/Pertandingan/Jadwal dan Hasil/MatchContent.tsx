@@ -8,6 +8,7 @@ import "aos/dist/aos.css";
 import { useRouter } from "next/navigation";
 import { MatchData, transformMatchData, APIMatch } from "./matchData";
 import { fetchAPI } from "@/utils/api";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MatchContent() {
     const [activeTab, setActiveTab] = useState<'senior' | 'academy'>('senior');
@@ -16,9 +17,10 @@ export default function MatchContent() {
     const [loading, setLoading] = useState(true);
     const [animationClass, setAnimationClass] = useState("fade-in");
     const router = useRouter();
+    const { t, lang } = useLanguage();
 
     const handleMatchClick = (id: number) => {
-        router.push(`/pertandingan/jadwal/${id}?type=${activeTab}`);
+        router.push(`/${lang}/pertandingan/jadwal/${id}?type=${activeTab}`);
     };
 
     useEffect(() => {
@@ -119,7 +121,7 @@ export default function MatchContent() {
                             boxShadow: activeTab === 'senior' ? "0 4px 12px rgba(220, 38, 38, 0.3)" : "none"
                         }}
                     >
-                        Tim Senior
+                        {t('page.schedule.senior_team')}
                     </button>
                     <button
                         onClick={() => handleTabChange('academy')}
@@ -137,7 +139,7 @@ export default function MatchContent() {
                             boxShadow: activeTab === 'academy' ? "0 4px 12px rgba(220, 38, 38, 0.3)" : "none"
                         }}
                     >
-                        Academy U20
+                        {t('page.schedule.academy_u20')}
                     </button>
                 </div>
             </div>
@@ -146,17 +148,17 @@ export default function MatchContent() {
             <div className={animationClass}>
 
                 {loading ? (
-                    <div style={{ padding: "100px", textAlign: "center", color: "#6B7280" }}>Loading...</div>
+                    <div style={{ padding: "100px", textAlign: "center", color: "#6B7280" }}>{t('common.loading')}</div>
                 ) : (
                     <>
                         {/* SECTION 1: LATEST MATCH RESULTS */}
                         <section style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 20px" }}>
                             <div style={{ textAlign: "center", marginBottom: "40px" }}>
                                 <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", fontSize: "14px", marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                                    <span style={{ fontSize: "16px" }}>⚽</span> {activeTab === 'senior' ? 'Tim Senior' : 'Academy U20'}
+                                    <span style={{ fontSize: "16px" }}>⚽</span> {activeTab === 'senior' ? t('page.schedule.senior_team') : t('page.schedule.academy_u20')}
                                 </h4>
                                 <h2 style={{ fontSize: "36px", fontWeight: "900", color: "#111827", textTransform: "uppercase" }}>
-                                    Latest Match Update
+                                    {t('page.schedule.latest_match')}
                                 </h2>
                             </div>
 
@@ -236,7 +238,7 @@ export default function MatchContent() {
                                     })}
                                 </div>
                             ) : (
-                                <div style={{ textAlign: "center", color: "#6B7280", padding: "40px" }}>No match results available.</div>
+                                <div style={{ textAlign: "center", color: "#6B7280", padding: "40px" }}>{t('page.schedule.no_results')}</div>
                             )}
                         </section>
 
@@ -256,10 +258,10 @@ export default function MatchContent() {
                             <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 20px", position: "relative", zIndex: 10 }}>
                                 <div style={{ textAlign: "center", marginBottom: "50px" }} className="scroll-animate">
                                     <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", fontSize: "14px", marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                                        <span style={{ fontSize: "16px" }}>⚽</span> Upcoming Matches
+                                        <span style={{ fontSize: "16px" }}>⚽</span> {t('page.schedule.upcoming')}
                                     </h4>
                                     <h2 style={{ fontSize: "36px", fontWeight: "900", color: "white", textTransform: "uppercase" }}>
-                                        Watch {activeTab === 'senior' ? 'Tim Senior' : 'Academy U20'}
+                                        {t('section.watch')} {activeTab === 'senior' ? t('page.schedule.senior_team') : t('page.schedule.academy_u20')}
                                     </h2>
                                 </div>
 
@@ -354,7 +356,7 @@ export default function MatchContent() {
                                         })}
                                     </div>
                                 ) : (
-                                    <div style={{ textAlign: "center", color: "white", padding: "40px" }}>No upcoming matches.</div>
+                                    <div style={{ textAlign: "center", color: "white", padding: "40px" }}>{t('page.schedule.no_upcoming')}</div>
                                 )}
                             </div>
                         </section>

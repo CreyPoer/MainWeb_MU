@@ -4,8 +4,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function StandingsHero() {
+    const { t, lang } = useLanguage();
     return (
         <section style={{ position: "relative", height: "100vh", minHeight: "400px", width: "100%", overflow: "hidden", backgroundColor: "#111827" }}>
             {/* Background - Failsafe Color #111827 added to section above */}
@@ -57,7 +59,7 @@ export default function StandingsHero() {
                         textShadow: "2px 2px 4px rgba(0,0,0,0.5)"
                     }}
                 >
-                    Klasemen
+                    {t('page.standings.title')}
                 </h1>
 
                 {/* Breadcrumb */}
@@ -72,11 +74,11 @@ export default function StandingsHero() {
                         letterSpacing: "1px"
                     }}
                 >
-                    <Link href="/" style={{ color: "#D1D5DB", textDecoration: "none", transition: "color 0.3s" }} className="hover:text-white">
-                        Beranda
+                    <Link href={`/${lang}/`} style={{ color: "#D1D5DB", textDecoration: "none", transition: "color 0.3s" }} className="hover:text-white">
+                        {t('nav.home')}
                     </Link>
                     <FaChevronRight size={12} style={{ color: "#DC2626" }} />
-                    <span style={{ color: "#DC2626" }}>Klasemen</span>
+                    <span style={{ color: "#DC2626" }}>{t('page.standings.breadcrumb')}</span>
                 </div>
             </div>
         </section>

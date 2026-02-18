@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPowerOff, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // --- DATA TYPE ---
 interface GalleryItem {
@@ -14,6 +15,7 @@ interface GalleryItem {
 }
 
 export default function GallerySection() {
+    const { t } = useLanguage();
     const [modalData, setModalData] = useState<null | GalleryItem>(null);
     const [sliderIndex, setSliderIndex] = useState(0);
     const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
@@ -103,7 +105,7 @@ export default function GallerySection() {
     };
 
     if (isLoading && galleryData.length === 0) {
-        return <div style={{ height: '500px', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Gallery...</div>;
+        return <div style={{ height: '500px', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{t('common.loading_gallery')}</div>;
     }
 
     return (
@@ -113,10 +115,10 @@ export default function GallerySection() {
                 {/* HEADER */}
                 <div style={{ marginBottom: "40px", textAlign: "left" }} data-aos="fade-right">
                     <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "14px", marginBottom: "8px" }}>
-                        Our Memories
+                        {t('section.our_memories')}
                     </h4>
                     <h2 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", color: "black", lineHeight: "1.2" }}>
-                        Latest <span style={{ color: "#DC2626" }}>Gallery</span>
+                        {t('section.latest')} <span style={{ color: "#DC2626" }}>{t('section.gallery_highlight')}</span>
                     </h2>
                 </div>
 
@@ -196,7 +198,7 @@ export default function GallerySection() {
                                         )
                                     })
                                 ) : (
-                                    <div style={{ color: 'white' }}>No images available</div>
+                                    <div style={{ color: 'white' }}>{t('common.no_images')}</div>
                                 )}
                             </div>
 

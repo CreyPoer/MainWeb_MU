@@ -5,34 +5,40 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaBars, FaTimes } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaBars, FaTimes, FaGlobe } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
-
-const HOME_MENU = [
-  { label: "Beranda", href: "#home", type: "hash" },
-  { label: "Program", href: "#program", type: "hash" },
-  { label: "Fasilitas", href: "#fasilitas", type: "hash" },
-  { label: "Berita", href: "#berita", type: "hash" },
-  { label: "Gallery", href: "#gallery", type: "hash" },
-  { label: "Video", href: "#video", type: "hash" },
-];
-
-const OTHER_MENU = [
-  { label: "Beranda", href: "/mufa", type: "route" },
-  { label: "Berita", href: "/mufa/berita", type: "route" },
-  { label: "Gallery", href: "/mufa/gallery", type: "route" },
-  { label: "Video", href: "/mufa/video", type: "route" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MUFANavbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { lang, t, switchLanguage } = useLanguage();
 
-  // Check if we are on the homepage (either root /mufa or just /mufa/)
-  // Adjust logic if your homepage is different. Assuming /mufa is home based on context.
-  const isHomePage = pathname === "/mufa" || pathname === "/mufa/";
+  const handleToggleLanguage = () => {
+    switchLanguage(lang === 'id' ? 'en' : 'id');
+  };
+
+  // Check if we are on the homepage — account for language prefix
+  const isHomePage = pathname === `/${lang}/mufa` || pathname === `/${lang}/mufa/`
+    || pathname === "/mufa" || pathname === "/mufa/";
+
+  const HOME_MENU = [
+    { label: t('mufa.nav.home'), href: "#home", type: "hash" },
+    { label: t('mufa.nav.program'), href: "#program", type: "hash" },
+    { label: t('mufa.nav.facilities'), href: "#fasilitas", type: "hash" },
+    { label: t('mufa.nav.news'), href: "#berita", type: "hash" },
+    { label: t('mufa.nav.gallery'), href: "#gallery", type: "hash" },
+    { label: t('mufa.nav.video'), href: "#video", type: "hash" },
+  ];
+
+  const OTHER_MENU = [
+    { label: t('mufa.nav.home'), href: `/${lang}/mufa`, type: "route" },
+    { label: t('mufa.nav.news'), href: `/${lang}/mufa/berita`, type: "route" },
+    { label: t('mufa.nav.gallery'), href: `/${lang}/mufa/gallery`, type: "route" },
+    { label: t('mufa.nav.video'), href: `/${lang}/mufa/video`, type: "route" },
+  ];
 
   const menuItems = isHomePage ? HOME_MENU : OTHER_MENU;
 
@@ -59,8 +65,7 @@ export default function MUFANavbar() {
       // Direct navigation
       router.push(item.href);
     } else if (item.type === "hash" && !isHomePage) {
-      // If we are on another page and click a hash link (shouldn't happen with current menu logic, but safe to handle)
-      router.push(`/mufa${item.href}`);
+      router.push(`/${lang}/mufa${item.href}`);
     }
     setIsMobileOpen(false);
   };
@@ -72,7 +77,7 @@ export default function MUFANavbar() {
     <header className={navbarClass} data-aos="fade-down" data-aos-duration="800">
       <div className={`${styles.mufaContainer} ${styles.mufaNavbarInner}`}>
         {/* Logo + Brand */}
-        <Link href="/mufa" className="flex items-center gap-3">
+        <Link href={`/${lang}/mufa`} className="flex items-center gap-3">
           <div className={styles.mufaLogoCircle}>
             <div className={styles.mufaLogoInner}>
               <Image
@@ -140,6 +145,17 @@ export default function MUFANavbar() {
             </a>
           </div>
 
+          {/* Language Switch */}
+          <button
+            type="button"
+            onClick={handleToggleLanguage}
+            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-100 text-xs font-bold uppercase tracking-wider transition-all duration-200 border border-white/10 hover:border-white/25"
+            title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+          >
+            <FaGlobe size={12} />
+            <span>{lang.toUpperCase()}</span>
+          </button>
+
           <button
             type="button"
             className={styles.mufaMobileToggle}
@@ -163,6 +179,18 @@ export default function MUFANavbar() {
                 {item.label}
               </button>
             ))}
+            {/* Language Switch in Mobile */}
+            <button
+              type="button"
+              onClick={() => {
+                handleToggleLanguage();
+                setIsMobileOpen(false);
+              }}
+              className="flex items-center gap-2 text-sm font-semibold tracking-widest uppercase text-slate-50/90 text-left py-2 border-b border-white/5"
+            >
+              <FaGlobe size={12} />
+              {lang === 'id' ? 'Switch to English' : 'Ganti ke Indonesia'}
+            </button>
           </div>
         </div>
       )}

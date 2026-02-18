@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import styles from "./KomunitasSuporterSection.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type SupporterCommunity = {
   id: number;
@@ -17,6 +18,7 @@ const SECTION_ANIM_DURATION_S = 0.95;
 const AFTER_SECTION_BUFFER_MS = 150;
 
 export default function KomunitasSuporterSection() {
+  const { t } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement | null>(null);
   const [sectionAnimDone, setSectionAnimDone] = useState(false);
@@ -137,13 +139,13 @@ export default function KomunitasSuporterSection() {
         <header className={styles.header} data-aos="fade-up" data-aos-delay="250">
           <div>
             <p className={styles.eyebrow}>
-              TENTANG KAMI
+              {t('page.about.eyebrow').toUpperCase()}
             </p>
             <h2
               id="komunitas-suporter-title"
               className={styles.title}
             >
-              KOMUNITAS SUPORTER
+              {t('page.about.community_title').toUpperCase()}
             </h2>
           </div>
           <div className={styles.rule} aria-hidden="true" />
@@ -151,11 +153,11 @@ export default function KomunitasSuporterSection() {
 
         {loading ? (
           <div style={{ textAlign: "center", padding: "3rem 0", color: "#888" }}>
-            Memuat data komunitas...
+            {t('page.about.loading_community')}
           </div>
         ) : communities.length === 0 ? (
           <div style={{ textAlign: "center", padding: "3rem 0", color: "#888" }}>
-            Belum ada data komunitas.
+            {t('page.about.no_community')}
           </div>
         ) : (
           <motion.div

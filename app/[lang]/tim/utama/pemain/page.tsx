@@ -4,6 +4,8 @@ import HeroPemain from "@/components/Tim/Pemain/HeroPemain";
 import PemainContent from "@/components/Tim/Pemain/PemainContent";
 import FooterSection from "@/components/HomePage/FooterSection";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Daftar Tim Utama | Madura United FC",
   description: "Daftar pemain tim utama Madura United FC.",

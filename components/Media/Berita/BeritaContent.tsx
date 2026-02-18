@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaFilter, FaTimes, FaSearch, FaChevronRight } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 
 
@@ -15,6 +16,7 @@ import "aos/dist/aos.css";
 
 
 export default function BeritaContent() {
+    const { t, lang } = useLanguage();
     const [newsData, setNewsData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -121,7 +123,7 @@ export default function BeritaContent() {
 
     const resetAll = () => {
         setSearchQuery("");
-        router.push('/media/berita');
+        router.push(`/${lang}/media/berita`);
         if (window.innerWidth < 1024) setIsFilterOpen(false);
     };
 
@@ -155,7 +157,7 @@ export default function BeritaContent() {
             params.delete(type);
         }
 
-        router.push(`/media/berita?${params.toString()}`);
+        router.push(`/${lang}/media/berita?${params.toString()}`);
         if (window.innerWidth < 1024) setIsFilterOpen(false); // Close sidebar on mobile selection
     };
 
@@ -269,7 +271,7 @@ export default function BeritaContent() {
 
                                 <div style={{ marginTop: "20px" }}>
                                     <Link
-                                        href={`/media/berita/${news.id}`}
+                                        href={`/${lang}/media/berita/${news.id}`}
                                         style={{
                                             backgroundColor: "#DC2626",
                                             color: "white",
@@ -285,7 +287,7 @@ export default function BeritaContent() {
                                         }}
                                         className="hover:bg-red-800"
                                     >
-                                        Read More
+                                        {t('mufa.detail.read_more')}
                                     </Link>
                                 </div>
                             </div>
@@ -316,13 +318,13 @@ export default function BeritaContent() {
                     })
                 ) : (
                     <div style={{ padding: "100px", textAlign: "center", color: "white", width: "100%", gridColumn: "1 / -1" }}>
-                        <h3 style={{ fontSize: "2rem", fontWeight: "bold" }}>Tidak ada berita ditemukan.</h3>
-                        <p style={{ marginTop: "10px", color: "#9CA3AF" }}>Coba kata kunci atau filter lain.</p>
+                        <h3 style={{ fontSize: "2rem", fontWeight: "bold" }}>{t('page.news.no_news')}</h3>
+                        <p style={{ marginTop: "10px", color: "#9CA3AF" }}>{t('page.news.try_other')}</p>
                         <button
-                            onClick={() => router.push('/media/berita')}
+                            onClick={() => router.push(`/${lang}/media/berita`)}
                             style={{ marginTop: "20px", padding: "10px 20px", backgroundColor: "#DC2626", color: "white", borderRadius: "8px", fontWeight: "bold", border: "none", cursor: "pointer" }}
                         >
-                            Reset Filter
+                            {t('page.news.reset_filter')}
                         </button>
                     </div>
                 )}
@@ -384,7 +386,7 @@ export default function BeritaContent() {
                 {/* Header */}
                 <div style={{ backgroundColor: "#111827", padding: "25px", display: "flex", justifyContent: "space-between", alignItems: "center", color: "white" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                        <h3 style={{ fontSize: "20px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "1px" }}>Filter News</h3>
+                        <h3 style={{ fontSize: "20px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "1px" }}>{t('page.news.filter_title')}</h3>
                         {(activeCategory || activeTag || activeQuery || activeAuthor) && (
                             <button
                                 onClick={resetAll}
@@ -415,12 +417,12 @@ export default function BeritaContent() {
                     {/* Search */}
                     <div style={{ marginBottom: "40px" }}>
                         <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF", letterSpacing: "1px" }}>
-                            Keyword Search
+                            {t('page.news.keyword_search')}
                         </h4>
                         <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                             <input
                                 type="text"
-                                placeholder="Type to search..."
+                                placeholder={t('page.news.search_placeholder')}
                                 style={{
                                     width: "100%",
                                     padding: "15px 20px",
@@ -455,7 +457,7 @@ export default function BeritaContent() {
                     {/* Categories */}
                     <div style={{ marginBottom: "40px" }}>
                         <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF", letterSpacing: "1px" }}>
-                            Categories
+                            {t('page.news.categories')}
                         </h4>
                         <ul style={{ listStyle: "none", padding: 0 }}>
                             {categories.map((cat, idx) => (
@@ -490,7 +492,7 @@ export default function BeritaContent() {
                     {/* Tags */}
                     <div>
                         <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF", letterSpacing: "1px" }}>
-                            Popular Tags
+                            {t('page.news.popular_tags')}
                         </h4>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                             {tags.map((tag, idx) => (

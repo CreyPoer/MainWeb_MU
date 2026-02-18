@@ -2,9 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
 import styles from "../HomePage/MUFAHome.module.css";
 
 export default function MUFAVideoHero() {
+    const { t } = useLanguage();
     return (
         <section className="pt-6 md:pt-10">
             <div className={styles.mufaContainer}>
@@ -25,15 +27,14 @@ export default function MUFAVideoHero() {
                                 data-aos-delay="100"
                             >
                                 <p className="text-xs md:text-sm font-semibold tracking-[0.32em] uppercase text-red-400 mb-3">
-                                    Motion Stories
+                                    {t('mufa.video_page.hero_eyebrow')}
                                 </p>
                                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase leading-tight mb-4">
-                                    Galeri Video
-                                    <span className="block text-red-400">Football Academy</span>
+                                    {t('mufa.video_page.hero_title')}
+                                    <span className="block text-red-400">{t('mufa.video_page.hero_title_highlight')}</span>
                                 </h1>
                                 <p className="text-sm md:text-base text-slate-200/80 max-w-xl mx-auto">
-                                    Saksikan aksi, semangat, dan momen terbaik dari talenta muda
-                                    Madura United Football Academy.
+                                    {t('mufa.video_page.hero_desc')}
                                 </p>
                             </div>
                         </div>

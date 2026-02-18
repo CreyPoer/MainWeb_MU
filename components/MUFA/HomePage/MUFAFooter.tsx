@@ -6,22 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
-
-const HOME_LINKS = [
-  { label: "Beranda", href: "#home", type: "hash" },
-  { label: "Program", href: "#program", type: "hash" },
-  { label: "Fasilitas", href: "#fasilitas", type: "hash" },
-  { label: "Berita", href: "#berita", type: "hash" },
-  { label: "Gallery", href: "#gallery", type: "hash" },
-  { label: "Video", href: "#video", type: "hash" },
-];
-
-const OTHER_LINKS = [
-  { label: "Beranda", href: "/mufa", type: "route" },
-  { label: "Berita", href: "/mufa/berita", type: "route" },
-  { label: "Gallery", href: "/mufa/gallery", type: "route" },
-  { label: "Video", href: "/mufa/video", type: "route" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Album = {
   id: number;
@@ -31,12 +16,30 @@ type Album = {
 
 export default function MUFAFooter() {
   const pathname = usePathname();
+  const { t, lang } = useLanguage();
   const [activeAlbum, setActiveAlbum] = useState<Album | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [footerGallery, setFooterGallery] = useState<Album[]>([]);
 
-  // Check if homepage
-  const isHomePage = pathname === "/mufa" || pathname === "/mufa/";
+  // Check if homepage (account for language prefix)
+  const isHomePage = pathname === `/${lang}/mufa` || pathname === `/${lang}/mufa/` || pathname === "/mufa" || pathname === "/mufa/";
+
+  const HOME_LINKS = [
+    { label: t('mufa.nav.home'), href: "#home", type: "hash" },
+    { label: t('mufa.nav.program'), href: "#program", type: "hash" },
+    { label: t('mufa.nav.facilities'), href: "#fasilitas", type: "hash" },
+    { label: t('mufa.nav.news'), href: "#berita", type: "hash" },
+    { label: t('mufa.nav.gallery'), href: "#gallery", type: "hash" },
+    { label: t('mufa.nav.video'), href: "#video", type: "hash" },
+  ];
+
+  const OTHER_LINKS = [
+    { label: t('mufa.nav.home'), href: `/${lang}/mufa`, type: "route" },
+    { label: t('mufa.nav.news'), href: `/${lang}/mufa/berita`, type: "route" },
+    { label: t('mufa.nav.gallery'), href: `/${lang}/mufa/gallery`, type: "route" },
+    { label: t('mufa.nav.video'), href: `/${lang}/mufa/video`, type: "route" },
+  ];
+
   const filteredNavLinks = isHomePage ? HOME_LINKS : OTHER_LINKS;
 
   useEffect(() => {
@@ -45,9 +48,6 @@ export default function MUFAFooter() {
         const res = await fetch('/api/footer-gallery?type=MUFA');
         const data = await res.json();
         if (Array.isArray(data)) {
-          // Map to Album structure
-          // API returns { thumbnail: string, images: string[] }
-          // We need to add an 'id' - index or something
           const mapped = data.map((item: any, idx: number) => ({
             id: idx + 1,
             cover: item.thumbnail,
@@ -132,9 +132,9 @@ export default function MUFAFooter() {
                       textTransform: "uppercase",
                     }}
                   >
-                    Madura United
+                    {t('mufa.brand_name')}
                     <br />
-                    Football Academy
+                    {t('mufa.brand_sub')}
                   </h3>
                 </div>
               </div>
@@ -147,8 +147,7 @@ export default function MUFAFooter() {
                   maxWidth: "420px",
                 }}
               >
-                MUFA merupakan program pembinaan resmi Madura United FC yang mempersiapkan talenta muda melalui
-                kurikulum terstruktur, fasilitas modern, dan jalur jelas menuju sepak bola profesional.
+                {t('mufa.footer.brand_desc')}
               </p>
 
               {/* Social Icons */}
@@ -186,7 +185,7 @@ export default function MUFAFooter() {
             {/* COLUMN 2: NAVIGASI */}
             <div className={styles.mufaFooterCol} data-aos="fade-up" data-aos-delay="100">
               <h4 className={styles.mufaFooterHeading}>
-                <span style={{ color: "#FCA5A5", marginRight: "8px" }}>—</span> Navigasi
+                <span style={{ color: "#FCA5A5", marginRight: "8px" }}>—</span> {t('mufa.footer.navigation')}
               </h4>
 
               <div style={{ display: "flex", gap: "40px" }}>
@@ -284,7 +283,7 @@ export default function MUFAFooter() {
             {/* COLUMN 3: GALLERY */}
             <div className={styles.mufaFooterCol} data-aos="fade-up" data-aos-delay="200">
               <h4 className={styles.mufaFooterHeading}>
-                <span style={{ color: "#FCA5A5", marginRight: "8px" }}>—</span> Gallery
+                <span style={{ color: "#FCA5A5", marginRight: "8px" }}>—</span> {t('mufa.footer.gallery')}
               </h4>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
@@ -314,7 +313,6 @@ export default function MUFAFooter() {
                       style={{ objectFit: "cover" }}
                       className="group-hover:scale-110 transition-transform duration-500"
                     />
-                    {/* Subtle overlay on hover just to indicate clickability, no text/buttons as requested */}
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </button>
                 ))}
@@ -324,7 +322,7 @@ export default function MUFAFooter() {
             {/* COLUMN 4: CTA KE WEBSITE UTAMA */}
             <div className={styles.mufaFooterCol} data-aos="fade-up" data-aos-delay="300">
               <h4 className={styles.mufaFooterHeading}>
-                <span style={{ color: "#FCA5A5", marginRight: "8px" }}>—</span> Jelajahi Lebih Jauh
+                <span style={{ color: "#FCA5A5", marginRight: "8px" }}>—</span> {t('mufa.footer.explore_more')}
               </h4>
               <p
                 style={{
@@ -334,14 +332,13 @@ export default function MUFAFooter() {
                   marginBottom: "20px",
                 }}
               >
-                Ingin mengetahui informasi lengkap mengenai tim utama, jadwal pertandingan, dan berita terbaru Madura
-                United FC?
+                {t('mufa.footer.explore_desc')}
               </p>
               <Link
-                href="/"
+                href={`/${lang}`}
                 className={styles.mufaFooterCta}
               >
-                Ke Website Utama Madura United FC
+                {t('mufa.footer.explore_cta')}
               </Link>
             </div>
 
@@ -358,8 +355,7 @@ export default function MUFAFooter() {
           }}
         >
           <p style={{ fontSize: "13px", color: "#FECACA", letterSpacing: "0.5px" }}>
-            © 2026 <span style={{ color: "white", fontWeight: "bold" }}>Madura United Football Academy</span>. All
-            rights reserved.
+            {t('mufa.footer.copyright')}
           </p>
         </div>
       </footer>
@@ -412,12 +408,11 @@ export default function MUFAFooter() {
               </button>
             </div>
 
-            {/* Thumbnail Strip (Optional - kept simple as requested, but adding counter) */}
+            {/* Thumbnail Strip */}
             <div className="h-14 bg-neutral-900 border-t border-white/10 flex items-center justify-between px-6">
               <span className="text-slate-400 text-sm font-medium">
-                Image {slideIndex + 1} of {activeAlbum.images.length}
+                {t('mufa.footer.image_counter').replace('{current}', String(slideIndex + 1)).replace('{total}', String(activeAlbum.images.length))}
               </span>
-              {/* Small thumbs could go here if needed later */}
             </div>
           </div>
         </div>

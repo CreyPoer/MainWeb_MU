@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaFilter, FaTimes, FaSearch, FaTag, FaChevronRight } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 import MUFANavbar from "../HomePage/MUFANavbar";
 import MUFAFooter from "../HomePage/MUFAFooter";
@@ -18,6 +19,7 @@ import styles from "../HomePage/MUFAHome.module.css";
 export default function MUFABeritaPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t, lang } = useLanguage();
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   // Initialize state from URL params if available, otherwise default
@@ -157,7 +159,7 @@ export default function MUFABeritaPage() {
     if (newTag) params.set("tag", newTag);
 
     // Replace logic to keep history clean or Push? Push is better for "Back" navigation.
-    router.push(`/mufa/berita?${params.toString()}`, { scroll: false });
+    router.push(`/${lang}/mufa/berita?${params.toString()}`, { scroll: false });
   };
 
   const handleTagClick = (tag: string) => {
@@ -181,7 +183,7 @@ export default function MUFABeritaPage() {
   const resetAll = () => {
     setSearchTerm("");
     setActiveTag(null);
-    router.push("/mufa/berita", { scroll: false });
+    router.push(`/${lang}/mufa/berita`, { scroll: false });
     if (window.innerWidth < 1024) setIsFilterOpen(false);
   };
 
@@ -212,15 +214,14 @@ export default function MUFABeritaPage() {
                     data-aos-delay="100"
                   >
                     <p className="text-xs md:text-sm font-semibold tracking-[0.32em] uppercase text-red-400 mb-3">
-                      MUFA Newsroom
+                      {t('mufa.berita_page.hero_eyebrow')}
                     </p>
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase leading-tight mb-4">
-                      Berita Terbaru
-                      <span className="block text-red-400">Football Academy</span>
+                      {t('mufa.berita_page.hero_title')}
+                      <span className="block text-red-400">{t('mufa.berita_page.hero_title_highlight')}</span>
                     </h1>
                     <p className="text-sm md:text-base text-slate-200/80 max-w-xl mx-auto">
-                      Update terkini seputar program, pertandingan, dan aktivitas pengembangan
-                      pemain muda di Madura United Football Academy.
+                      {t('mufa.berita_page.hero_desc')}
                     </p>
                   </div>
                 </div>
@@ -235,14 +236,13 @@ export default function MUFABeritaPage() {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
               <div data-aos="fade-up">
                 <p className="text-[11px] md:text-xs font-semibold tracking-[0.32em] uppercase text-red-400 mb-2">
-                  Daftar Berita
+                  {t('mufa.berita_page.list_eyebrow')}
                 </p>
                 <h2 className="text-2xl md:text-3xl font-extrabold text-white uppercase leading-tight mb-2">
-                  Arsip Berita <span className="text-red-400">MUFA</span>
+                  {t('mufa.berita_page.archive_title')} <span className="text-red-400">{t('mufa.berita_page.archive_highlight')}</span>
                 </h2>
                 <p className="text-xs md:text-sm text-slate-300/80 max-w-xl">
-                  Jelajahi rangkaian cerita dan perkembangan terbaru dari setiap program
-                  pembinaan yang berjalan di akademi.
+                  {t('mufa.berita_page.archive_desc')}
                 </p>
               </div>
 
@@ -254,7 +254,7 @@ export default function MUFABeritaPage() {
                 <span className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-slate-900/80 border border-slate-700/70">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span>
-                    {filteredNews.length} berita tampil
+                    {filteredNews.length} {t('mufa.berita_page.news_showing')}
                   </span>
                 </span>
                 {hasActiveFilters && (
@@ -263,7 +263,7 @@ export default function MUFABeritaPage() {
                     onClick={resetAll}
                     className="px-3 py-2 rounded-full bg-slate-900/80 border border-red-500/60 text-red-300 hover:bg-red-500/10 transition text-[11px] md:text-xs uppercase font-bold tracking-wider"
                   >
-                    Reset Filter
+                    {t('mufa.berita_page.reset_filter')}
                   </button>
                 )}
               </div>
@@ -298,7 +298,7 @@ export default function MUFABeritaPage() {
 
                   <div className="flex flex-col flex-1 px-4 pt-4 pb-4 md:pb-5 gap-3">
                     <Link
-                      href={`/mufa/berita/${item.id}`}
+                      href={`/${lang}/mufa/berita/${item.id}`}
                       className="text-sm md:text-base font-semibold text-white leading-snug line-clamp-2 group-hover:text-red-300 transition"
                     >
                       {item.title}
@@ -324,10 +324,10 @@ export default function MUFABeritaPage() {
                         ))}
                       </div>
                       <Link
-                        href={`/mufa/berita/${item.id}`}
+                        href={`/${lang}/mufa/berita/${item.id}`}
                         className="text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-400 group-hover:text-amber-300 transition hidden md:inline-flex"
                       >
-                        Baca Detail
+                        {t('mufa.berita_page.read_detail')}
                       </Link>
                     </div>
                   </div>
@@ -340,14 +340,14 @@ export default function MUFABeritaPage() {
                 className="mt-10 text-center text-slate-300/80 text-sm md:text-base py-10"
                 data-aos="fade-up"
               >
-                <h3 className="text-xl font-bold text-white mb-2">Tidak ada berita ditemukan.</h3>
-                <p className="mb-4">Coba kata kunci atau filter lain.</p>
+                <h3 className="text-xl font-bold text-white mb-2">{t('mufa.berita_page.no_news_title')}</h3>
+                <p className="mb-4">{t('mufa.berita_page.no_news_desc')}</p>
                 <button
                   type="button"
                   onClick={resetAll}
                   className="px-6 py-2 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 transition"
                 >
-                  Reset Filter
+                  {t('mufa.berita_page.reset_filter')}
                 </button>
               </div>
             )}
@@ -378,7 +378,7 @@ export default function MUFABeritaPage() {
         <div className="bg-slate-900 text-white px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h3 className="text-lg font-extrabold uppercase tracking-[0.1em]">
-              Filter Berita
+              {t('mufa.berita_page.filter_title')}
             </h3>
             {hasActiveFilters && (
               <button
@@ -404,12 +404,12 @@ export default function MUFABeritaPage() {
           {/* Search */}
           <div>
             <h4 className="text-sm font-extrabold tracking-[0.1em] uppercase text-slate-400 mb-4">
-              Pencarian Kata Kunci
+              {t('mufa.berita_page.search_title')}
             </h4>
             <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Type to search..."
+                placeholder={t('mufa.berita_page.search_placeholder')}
                 value={searchTerm}
                 onChange={handleSearchChange}
                 onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
@@ -427,7 +427,7 @@ export default function MUFABeritaPage() {
           {/* Tags */}
           <div className="mt-5">
             <h4 className="text-sm font-extrabold tracking-[0.1em] uppercase text-slate-400 mb-4">
-              Tags Populer
+              {t('mufa.berita_page.popular_tags')}
             </h4>
             <div className="flex flex-wrap gap-2">
               {activeTags.map((tag: string) => {

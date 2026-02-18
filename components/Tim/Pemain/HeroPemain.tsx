@@ -1,11 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function HeroPemain() {
+  const { t, lang } = useLanguage();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
     <section
       style={{
@@ -63,7 +74,7 @@ export default function HeroPemain() {
             textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
           }}
         >
-          Pemain
+          {t('page.players.title')}
         </h1>
 
         <div
@@ -77,19 +88,11 @@ export default function HeroPemain() {
             letterSpacing: "1px",
           }}
         >
-          <Link
-            href="/"
-            style={{
-              color: "#D1D5DB",
-              textDecoration: "none",
-              transition: "color 0.3s",
-            }}
-            className="hover:text-white"
-          >
-            Beranda
+          <Link href={`/${lang}/`} style={{ color: "#D1D5DB", textDecoration: "none" }} className="hover:text-white">
+            {t('nav.home')}
           </Link>
-          <FaChevronRight size={12} style={{ color: "#DC2626" }} />
-          <span style={{ color: "#DC2626" }}>Daftar Pemain</span>
+          <span style={{ margin: "0 8px", color: "#DC2626" }}>&gt;</span>
+          <span style={{ color: "#DC2626" }}>{t('page.players.breadcrumb')}</span>
         </div>
       </div>
     </section>

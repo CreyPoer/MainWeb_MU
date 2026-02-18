@@ -4,12 +4,14 @@ import React, { useMemo } from "react";
 import Image from "next/image";
 import { FaTrophy, FaArrowUp, FaArrowDown, FaShieldAlt, FaFutbol, FaMinusCircle } from "react-icons/fa";
 import { StandingTeam } from "./data";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StandingsOverviewProps {
     data: StandingTeam[];
 }
 
 export default function StandingsOverview({ data }: StandingsOverviewProps) {
+    const { t } = useLanguage();
     // --- CALCULATE METRICS ---
     const stats = useMemo(() => {
         if (!data || data.length === 0) return null;
@@ -56,11 +58,11 @@ export default function StandingsOverview({ data }: StandingsOverviewProps) {
                 {team.name}
             </h4>
             <span style={{ fontSize: "11px", fontWeight: "700", color: "#6B7280", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "0.5px" }}>
-                {title}
+                {t(title)}
             </span>
             <div style={{ fontSize: "32px", fontWeight: "900", color: color, display: "flex", flexDirection: "column", alignItems: "center", lineHeight: "1" }}>
                 {value}
-                {valueLabel && <span style={{ fontSize: "12px", color: color, marginTop: "4px", fontWeight: "600" }}>{valueLabel}</span>}
+                {valueLabel && <span style={{ fontSize: "12px", color: color, marginTop: "4px", fontWeight: "600" }}>{t(valueLabel)}</span>}
             </div>
         </div>
     );
@@ -69,15 +71,11 @@ export default function StandingsOverview({ data }: StandingsOverviewProps) {
         <section style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 20px 40px" }} data-aos="fade-up">
             <div style={{ marginBottom: "40px" }}>
                 <h2 style={{ fontSize: "32px", fontWeight: "900", textTransform: "uppercase", color: "#111827", marginBottom: "8px" }}>
-                    Overview Statistics
+                    {t('page.standings.overview.title')}
                 </h2>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }} className="overview-header">
                     <p style={{ fontSize: "14px", color: "#6B7280", fontWeight: "600", textTransform: "uppercase" }}>
-                        Season 2025-2026
-                    </p>
-                    <p style={{ fontSize: "14px", color: "#6B7280" }}>
-                        <span style={{ marginRight: "20px" }}>LAST UPDATE: 03 FEB 2026</span>
-                        <span>NEXT UPDATE: 10 FEB 2026</span>
+                        {t('page.standings.overview.season')} 2025-2026
                     </p>
                 </div>
             </div>
@@ -85,41 +83,41 @@ export default function StandingsOverview({ data }: StandingsOverviewProps) {
             {/* Cards Grid */}
             <div className="overview-grid" style={{ padding: "20px" }}>
                 <OverviewCard
-                    title="Most Goals"
+                    title="page.standings.overview.most_goals"
                     team={stats.mostGoals}
-                    valueLabel="GOALS SCORED"
+                    valueLabel="page.standings.overview.scored_label"
                     value={stats.mostGoals.goalsFor}
                     icon={<FaFutbol />}
                     color="#059669" // Green
                 />
                 <OverviewCard
-                    title="Best Defense"
+                    title="page.standings.overview.best_defense"
                     team={stats.bestDefense}
-                    valueLabel="GOALS CONCEDED"
+                    valueLabel="page.standings.overview.conceded_label"
                     value={stats.bestDefense.goalsAgainst}
                     icon={<FaShieldAlt />}
                     color="#2563EB" // Blue
                 />
                 <OverviewCard
-                    title="Hardest to Beat"
+                    title="page.standings.overview.hardest_beat"
                     team={stats.toughToBeat}
-                    valueLabel="LOSSES"
+                    valueLabel="page.standings.overview.losses_label"
                     value={stats.toughToBeat.lost}
                     icon={<FaMinusCircle />}
                     color="#D97706" // Amber
                 />
                 <OverviewCard
-                    title="Most Losses"
+                    title="page.standings.overview.most_losses"
                     team={stats.mostLoss}
-                    valueLabel="LOSSES"
+                    valueLabel="page.standings.overview.losses_label"
                     value={stats.mostLoss.lost}
                     icon={<FaArrowDown />}
                     color="#DC2626" // Red
                 />
                 <OverviewCard
-                    title="Draw Specialists"
+                    title="page.standings.overview.draw_specialist"
                     team={stats.drawKing}
-                    valueLabel="DRAWS"
+                    valueLabel="page.standings.overview.draws_label"
                     value={stats.drawKing.drawn}
                     icon={<FaMinusCircle />}
                     color="#4B5563" // Gray

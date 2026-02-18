@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MatchResult {
     id: number;
@@ -21,6 +22,7 @@ interface MatchResult {
 export default function ResultSection() {
     const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { t, lang } = useLanguage();
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -109,10 +111,10 @@ export default function ResultSection() {
                     {/* Text - WHITE */}
                     <div>
                         <h2 style={{ color: '#FFFFFF', fontSize: '14px', fontWeight: 900, textTransform: 'uppercase', lineHeight: 1.2, marginBottom: '4px' }}>
-                            Latest Matches
+                            {t('section.latest_matches')}
                         </h2>
                         <h3 style={{ color: '#FFFFFF', fontSize: '20px', fontWeight: 900, lineHeight: 1.1 }}>
-                            Updates from Our Last Game
+                            {t('section.updates_last_game')}
                         </h3>
                     </div>
                 </div>
@@ -133,7 +135,7 @@ export default function ResultSection() {
                     {matchResults.map((match, index) => (
                         <Link
                             key={match.id || index}
-                            href={`/pertandingan/jadwal/${match.id}`}
+                            href={`/${lang}/pertandingan/jadwal/${match.id}`}
                             data-aos="fade-left"
                             data-aos-delay={index * 150}
                             data-aos-offset="200"

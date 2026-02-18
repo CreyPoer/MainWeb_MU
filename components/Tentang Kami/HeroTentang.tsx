@@ -1,6 +1,11 @@
+"use client";
+
 import React from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function HeroTentang() {
+  const { t } = useLanguage();
+
   return (
     <section
       className="relative w-full min-h-105 md:min-h-130 flex items-center justify-center overflow-hidden"
@@ -30,7 +35,7 @@ export default function HeroTentang() {
           className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-neutral-200 mb-4"
           data-aos="fade-up"
         >
-          Klub
+          {t('page.about.hero.subtitle')}
         </span>
         <h1
           className="font-black uppercase tracking-tight leading-tight text-white drop-shadow-xl"
@@ -38,7 +43,7 @@ export default function HeroTentang() {
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          TENTANG MADURA UNITED FC
+          {t('page.about.hero.title')}
         </h1>
       </div>
     </section>

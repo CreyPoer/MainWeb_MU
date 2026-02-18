@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AppShell from "@/components/AppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Madura United FC - Official Website",
-  description: "Official website of Madura United Football Club - Sape Kerrab Madura United!",
+  title: "Madura United FC",
+  description: "Official website of Madura United Football Club",
 };
 
 export default function RootLayout({
@@ -16,9 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
-        <AppShell>{children}</AppShell>
+        {children}
       </body>
     </html>
   );

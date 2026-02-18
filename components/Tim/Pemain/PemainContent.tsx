@@ -98,8 +98,10 @@ const getPositionClass = (position: string): string => {
 
 
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PemainContent() {
+	const { t } = useLanguage();
 	const searchParams = useSearchParams();
 	const tabParam = searchParams.get("tab");
 
@@ -294,10 +296,9 @@ export default function PemainContent() {
 				<div className="players-header players-animate players-animate-up">
 					<div className="players-header-text">
 						<p className="players-eyebrow">Madura United FC</p>
-						<h2 className="players-title">Daftar Pemain</h2>
+						<h2 className="players-title">{t('page.players.list_title')}</h2>
 						<p className="players-subtitle">
-							Jelajahi skuad lengkap Madura United mulai dari tim utama hingga
-							pemain masa depan di Akademi.
+							{t('page.players.description')}
 						</p>
 					</div>
 
@@ -308,7 +309,7 @@ export default function PemainContent() {
 							className={`tab-button ${activeTeam === "utama" ? "active" : "inactive"
 								}`}
 						>
-							Tim Utama
+							{t('page.officials.main_team')}
 						</button>
 						<button
 							type="button"
@@ -316,7 +317,7 @@ export default function PemainContent() {
 							className={`tab-button ${activeTeam === "akademi" ? "active" : "inactive"
 								}`}
 						>
-							Akademi
+							{t('page.officials.academy')}
 						</button>
 					</div>
 				</div>
@@ -339,13 +340,13 @@ export default function PemainContent() {
 				{/* Mobile Sidebar - Fixed Outside Panel */}
 				<aside className={`players-sidebar mobile-sidebar ${isSidebarOpen ? "active" : ""}`}>
 					<h3 className="players-sidebar-title">
-						Skuad {activeTeam === "utama" ? "Tim Utama" : "Akademi"}
+						Skuad {activeTeam === "utama" ? t('page.officials.main_team') : t('page.officials.academy')}
 					</h3>
 					<div className="players-sidebar-inner">
 						<div className="players-sidebar-overlay" />
 						<div className="players-list">
-							{loading && <p className="p-4 text-white text-sm">Memuat data pemain...</p>}
-							{!loading && players.length === 0 && <p className="p-4 text-white text-sm">Tidak ada pemain ditemukan.</p>}
+							{loading && <p className="p-4 text-white text-sm">{t('common.loading')}</p>}
+							{!loading && players.length === 0 && <p className="p-4 text-white text-sm">{t('page.players.no_players')}</p>}
 							{players.map((player) => {
 								const isActive = player.id === selectedPlayer?.id;
 								const styleClass = getPositionClass(player.positionFull);
@@ -381,7 +382,7 @@ export default function PemainContent() {
 					{/* Desktop Sidebar - Static Inside Panel */}
 					<aside className="players-sidebar desktop-sidebar players-animate players-animate-left">
 						<h3 className="players-sidebar-title">
-							Skuad {activeTeam === "utama" ? "Tim Utama" : "Akademi"}
+							Skuad {activeTeam === "utama" ? t('page.officials.main_team') : t('page.officials.academy')}
 						</h3>
 						<div className="players-sidebar-inner">
 							<div className="players-sidebar-overlay" />

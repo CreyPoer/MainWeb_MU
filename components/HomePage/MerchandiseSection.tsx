@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { FaShoppingBag, FaArrowRight } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import Swiper styles
 import "swiper/css";
@@ -21,6 +22,7 @@ interface ProductItem {
 }
 
 export default function MerchandiseSection() {
+    const { t } = useLanguage();
     const [products, setProducts] = useState<ProductItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -77,7 +79,7 @@ export default function MerchandiseSection() {
                         textTransform: "uppercase"
                     }}
                 >
-                    CLUB MERCH
+                    {t('section.club_merch_bg')}
                 </h1>
 
                 {/* 2. Content Header (Layer 2) */}
@@ -93,7 +95,7 @@ export default function MerchandiseSection() {
                             textShadow: "0 1px 2px rgba(0,0,0,0.3)"
                         }}
                     >
-                        Online Store
+                        {t('section.online_store')}
                     </h4>
                     <h2
                         className="text-white"
@@ -107,7 +109,7 @@ export default function MerchandiseSection() {
                             textShadow: "0 2px 4px rgba(0,0,0,0.3)"
                         }}
                     >
-                        Support Your Favorite Team With <span style={{ color: "white" }}>Branded Accessories</span>
+                        {t('section.support_team')} <span style={{ color: "white" }}>{t('section.branded_accessories')}</span>
                     </h2>
                 </div>
             </div>
@@ -233,7 +235,7 @@ export default function MerchandiseSection() {
                                     }}
                                     className="hover:bg-gray-100"
                                 >
-                                    <FaShoppingBag /> Buy Now
+                                    <FaShoppingBag /> {t('common.buy_now')}
                                 </button>
                             </div>
                         </SwiperSlide>
@@ -269,7 +271,7 @@ export default function MerchandiseSection() {
                         e.currentTarget.style.color = "white";
                     }}
                 >
-                    Selengkapnya <FaArrowRight />
+                    {t('common.see_more')} <FaArrowRight />
                 </a>
             </div>
 

@@ -36,6 +36,7 @@ import { FaMedal, FaClock } from "react-icons/fa";
 import { FaFlag } from "react-icons/fa6";
 import Flag from "react-world-flags";
 import { useSearchParams } from "next/navigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type TeamKey = "utama" | "akademi";
 
@@ -52,18 +53,19 @@ type Official = {
   birthDate: string;
 };
 
-const teamLabel: Record<TeamKey, string> = {
-  utama: "Tim Utama",
-  akademi: "Akademi",
-};
-
 export default function OfficialsContent() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
   const [activeTeam, setActiveTeam] = useState<TeamKey>(
     tabParam === "akademi" ? "akademi" : "utama"
   );
   const gridRef = useRef<HTMLDivElement | null>(null);
+
+  const teamLabel: Record<TeamKey, string> = {
+    utama: t('page.officials.main_team'),
+    akademi: t('page.officials.academy'),
+  };
 
   const [officials, setOfficials] = useState<Official[]>([]);
   const [loading, setLoading] = useState(true);
@@ -150,12 +152,7 @@ export default function OfficialsContent() {
         <div className="officials-header">
           <div className="officials-header-text">
             <p className="officials-eyebrow">Madura United FC</p>
-            <h2 className="officials-title">Daftar Officials</h2>
-            <p className="officials-subtitle">
-              Tim pelatih dan staf profesional yang bekerja di balik layar
-              untuk memastikan skuad Madura United FC tampil maksimal di setiap
-              pertandingan.
-            </p>
+            <h2 className="officials-title">{t('page.officials.list_title')}</h2>
           </div>
 
           <div className="officials-tab-switcher">
@@ -177,8 +174,8 @@ export default function OfficialsContent() {
 
         {/* Grid Cards */}
         <div className="officials-grid" ref={gridRef}>
-          {loading && <p className="text-gray-500 col-span-full text-center py-10">Memuat data officials...</p>}
-          {!loading && officials.length === 0 && <p className="text-gray-500 col-span-full text-center py-10">Tidak ada data officials.</p>}
+          {loading && <p className="text-gray-500 col-span-full text-center py-10">{t('common.loading')}</p>}
+          {!loading && officials.length === 0 && <p className="text-gray-500 col-span-full text-center py-10">{t('page.officials.no_data')}</p>}
 
           {!loading && officials.map((official) => {
             const isMainTeam = official.team === "utama";

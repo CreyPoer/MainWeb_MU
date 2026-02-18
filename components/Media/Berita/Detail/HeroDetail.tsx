@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface HeroDetailProps {
     title: string;
@@ -9,6 +10,7 @@ interface HeroDetailProps {
 }
 
 export default function HeroDetail({ title, image }: HeroDetailProps) {
+    const { t, lang } = useLanguage();
     return (
         <div
             style={{
@@ -78,12 +80,12 @@ export default function HeroDetail({ title, image }: HeroDetailProps) {
                         color: "#D1D5DB", // Light gray
                     }}
                 >
-                    <Link href="/" style={{ color: "#D1D5DB", textDecoration: "none" }} className="hover:text-white transition-colors">
-                        Beranda
+                    <Link href={`/${lang}/`} style={{ color: "#D1D5DB", textDecoration: "none" }} className="hover:text-white transition-colors">
+                        {t('page.news.breadcrumb_home')}
                     </Link>
                     <span style={{ margin: "0 10px" }}>&gt;</span>
-                    <Link href="/media/berita" style={{ color: "#D1D5DB", textDecoration: "none" }} className="hover:text-white transition-colors">
-                        Berita
+                    <Link href={`/${lang}/media/berita`} style={{ color: "#D1D5DB", textDecoration: "none" }} className="hover:text-white transition-colors">
+                        {t('page.news.breadcrumb_news')}
                     </Link>
                     <span style={{ margin: "0 10px" }}>&gt;</span>
                     <span style={{ color: "#DC2626" }}>{title}</span> {/* Judul highlight red */}

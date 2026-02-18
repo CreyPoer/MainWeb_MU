@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaSearch, FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaWhatsapp, FaFilter, FaTimes, FaTag, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { MufaNewsDetail } from "../newsData";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MUFAContentDetailProps {
   newsItem: any; // MufaNewsDetail; replaced with any to accommodate API structure variation
@@ -18,6 +19,7 @@ interface MUFAContentDetailProps {
 
 export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) {
   const router = useRouter();
+  const { t, lang } = useLanguage();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarTags, setSidebarTags] = useState<string[]>([]);
@@ -39,12 +41,12 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      router.push(`/mufa/berita?q=${encodeURIComponent(searchQuery)}`);
+      router.push(`/${lang}/mufa/berita?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
   const handleTagClick = (tag: string) => {
-    router.push(`/mufa/berita?tag=${encodeURIComponent(tag)}`);
+    router.push(`/${lang}/mufa/berita?tag=${encodeURIComponent(tag)}`);
   };
 
   return (
@@ -99,7 +101,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               )}
               {newsItem.penerbit && newsItem.link_berita && (
                 <p className="mt-4 text-sm italic text-gray-400">
-                  Dilansir dari: <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" className="text-red-500 underline hover:text-red-400 transition-colors">{newsItem.penerbit}</a>
+                  {t('mufa.detail.sourced_from')} <a href={newsItem.link_berita} target="_blank" rel="noopener noreferrer" className="text-red-500 underline hover:text-red-400 transition-colors">{newsItem.penerbit}</a>
                 </p>
               )}
             </div>
@@ -109,7 +111,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
             {/* TAGS & SHARE ROW */}
             <div className="mufa-news-detail-bottomRow">
               <div className="mufa-news-detail-tagsRow">
-                <span className="mufa-news-detail-tagsLabel">TAGS:</span>
+                <span className="mufa-news-detail-tagsLabel">{t('mufa.detail.tags_label')}</span>
                 {newsItem.tags.slice(0, 4).map((tag: string) => (
                   <span key={tag} className="mufa-news-detail-tagPill" onClick={() => handleTagClick(tag)} style={{ cursor: "pointer" }}>
                     #{tag}
@@ -118,7 +120,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               </div>
 
               <div className="mufa-news-detail-shareRow">
-                <span className="mufa-news-detail-shareLabel">SHARE:</span>
+                <span className="mufa-news-detail-shareLabel">{t('mufa.detail.share_label')}</span>
                 {[
                   {
                     Icon: FaFacebookF,
@@ -142,7 +144,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                     label: "Copy link for Instagram",
                     onClick: () => {
                       navigator.clipboard.writeText(window.location.href).then(() => {
-                        alert('Link berhasil disalin! Kamu bisa paste di Instagram Story atau DM.');
+                        alert(t('mufa.detail.link_copied'));
                       });
                     }
                   },
@@ -174,14 +176,12 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                 />
               </div>
               <div className="mufa-news-detail-authorBody">
-                <h3>ABOUT {newsItem.author}</h3>
+                <h3>{t('mufa.detail.about_author')} {newsItem.author}</h3>
                 <p className="mufa-news-detail-authorDesc">
-                  MUFA secara konsisten menghadirkan informasi terkini seputar program,
-                  pertandingan, dan pengembangan talenta muda di lingkungan Madura United
-                  Football Academy.
+                  {t('mufa.detail.author_desc')}
                 </p>
                 <button className="mufa-news-detail-authorLink">
-                  Lihat semua berita dari {newsItem.author}
+                  {t('mufa.detail.view_all_by')} {newsItem.author}
                 </button>
               </div>
             </div>
@@ -191,14 +191,14 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               {/* Previous Post */}
               {newsItem.previous ? (
                 <Link
-                  href={`/mufa/berita/${newsItem.previous.id}`}
+                  href={`/${lang}/mufa/berita/${newsItem.previous.id}`}
                   className="group relative flex flex-col p-6 rounded-2xl bg-red-500 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
 
                   <div className="relative z-10 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase text-white mb-2">
                     <FaChevronLeft size={10} />
-                    <span>Previous Post</span>
+                    <span>{t('mufa.detail.previous_post')}</span>
                   </div>
                   <h4 className="relative z-10 text-sm md:text-base font-bold text-dark-900 group-hover:text-white transition-colors line-clamp-2">
                     {newsItem.previous.title}
@@ -211,13 +211,13 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               {/* Next Post */}
               {newsItem.next ? (
                 <Link
-                  href={`/mufa/berita/${newsItem.next.id}`}
+                  href={`/${lang}/mufa/berita/${newsItem.next.id}`}
                   className="group relative flex flex-col p-6 rounded-2xl bg-red-500 border border-red-500 shadow-sm hover:shadow-lg transition-all duration-300 text-right items-end overflow-hidden"
                 >
                   <div className="absolute inset-0 -translate-x-[150%] skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out" />
 
                   <div className="relative z-10 flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase text-white mb-2">
-                    <span>Next Post</span>
+                    <span>{t('mufa.detail.next_post')}</span>
                     <FaChevronRight size={10} />
                   </div>
                   <h4 className="relative z-10 text-sm md:text-base font-bold text-dark-900 group-hover:text-white transition-colors line-clamp-2">
@@ -232,7 +232,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
             {/* YOU MAY ALSO LIKE SECTION */}
             <div className="mt-12 md:mt-16" data-aos="fade-up">
               <h3 className="text-xl md:text-2xl font-extrabold text-slate-500 uppercase tracking-wide mb-6">
-                You May Also Like
+                {t('mufa.detail.you_may_like')}
               </h3>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
                 {newsItem.related && newsItem.related.map((item: any) => (
@@ -260,17 +260,17 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
 
                     <div className="flex flex-col flex-1 px-4 pt-4 pb-4 gap-3">
                       <Link
-                        href={`/mufa/berita/${item.id}`}
+                        href={`/${lang}/mufa/berita/${item.id}`}
                         className="text-sm font-semibold text-white leading-snug line-clamp-2 group-hover:text-red-300 transition"
                       >
                         {item.title}
                       </Link>
                       <div className="mt-auto pt-2 border-t border-slate-700/70 flex justify-end">
                         <Link
-                          href={`/mufa/berita/${item.id}`}
+                          href={`/${lang}/mufa/berita/${item.id}`}
                           className="inline-flex px-4 py-2 rounded-full bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase hover:bg-red-700 transition"
                         >
-                          Read More
+                          {t('mufa.detail.read_more')}
                         </Link>
                       </div>
                     </div>
@@ -286,7 +286,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               }`}
           >
             <div className="mufa-news-detail-sidebarHeader-mobile">
-              <h4>Filter &amp; Insight</h4>
+              <h4>{t('mufa.detail.filter_insight')}</h4>
               <button onClick={() => setIsSidebarOpen(false)}>
                 <FaTimes size={18} />
               </button>
@@ -295,7 +295,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
             <div className="mufa-news-detail-sidebarInner">
               {/* SEARCH */}
               <div className="mufa-news-detail-widget">
-                <div className="mufa-news-detail-widgetHeader">Pencarian Berita</div>
+                <div className="mufa-news-detail-widgetHeader">{t('mufa.detail.search_news')}</div>
                 <div className="mufa-news-detail-widgetBody">
                   <div className="mufa-news-detail-searchWrapper">
                     <button onClick={handleSearch} className="mufa-news-detail-searchIconBtn">
@@ -303,7 +303,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                     </button>
                     <input
                       type="text"
-                      placeholder="Cari di berita MUFA..."
+                      placeholder={t('mufa.detail.search_placeholder')}
                       className="mufa-news-detail-searchInput"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -315,7 +315,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
 
               {/* TAGS */}
               <div className="mufa-news-detail-widget">
-                <div className="mufa-news-detail-widgetHeader">Tags Populer</div>
+                <div className="mufa-news-detail-widgetHeader">{t('mufa.berita_page.popular_tags')}</div>
                 <div className="mufa-news-detail-widgetBody">
                   <div className="mufa-news-detail-tagsCloud">
                     {sidebarTags.map((tag: string) => (

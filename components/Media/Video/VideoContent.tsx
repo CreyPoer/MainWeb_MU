@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // --- DATA TYPE ---
 interface VideoItem {
@@ -15,6 +16,7 @@ interface VideoItem {
 }
 
 export default function VideoContent() {
+    const { t } = useLanguage();
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
     const [startDate, setStartDate] = useState("");
@@ -92,7 +94,7 @@ export default function VideoContent() {
     if (isLoading && videoData.length === 0) {
         return (
             <div style={{ height: '600px', backgroundColor: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <p>Loading videos...</p>
+                <p>{t('common.loading_videos')}</p>
             </div>
         );
     }
@@ -149,7 +151,7 @@ export default function VideoContent() {
                                 marginBottom: "8px",
                             }}
                         >
-                            Our Videos
+                            {t('section.our_videos')}
                         </h4>
                         <h2
                             style={{
@@ -160,14 +162,14 @@ export default function VideoContent() {
                                 lineHeight: "1.2",
                             }}
                         >
-                            Watch {" "}
-                            <span style={{ color: "#DC2626" }}>Highlights</span>
+                            {t('section.watch')}{" "}
+                            <span style={{ color: "#DC2626" }}>{t('section.highlights')}</span>
                         </h2>
                     </div>
 
                     <div className="video-filter">
                         <div className="video-filter-group">
-                            <span className="video-filter-label">Tipe</span>
+                            <span className="video-filter-label">{t('page.video.type_label')}</span>
                             <div style={{ position: 'relative', display: 'inline-block' }}>
                                 <select
                                     className="video-filter-input"
@@ -184,7 +186,7 @@ export default function VideoContent() {
                                         backgroundSize: '16px',
                                     }}
                                 >
-                                    <option value="Semua">Semua</option>
+                                    <option value="Semua">{t('page.video.all_type')}</option>
                                     <option value="MUFA">MUFA</option>
                                     <option value="MUTV">MUTV</option>
                                 </select>
@@ -192,7 +194,7 @@ export default function VideoContent() {
                         </div>
 
                         <div className="video-filter-group">
-                            <span className="video-filter-label">Dari</span>
+                            <span className="video-filter-label">{t('page.video.from_label')}</span>
                             <input
                                 type="date"
                                 className="video-filter-input"
@@ -201,7 +203,7 @@ export default function VideoContent() {
                             />
                         </div>
                         <div className="video-filter-group">
-                            <span className="video-filter-label">Sampai</span>
+                            <span className="video-filter-label">{t('page.video.to_label')}</span>
                             <input
                                 type="date"
                                 className="video-filter-input"
@@ -220,7 +222,7 @@ export default function VideoContent() {
                                     setSelectedType("Semua");
                                 }}
                             >
-                                Reset
+                                {t('common.reset')}
                             </button>
                         )}
                     </div>

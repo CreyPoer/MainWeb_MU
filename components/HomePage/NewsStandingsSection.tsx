@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight, FaArrowRight } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NewsItem {
     id: number;
@@ -30,6 +31,7 @@ interface StandingsRow {
 }
 
 export default function NewsStandingsSection() {
+    const { lang, t } = useLanguage();
     const [newsIndex, setNewsIndex] = useState(0);
     const [newsData, setNewsData] = useState<NewsItem[]>([]);
     const [standingsData, setStandingsData] = useState<StandingsRow[]>([]);
@@ -223,7 +225,7 @@ export default function NewsStandingsSection() {
     }, [standingsData]);
 
     if (isLoadingNews && isLoadingStandings) {
-        return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
+        return <div style={{ padding: '100px', textAlign: 'center' }}>{t('common.loading')}</div>;
     }
 
     const currentNews = newsData[newsIndex] || { id: 0, title: '', description: '', image: '', date: '' };
@@ -252,9 +254,9 @@ export default function NewsStandingsSection() {
 
                     {/* Title */}
                     <div style={{ marginBottom: '24px' }} data-aos="fade-right">
-                        <h4 style={{ color: '#DC2626', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '14px', marginBottom: '4px' }}>Our Blog</h4>
+                        <h4 style={{ color: '#DC2626', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '14px', marginBottom: '4px' }}>{t('section.our_blog')}</h4>
                         <h2 style={{ fontSize: '32px', fontWeight: '900', textTransform: 'uppercase', color: '#111827', lineHeight: '1.2' }}>
-                            Recent Club <span style={{ color: '#DC2626' }}>News</span>
+                            {t('section.recent_club_news')} <span style={{ color: '#DC2626' }}>{t('section.news_highlight')}</span>
                         </h2>
                     </div>
 
@@ -312,7 +314,7 @@ export default function NewsStandingsSection() {
                                                 style={{ fontSize: '16px', color: '#e5e7eb', marginBottom: '24px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
                                                 dangerouslySetInnerHTML={{ __html: currentNews.description }}
                                             />
-                                            <Link href={`/media/berita/${currentNews.slug || currentNews.id}`} passHref>
+                                            <Link href={`/${lang}/media/berita/${currentNews.slug || currentNews.id}`} passHref>
                                                 <motion.button
                                                     whileHover={{ scale: 1.05 }}
                                                     whileTap={{ scale: 0.95 }}
@@ -323,7 +325,7 @@ export default function NewsStandingsSection() {
                                                         boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)'
                                                     }}
                                                 >
-                                                    Read More
+                                                    {t('common.read_more')}
                                                 </motion.button>
                                             </Link>
                                         </div>
@@ -397,8 +399,8 @@ export default function NewsStandingsSection() {
                 }}>
                     {/* Title */}
                     <div style={{ marginBottom: '24px' }} data-aos="fade-left">
-                        <h5 style={{ fontSize: '14px', fontWeight: 'bold', color: '#DC2626', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>Season 2025-2026</h5>
-                        <h3 style={{ fontSize: '32px', fontWeight: '900', textTransform: 'uppercase', color: '#111827', lineHeight: '1.2' }}>League Table</h3>
+                        <h5 style={{ fontSize: '14px', fontWeight: 'bold', color: '#DC2626', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>{t('section.season')}</h5>
+                        <h3 style={{ fontSize: '32px', fontWeight: '900', textTransform: 'uppercase', color: '#111827', lineHeight: '1.2' }}>{t('section.league_table')}</h3>
                     </div>
 
                     {/* Widget Card */}
@@ -418,12 +420,12 @@ export default function NewsStandingsSection() {
                                 <thead style={{ backgroundColor: '#B91C1C', color: 'white', height: '56px', position: 'sticky', top: 0, zIndex: 10 }}>
                                     <tr>
                                         <th style={{ padding: '12px', textAlign: 'center', width: '40px' }}>#</th>
-                                        <th style={{ padding: '12px', textAlign: 'left' }}>FOOTBALL CLUB</th>
-                                        <th style={{ padding: '12px', textAlign: 'center' }}>P</th>
-                                        <th style={{ padding: '12px', textAlign: 'center' }}>W</th>
-                                        <th style={{ padding: '12px', textAlign: 'center' }}>D</th>
-                                        <th style={{ padding: '12px', textAlign: 'center' }}>L</th>
-                                        <th style={{ padding: '12px', textAlign: 'center' }}>PTS</th>
+                                        <th style={{ padding: '12px', textAlign: 'left' }}>{t('section.football_club')}</th>
+                                        <th style={{ padding: '12px', textAlign: 'center' }}>{t('common.played')}</th>
+                                        <th style={{ padding: '12px', textAlign: 'center' }}>{t('common.won')}</th>
+                                        <th style={{ padding: '12px', textAlign: 'center' }}>{t('common.draw')}</th>
+                                        <th style={{ padding: '12px', textAlign: 'center' }}>{t('common.lost')}</th>
+                                        <th style={{ padding: '12px', textAlign: 'center' }}>{t('common.pts')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -475,13 +477,13 @@ export default function NewsStandingsSection() {
                         </div>
 
                         <div style={{ marginTop: 'auto', padding: '16px', display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #f3f4f6' }}>
-                            <Link href="/pertandingan/klasemen" passHref>
+                            <Link href={`/${lang}/pertandingan/klasemen`} passHref>
                                 <motion.button
                                     whileHover={{ x: 5 }}
                                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                                     style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#DC2626', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', background: 'none', border: 'none', cursor: 'pointer' }}
                                 >
-                                    Fixtures and Matches <FaArrowRight />
+                                    {t('section.fixtures_and_matches')} <FaArrowRight />
                                 </motion.button>
                             </Link>
                         </div>

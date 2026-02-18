@@ -4,6 +4,8 @@ import FooterSection from '@/components/HomePage/FooterSection';
 import BeritaContent from '@/components/Media/Berita/BeritaContent';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'Berita | Madura United FC',
     description: 'Berita terbaru seputar Madura United FC, update pemain, hasil pertandingan, dan info klub terkini.',
@@ -20,23 +22,24 @@ export default async function BeritaPage({
     const query = resolvedSearchParams?.q;
     const author = resolvedSearchParams?.author;
 
-    let heroTitle = "Berita";
+    let activeFilter = undefined;
     if (category && typeof category === "string") {
-        heroTitle = `Kategori: ${category}`;
+        activeFilter = { type: 'category', value: category };
     } else if (tag && typeof tag === "string") {
-        heroTitle = `Tag: #${tag}`;
+        activeFilter = { type: 'tag', value: tag };
     } else if (query && typeof query === "string") {
-        heroTitle = `Pencarian: "${query}"`;
+        activeFilter = { type: 'q', value: query };
     } else if (author && typeof author === "string") {
-        heroTitle = `Penulis: ${author}`;
+        activeFilter = { type: 'author', value: author };
     }
 
     return (
         <main className="bg-neutral-900 min-h-screen">
             <CustomHero
-                title={heroTitle}
+                titleKey="page.news.title"
                 bgImage="/berita.jpg"
-                breadcrumbActive="Berita"
+                breadcrumbKey="page.news.breadcrumb"
+                activeFilter={activeFilter}
             />
 
             <BeritaContent />

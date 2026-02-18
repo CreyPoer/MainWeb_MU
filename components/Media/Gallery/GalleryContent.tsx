@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { FaPowerOff, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface GalleryItem {
     id: string;
@@ -20,6 +21,7 @@ interface CategoryItem {
 }
 
 export default function GalleryContent() {
+    const { t } = useLanguage();
     const [activeFilter, setActiveFilter] = useState<number | "All">("All");
     const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
     const [categories, setCategories] = useState<CategoryItem[]>([]);
@@ -168,7 +170,7 @@ export default function GalleryContent() {
                                 marginBottom: "8px",
                             }}
                         >
-                            Our Memories
+                            {t('section.our_memories')}
                         </h4>
                         <h2
                             style={{
@@ -179,7 +181,7 @@ export default function GalleryContent() {
                                 lineHeight: 1.2,
                             }}
                         >
-                            Club <span style={{ color: "#DC2626" }}>Photo Gallery</span>
+                            {t('page.gallery.club1')} <span style={{ color: "#DC2626" }}>{t('page.gallery.breadcrumb')}</span> {t('page.gallery.club2')}
                         </h2>
                     </div>
 
@@ -209,7 +211,7 @@ export default function GalleryContent() {
                                 transform: activeFilter === "All" ? "translateY(-1px)" : "translateY(0)",
                             }}
                         >
-                            All
+                            {t('page.gallery.all_filter')}
                         </button>
                         {categories.map((cat) => {
                             const isActive = activeFilter === cat.id;
@@ -346,7 +348,7 @@ export default function GalleryContent() {
                                     })
                                 ) : (
                                     <div className="slide-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                                        <p>No images available</p>
+                                        <p>{t('common.no_images')}</p>
                                     </div>
                                 )}
                             </div>

@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./StrukturOrganisasiSection.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type OrgPerson = {
   id: number;
@@ -88,6 +89,7 @@ function ProfileCard({
 }
 
 export default function StrukturOrganisasiSection() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement | null>(null);
   const [orgData, setOrgData] = useState<OrgPerson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -184,23 +186,23 @@ export default function StrukturOrganisasiSection() {
     >
       <div className={styles.shell}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>Tentang Kami</p>
-          <h2 className={styles.title}>Struktur Organisasi</h2>
+          <p className={styles.eyebrow}>{t('page.about.eyebrow')}</p>
+          <h2 className={styles.title}>{t('page.about.org_structure_title')}</h2>
           <p className={styles.subtitle}>
-            Susunan kepengurusan Madura United FC ditampilkan dalam format bertingkat (piramida) berdasarkan jabatan.
+            {t('page.about.org_structure_subtitle')}
           </p>
         </header>
 
         <div className={styles.body}>
           {loading && (
             <p style={{ textAlign: "center", color: "#6b7280", padding: "2rem 0" }}>
-              Memuat data struktur organisasi...
+              {t('page.about.loading_org')}
             </p>
           )}
 
           {!loading && orgData.length === 0 && (
             <p style={{ textAlign: "center", color: "#6b7280", padding: "2rem 0" }}>
-              Tidak ada data struktur organisasi.
+              {t('page.about.no_org')}
             </p>
           )}
 

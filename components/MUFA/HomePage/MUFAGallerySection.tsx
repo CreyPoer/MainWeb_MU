@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight, FaTimes, FaPowerOff, FaArrowRight } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Album = {
   id: number;
@@ -12,6 +13,7 @@ type Album = {
 };
 
 export default function MUFAGallerySection() {
+  const { t, lang } = useLanguage();
   const [activeAlbum, setActiveAlbum] = useState<Album | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [albums, setAlbums] = useState<Album[]>([]);
@@ -57,7 +59,7 @@ export default function MUFAGallerySection() {
   };
 
   if (isLoading) {
-    return <div className="py-20 text-center text-white">Loading Gallery...</div>;
+    return <div className="py-20 text-center text-white">{t('mufa.gallery_page.loading')}</div>;
   }
 
   // If no albums, hide section or show empty state? Let's just return nothing or a placeholder if empty
@@ -71,21 +73,21 @@ export default function MUFAGallerySection() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
           <div>
             <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
-              Visual Stories
+              {t('mufa.gallery.eyebrow')}
             </p>
             <h2
               data-aos="fade-up"
               className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight"
             >
-              Gallery <span className="text-red-400">MUFA</span>
+              {t('mufa.gallery.title_main')} <span className="text-red-400">{t('mufa.gallery.title_highlight')}</span>
             </h2>
           </div>
           <Link
-            href="/mufa/gallery"
+            href={`/${lang}/mufa/gallery`}
             data-aos="fade-left"
             className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase text-slate-100/90 hover:text-amber-300 transition-colors"
           >
-            Lihat Selengkapnya <FaArrowRight size={12} />
+            {t('mufa.gallery.view_more')} <FaArrowRight size={12} />
           </Link>
         </div>
 
@@ -112,7 +114,7 @@ export default function MUFAGallerySection() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/90 via-black/70 to-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute inset-0 hidden group-hover:flex flex-col items-center justify-center gap-4 text-center transition-opacity duration-300">
                   <span className="inline-flex px-3 py-1 rounded-full bg-red-500 text-xs font-semibold tracking-[0.18em] uppercase text-white/90">
-                    Featured Moments
+                    {t('mufa.gallery.featured')}
                   </span>
                   <h3 className="text-xl md:text-2xl font-bold text-white leading-snug max-w-md">
                     {album.title}

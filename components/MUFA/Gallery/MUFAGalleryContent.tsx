@@ -5,8 +5,10 @@ import Image from "next/image";
 import { FaPowerOff, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import styles from "../HomePage/MUFAHome.module.css";
 import { GalleryItem, Category } from "./galleryData";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MUFAGalleryContent() {
+    const { t } = useLanguage();
     const [activeFilter, setActiveFilter] = useState<string>("All");
     const [modalData, setModalData] = useState<GalleryItem | null>(null);
     const [sliderIndex, setSliderIndex] = useState(0);
@@ -87,7 +89,7 @@ export default function MUFAGalleryContent() {
     if (isLoading) {
         return (
             <section className="py-10 md:py-14 bg-slate-950 min-h-screen flex items-center justify-center">
-                <div className="text-white text-xl">Loading Gallery...</div>
+                <div className="text-white text-xl">{t('mufa.gallery_page.loading')}</div>
             </section>
         );
     }
@@ -99,10 +101,10 @@ export default function MUFAGalleryContent() {
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10" data-aos="fade-up">
                     <div>
                         <p className="text-xs md:text-sm font-semibold tracking-[0.32em] uppercase text-red-400 mb-2">
-                            Our Memories
+                            {t('mufa.gallery_page.content_eyebrow')}
                         </p>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase leading-tight">
-                            Club <span className="text-red-400">Photo Gallery</span>
+                            {t('mufa.gallery_page.content_title')} <span className="text-red-400">{t('mufa.gallery_page.content_title_highlight')}</span>
                         </h2>
                     </div>
 
@@ -121,7 +123,7 @@ export default function MUFAGalleryContent() {
                                         : "bg-slate-900 border border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                                         }`}
                                 >
-                                    {filter === "All" ? "Semua" : filter}
+                                    {filter === "All" ? t('mufa.gallery_page.all_filter') : filter}
                                 </button>
                             );
                         })}
@@ -173,86 +175,88 @@ export default function MUFAGalleryContent() {
             </div>
 
             {/* MODAL */}
-            {modalData && (
-                <div
-                    className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-8 md:p-12 animate-in fade-in duration-300"
-                    onClick={closeModal}
-                >
+            {
+                modalData && (
                     <div
-                        className="relative w-full max-w-5xl max-h-[85vh] aspect-[16/9] md:aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
+                        className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-8 md:p-12 animate-in fade-in duration-300"
+                        onClick={closeModal}
                     >
-                        {/* Close Button */}
-                        <button
-                            onClick={closeModal}
-                            className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-red-600/80 hover:bg-red-600 text-white flex items-center justify-center transition-all hover:rotate-90"
+                        <div
+                            className="relative w-full max-w-5xl max-h-[85vh] aspect-[16/9] md:aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <FaTimes size={18} />
-                        </button>
-
-                        {/* Main Image */}
-                        <div className="relative flex-1 overflow-hidden group">
-                            <Image
-                                src={modalData.images[sliderIndex]}
-                                alt={`Slide ${sliderIndex}`}
-                                fill
-                                className="object-contain bg-black/50"
-                            />
-
-                            {/* Navigation Arrows */}
+                            {/* Close Button */}
                             <button
-                                onClick={prevSlide}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-red-600/80 text-white backdrop-blur-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                                onClick={closeModal}
+                                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-red-600/80 hover:bg-red-600 text-white flex items-center justify-center transition-all hover:rotate-90"
                             >
-                                <FaChevronLeft size={20} />
+                                <FaTimes size={18} />
                             </button>
-                            <button
-                                onClick={nextSlide}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-red-600/80 text-white backdrop-blur-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
-                            >
-                                <FaChevronRight size={20} />
-                            </button>
-                        </div>
 
-                        {/* Caption / Footer */}
-                        <div className="bg-slate-900/90 border-t border-slate-800 p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-xl absolute bottom-0 w-full">
-                            <div>
-                                <div className="flex items-center gap-3 mb-1">
-                                    <span className="text-[10px] font-bold tracking-widest uppercase text-red-400">
-                                        {modalData.category}
-                                    </span>
-                                    <span className="w-1 h-1 rounded-full bg-slate-500" />
-                                    <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
-                                        {modalData.date}
-                                    </span>
-                                </div>
-                                <h3 className="text-lg md:text-xl font-bold text-white">
-                                    {modalData.title}
-                                </h3>
+                            {/* Main Image */}
+                            <div className="relative flex-1 overflow-hidden group">
+                                <Image
+                                    src={modalData.images[sliderIndex]}
+                                    alt={`Slide ${sliderIndex}`}
+                                    fill
+                                    className="object-contain bg-black/50"
+                                />
+
+                                {/* Navigation Arrows */}
+                                <button
+                                    onClick={prevSlide}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-red-600/80 text-white backdrop-blur-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                                >
+                                    <FaChevronLeft size={20} />
+                                </button>
+                                <button
+                                    onClick={nextSlide}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-red-600/80 text-white backdrop-blur-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                                >
+                                    <FaChevronRight size={20} />
+                                </button>
                             </div>
 
-                            {/* Thumbnails Indicator */}
-                            <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0 max-w-[200px] md:max-w-xs scrollbar-hide">
-                                {modalData.images.map((_, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setSliderIndex(idx)}
-                                        className={`relative w-12 h-8 flex-shrink-0 rounded-md overflow-hidden border transition-all ${idx === sliderIndex ? "border-red-500 opacity-100" : "border-transparent opacity-40 hover:opacity-70"
-                                            }`}
-                                    >
-                                        <Image
-                                            src={modalData.images[idx]} // Use the actual image for thumbnail
-                                            alt="thumb"
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </button>
-                                ))}
+                            {/* Caption / Footer */}
+                            <div className="bg-slate-900/90 border-t border-slate-800 p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-xl absolute bottom-0 w-full">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-1">
+                                        <span className="text-[10px] font-bold tracking-widest uppercase text-red-400">
+                                            {modalData.category}
+                                        </span>
+                                        <span className="w-1 h-1 rounded-full bg-slate-500" />
+                                        <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
+                                            {modalData.date}
+                                        </span>
+                                    </div>
+                                    <h3 className="text-lg md:text-xl font-bold text-white">
+                                        {modalData.title}
+                                    </h3>
+                                </div>
+
+                                {/* Thumbnails Indicator */}
+                                <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0 max-w-[200px] md:max-w-xs scrollbar-hide">
+                                    {modalData.images.map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setSliderIndex(idx)}
+                                            className={`relative w-12 h-8 flex-shrink-0 rounded-md overflow-hidden border transition-all ${idx === sliderIndex ? "border-red-500 opacity-100" : "border-transparent opacity-40 hover:opacity-70"
+                                                }`}
+                                        >
+                                            <Image
+                                                src={modalData.images[idx]} // Use the actual image for thumbnail
+                                                alt="thumb"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </section>
+                )
+            }
+        </section >
     );
 }

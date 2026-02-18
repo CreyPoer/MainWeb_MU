@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./MUFAHome.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Slide {
   id: number;
@@ -12,6 +13,7 @@ interface Slide {
 }
 
 export default function MUFAHeroSection() {
+  const { t } = useLanguage();
   const [slides, setSlides] = useState<Slide[]>([]);
   const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +44,7 @@ export default function MUFAHeroSection() {
   }, [slides]);
 
   if (isLoading) {
-    return <div className="h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
+    return <div className="h-screen bg-black flex items-center justify-center text-white">{t('mufa.hero.loading')}</div>;
   }
 
   if (slides.length === 0) {
@@ -99,13 +101,13 @@ export default function MUFAHeroSection() {
                   href="#program"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full text-xs md:text-sm font-semibold tracking-[0.18em] uppercase bg-amber-400 text-black hover:bg-amber-300 transition shadow-lg shadow-amber-500/30"
                 >
-                  Lihat Program
+                  {t('mufa.hero.view_program')}
                 </Link>
                 <Link
                   href="#fasilitas"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full text-xs md:text-sm font-semibold tracking-[0.18em] uppercase border border-white/30 text-slate-50 hover:bg-white/5 transition"
                 >
-                  Jelajahi Fasilitas
+                  {t('mufa.hero.explore_facilities')}
                 </Link>
               </div>
             </div>

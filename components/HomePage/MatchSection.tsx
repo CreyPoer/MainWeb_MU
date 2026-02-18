@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import FlipCountdown from './FlipCountdown';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Match {
     id: number;
@@ -19,6 +20,7 @@ interface Match {
 }
 
 export default function MatchSection() {
+    const { t } = useLanguage();
     const [matches, setMatches] = useState<Match[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -45,8 +47,9 @@ export default function MatchSection() {
 
     // Format Date & Time
     const dateObj = new Date(nextMatch.date);
-    const months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DECEMBER"];
-    const formattedDate = `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+    const months = t('match.months') as unknown as string[];
+    const monthNames = Array.isArray(months) ? months : ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+    const formattedDate = `${monthNames[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
     const formattedVenue = nextMatch.venue ? nextMatch.venue.toUpperCase() : 'STADION GELORA RATU PAMELINGAN';
 
     // Time 24h
@@ -85,7 +88,7 @@ export default function MatchSection() {
 
                         <span className="block transform skew-x-12 text-white font-black uppercase tracking-[0.2em] leading-none drop-shadow-md"
                             style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1.6rem)' }}>
-                            PERTANDINGAN SELANJUTNYA
+                            {t('match.next_match')}
                         </span>
                     </div>
 

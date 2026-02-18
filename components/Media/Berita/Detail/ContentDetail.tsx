@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaSearch, FaChevronRight, FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp, FaYoutube, FaFilter, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ContentDetailProps {
     newsItem: {
@@ -34,6 +35,7 @@ interface ContentDetailProps {
 }
 
 export default function ContentDetail({ newsItem }: ContentDetailProps) {
+    const { lang, t } = useLanguage();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
@@ -65,20 +67,20 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
-            router.push(`/media/berita?q=${encodeURIComponent(searchQuery)}`);
+            router.push(`/${lang}/media/berita?q=${encodeURIComponent(searchQuery)}`);
         }
     };
 
     const handleCategoryClick = (category: string) => {
-        router.push(`/media/berita?category=${encodeURIComponent(category)}`);
+        router.push(`/${lang}/media/berita?category=${encodeURIComponent(category)}`);
     };
 
     const handleTagClick = (tag: string) => {
-        router.push(`/media/berita?tag=${encodeURIComponent(tag)}`);
+        router.push(`/${lang}/media/berita?tag=${encodeURIComponent(tag)}`);
     };
 
     const handleAuthorClick = (author: string) => {
-        router.push(`/media/berita?author=${encodeURIComponent(author)}`);
+        router.push(`/${lang}/media/berita?author=${encodeURIComponent(author)}`);
     };
 
     // Helper for Sidebar Widget Title
@@ -175,7 +177,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                             {/* --- LEFT: TAGS --- */}
                             {newsItem.tags && newsItem.tags.length > 0 && (
                                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                    <span style={{ fontWeight: "900", textTransform: "uppercase", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>TAGS:</span>
+                                    <span style={{ fontWeight: "900", textTransform: "uppercase", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>{t('mufa.detail.tags_label')}</span>
                                     {newsItem.tags.map((tag, idx) => (
                                         <span key={idx}
                                             onClick={() => handleTagClick(tag)}
@@ -198,7 +200,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
 
                             {/* --- RIGHT: SHARE --- */}
                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <span style={{ fontWeight: "900", textTransform: "uppercase", marginRight: "10px", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>SHARE:</span>
+                                <span style={{ fontWeight: "900", textTransform: "uppercase", marginRight: "10px", fontSize: "16px", color: "#111827", letterSpacing: "1px" }}>{t('mufa.detail.share_label')}</span>
                                 {[
                                     {
                                         Icon: FaFacebookF,
@@ -281,7 +283,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                     marginBottom: "15px",
                                     letterSpacing: "1px"
                                 }}>
-                                    ABOUT {newsItem.author}
+                                    {t('mufa.detail.about_author')} {newsItem.author}
                                 </h3>
                                 <div style={{
                                     fontSize: "15px",
@@ -302,7 +304,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                         cursor: "pointer"
                                     }}
                                 >
-                                    View all posts by {newsItem.author}
+                                    {t('mufa.detail.view_all_by')} {newsItem.author}
                                 </div>
                             </div>
                         </div>
@@ -310,7 +312,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                         {/* --- PREV / NEXT NAVIGATION --- */}
                         <div style={{ display: "flex", justifyContent: "space-between", gap: "20px", marginTop: "40px" }} className="nav-buttons-container">
                             {newsItem.previous ? (
-                                <Link href={`/media/berita/${newsItem.previous.id}`} style={{ textDecoration: "none", flex: 1 }}>
+                                <Link href={`/${lang}/media/berita/${newsItem.previous.id}`} style={{ textDecoration: "none", flex: 1 }}>
                                     <div style={{
                                         backgroundColor: "white",
                                         padding: "30px",
@@ -334,7 +336,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                             alignItems: "center",
                                             gap: "5px"
                                         }}>
-                                            <FaChevronRight style={{ transform: "rotate(180deg)" }} /> Previous
+                                            <FaChevronRight style={{ transform: "rotate(180deg)" }} /> {t('mufa.detail.previous_post')}
                                         </span>
                                         <h4 style={{
                                             fontSize: "16px",
@@ -352,7 +354,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                             ) : <div style={{ flex: 1 }}></div>}
 
                             {newsItem.next ? (
-                                <Link href={`/media/berita/${newsItem.next.id}`} style={{ textDecoration: "none", flex: 1 }}>
+                                <Link href={`/${lang}/media/berita/${newsItem.next.id}`} style={{ textDecoration: "none", flex: 1 }}>
                                     <div style={{
                                         backgroundColor: "white",
                                         padding: "30px",
@@ -378,7 +380,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                             alignItems: "center",
                                             gap: "5px"
                                         }}>
-                                            Next <FaChevronRight />
+                                            {t('mufa.detail.next_post')} <FaChevronRight />
                                         </span>
                                         <h4 style={{
                                             fontSize: "16px",
@@ -413,13 +415,13 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                         color: "#111827",
                                         margin: 0
                                     }}>
-                                        Related News
+                                        {t('mufa.detail.related_news')}
                                     </h3>
                                 </div>
 
                                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "30px" }}>
                                     {newsItem.related.map((item) => (
-                                        <Link href={`/media/berita/${item.id}`} key={item.id} style={{ textDecoration: "none" }}>
+                                        <Link href={`/${lang}/media/berita/${item.id}`} key={item.id} style={{ textDecoration: "none" }}>
                                             <div className="group">
                                                 <div style={{
                                                     position: "relative",
@@ -482,7 +484,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                     >
                         {/* Mobile Header for Sidebar (Close Button) */}
                         <div className="sidebar-mobile-header" style={{ display: "none", padding: "20px", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #E5E7EB", marginBottom: "20px" }}>
-                            <h4 style={{ margin: 0, fontSize: "16px", fontWeight: "800", textTransform: "uppercase" }}>Sidebar Menu</h4>
+                            <h4 style={{ margin: 0, fontSize: "16px", fontWeight: "800", textTransform: "uppercase" }}>{t('mufa.detail.sidebar_menu')}</h4>
                             <button onClick={() => setIsSidebarOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: "#EF4444" }}>
                                 <FaTimes size={20} />
                             </button>
@@ -492,12 +494,12 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
 
                             {/* SEARCH WIDGET */}
                             <div style={{ backgroundColor: "white", marginBottom: "30px", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-                                <WidgetHeader title="Search" />
+                                <WidgetHeader title={t('mufa.detail.search_widget')} />
                                 <div style={{ padding: "30px" }}>
                                     <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                                         <input
                                             type="text"
-                                            placeholder="search ..."
+                                            placeholder={t('mufa.berita_page.search_placeholder')}
                                             style={{
                                                 width: "100%",
                                                 padding: "15px 20px",
@@ -540,7 +542,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
 
                             {/* CATEGORIES WIDGET */}
                             <div style={{ backgroundColor: "white", marginBottom: "30px", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-                                <WidgetHeader title="Categories" />
+                                <WidgetHeader title={t('mufa.detail.categories_widget')} />
                                 <div style={{ padding: "20px 30px" }}>
                                     <ul style={{ listStyle: "none", padding: 0 }}>
                                         {categories.map((cat, idx) => (
@@ -574,7 +576,7 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
 
                             {/* TAGS WIDGET */}
                             <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-                                <WidgetHeader title="Popular Tags" />
+                                <WidgetHeader title={t('mufa.berita_page.popular_tags')} />
                                 <div style={{ padding: "30px" }}>
                                     <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                                         {tags.map((tag, idx) => (

@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DetailHeroProps {
     homeTeam: string;
@@ -11,6 +12,7 @@ interface DetailHeroProps {
 }
 
 export default function DetailHero({ homeTeam, awayTeam }: DetailHeroProps) {
+    const { t, lang } = useLanguage();
     return (
         <section style={{ position: "relative", height: "100vh", minHeight: "500px", width: "100%", overflow: "hidden" }}>
             {/* Background Image */}
@@ -76,12 +78,12 @@ export default function DetailHero({ homeTeam, awayTeam }: DetailHeroProps) {
                         justifyContent: "center"
                     }}
                 >
-                    <Link href="/" style={{ color: "#D1D5DB", textDecoration: "none", transition: "color 0.3s" }} className="hover:text-white">
-                        BERANDA
+                    <Link href={`/${lang}/`} style={{ color: "#D1D5DB", textDecoration: "none", transition: "color 0.3s" }} className="hover:text-white">
+                        {t('nav.home').toUpperCase()}
                     </Link>
                     <FaChevronRight size={12} style={{ color: "#DC2626" }} />
-                    <Link href="/pertandingan/jadwal" style={{ color: "#D1D5DB", textDecoration: "none", transition: "color 0.3s" }} className="hover:text-white">
-                        JADWAL DAN HASIL
+                    <Link href={`/${lang}/pertandingan/jadwal`} style={{ color: "#D1D5DB", textDecoration: "none", transition: "color 0.3s" }} className="hover:text-white">
+                        {t('page.schedule.breadcrumb').toUpperCase()}
                     </Link>
                     <FaChevronRight size={12} style={{ color: "#DC2626" }} />
                     <span style={{ color: "#DC2626" }}>{homeTeam} vs {awayTeam}</span>

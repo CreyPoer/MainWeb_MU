@@ -1,6 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import MUFABeritaDetailPage from "../../../../components/MUFA/Berita/Detail/MUFABeritaDetailPage";
+import MUFABeritaDetailPage from "@/components/MUFA/Berita/Detail/MUFABeritaDetailPage";
 
 interface PageProps {
   params: Promise<{ id: string }>;

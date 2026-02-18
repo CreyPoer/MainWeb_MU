@@ -1,0 +1,486 @@
+{
+    "meta": {
+        "title": "Madura United FC - Official Website",
+        "description": "Official website of Madura United Football Club - Sape Kerrab Madura United!"
+    },
+    "nav": {
+        "home": "Home",
+        "team": "Team",
+        "main_team": "First Team",
+        "academy": "Academy",
+        "u20": "U-20",
+        "players": "Players",
+        "officials": "Officials",
+        "matches": "Matches",
+        "schedule": "Schedule & Results",
+        "standings": "Standings",
+        "media": "Media",
+        "news": "News",
+        "gallery": "Gallery",
+        "video": "Video",
+        "club": "Club",
+        "about": "About Madura United FC",
+        "mufa": "MUFA"
+    },
+    "section": {
+        "next_match": "NEXT MATCH",
+        "latest_results": "Latest Match Results",
+        "our_blog": "Our Blog",
+        "recent_club_news": "Recent Club",
+        "news_highlight": "News",
+        "season": "Season 2025-2026",
+        "league_table": "League Table",
+        "football_club": "FOOTBALL CLUB",
+        "fixtures_and_matches": "Fixtures and Matches",
+        "our_videos": "Our Videos",
+        "watch": "Watch",
+        "highlights": "Highlights",
+        "watch_highlight_bg": "WATCH HIGHLIGHT",
+        "our_memories": "Our Memories",
+        "latest": "Latest",
+        "gallery_highlight": "Gallery",
+        "online_store": "Online Store",
+        "support_team": "Support Your Favorite Team With",
+        "branded_accessories": "Branded Accessories",
+        "club_merch_bg": "CLUB MERCH",
+        "partnership": "Partnership",
+        "general_partners": "General Partners & Sponsors",
+        "of_madura_united": "Of Madura United",
+        "latest_matches": "Latest Matches",
+        "updates_last_game": "Updates from Our Last Game"
+    },
+    "footer": {
+        "essential_links": "Essential Links",
+        "get_in_touch": "Get In Touch",
+        "post_gallery": "Post Gallery",
+        "email": "EMAIL",
+        "phone": "PHONE",
+        "location": "LOCATION",
+        "address": "Jl. Raya Panglegur No. 10, Pamekasan, Madura, East Java",
+        "brand_desc": "It was the end of a period in the 1980s in which it seemed like every championship matchup featured the Laskar Sape Kerrab sports club.",
+        "copyright": "COPYRIGHT & DESIGN BY",
+        "view_album": "View Album",
+        "home": "Home",
+        "match": "Match",
+        "results": "Results",
+        "news_standings": "News & Standings",
+        "videos": "Videos",
+        "gallery": "Gallery",
+        "merchandise": "Merchandise",
+        "partners": "Partners",
+        "schedule": "Matches",
+        "standings": "Standings",
+        "main_team": "First Team",
+        "academy_team": "Academy Team",
+        "officials": "Officials",
+        "news": "News",
+        "about_us": "About Us",
+        "mufa": "MUFA"
+    },
+    "common": {
+        "view_all": "View All",
+        "read_more": "Read More",
+        "buy_now": "Buy Now",
+        "see_more": "See More",
+        "close": "Close",
+        "loading": "Loading...",
+        "loading_gallery": "Loading Gallery...",
+        "loading_videos": "Loading Videos...",
+        "no_data": "No data available",
+        "vs": "VS",
+        "played": "P",
+        "won": "W",
+        "draw": "D",
+        "lost": "L",
+        "gd": "GD",
+        "pts": "Pts",
+        "pos": "Pos",
+        "team": "Team",
+        "latest": "Latest",
+        "no_images": "No images available",
+        "days": "Days",
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds",
+        "reset": "Reset",
+        "all": "All",
+        "filter": "Filter",
+        "search": "Search",
+        "image_of": "Image {current} of {total}"
+    },
+    "match": {
+        "kick_off": "Kick Off",
+        "venue": "Stadium",
+        "full_time": "Full Time",
+        "half_time": "Half Time",
+        "live": "LIVE",
+        "upcoming": "Upcoming",
+        "finished": "Finished",
+        "next_match": "NEXT MATCH",
+        "months": [
+            "JANUARY",
+            "FEBRUARY",
+            "MARCH",
+            "APRIL",
+            "MAY",
+            "JUNE",
+            "JULY",
+            "AUGUST",
+            "SEPTEMBER",
+            "OCTOBER",
+            "NOVEMBER",
+            "DECEMBER"
+        ]
+    },
+    "page": {
+        "officials": {
+            "title": "Officials",
+            "breadcrumb": "Officials List",
+            "list_title": "Officials List",
+            "no_data": "No officials data available.",
+            "main_team": "First Team",
+            "academy": "Academy"
+        },
+        "players": {
+            "title": "Players",
+            "breadcrumb": "Player List",
+            "list_title": "Player List",
+            "no_players": "No players found.",
+            "description": "Explore the full Madura United squad from the first team to the future players in the Academy."
+        },
+        "news": {
+            "title": "News",
+            "breadcrumb": "News",
+            "category_prefix": "Category",
+            "tag_prefix": "Tag",
+            "search_prefix": "Search",
+            "author_prefix": "Author",
+            "filter_title": "Filter News",
+            "keyword_search": "Keyword Search",
+            "search_placeholder": "Type to search...",
+            "categories": "Categories",
+            "popular_tags": "Popular Tags",
+            "no_news": "No news found.",
+            "try_other": "Try different keywords or filters.",
+            "reset_filter": "Reset Filter",
+            "breadcrumb_home": "Home",
+            "breadcrumb_news": "News"
+        },
+        "gallery": {
+            "title": "Gallery",
+            "breadcrumb": "Photo Gallery",
+            "all_filter": "All",
+            "club1": "Club",
+            "club2": ""
+        },
+        "video": {
+            "title": "Video",
+            "type_label": "Type",
+            "from_label": "From",
+            "to_label": "To",
+            "all_type": "All",
+            "next_match": "Next Match",
+            "last_match": "Last Match"
+        },
+        "standings": {
+            "title": "Standings",
+            "breadcrumb": "Standings",
+            "overview": {
+                "title": "OVERVIEW STATISTICS",
+                "season": "Season",
+                "most_goals": "Most Goals",
+                "best_defense": "Best Defense",
+                "hardest_beat": "Hardest to Beat",
+                "most_losses": "Most Losses",
+                "draw_specialist": "Draw Specialists",
+                "scored_label": "GOALS SCORED",
+                "conceded_label": "GOALS CONCEDED",
+                "losses_label": "LOSSES",
+                "draws_label": "DRAWS"
+            }
+        },
+        "schedule": {
+            "title": "Schedule & Results",
+            "breadcrumb": "Schedule & Results",
+            "breadcrumb_detail": "Match Detail",
+            "senior_team": "Senior Team",
+            "academy_u20": "Academy U20",
+            "latest_match": "Latest Match Update",
+            "upcoming": "Upcoming Matches",
+            "no_results": "No match results available.",
+            "no_upcoming": "No upcoming matches."
+        },
+        "about": {
+            "hero_title": "ABOUT MADURA UNITED FC",
+            "eyebrow": "About Us",
+            "about_us": "About Us",
+            "org_structure_title": "Organization Structure",
+            "org_structure_subtitle": "The management structure of Madura United FC displayed in a tiered (pyramid) format based on positions.",
+            "loading_org": "Loading organization structure data...",
+            "no_org": "No organization structure data available.",
+            "community_title": "Supporter Community",
+            "loading_community": "Loading community data...",
+            "no_community": "No community data available yet.",
+            "history": {
+                "title": "History & Journey of Madura United FC",
+                "desc": "The long journey of Madura United FC is rooted in the history of its predecessors. From the era of Pelita Jaya which became the professional foundation, the transformation into Pelita Bandung Raya, to the birth of a new identity as Madura United FC representing four regencies on Madura Island.",
+                "foundation": {
+                    "label": "Foundation Era",
+                    "title": "Pelita Jaya (1986 – 2012)",
+                    "body": "It all started with Pelita Jaya, one of the pioneers of professional clubs in Indonesia. In this era, the club built a great reputation in the Galatama competition and was known as an elite team that produced many national football legends. Although its base moved several times, the value of professionalism instilled since 1986 became a strong foundation for the club's future existence."
+                },
+                "transition": {
+                    "label": "Transition Era",
+                    "title": "Pelita Bandung Raya (2012 – 2015)",
+                    "body": "Entering 2012, the club transformed into Pelita Bandung Raya (PBR). This was a period of trial and proof. PBR surprised the national football public by reaching the semifinals of the 2014 Indonesia Super League (ISL). However, the dynamics of national football in late 2015 demanded major changes to maintain the club's survival."
+                },
+                "revival": {
+                    "label": "Revival Era",
+                    "title": "Madura United FC (2016 – Present)",
+                    "body1": "This is the era where the club finally found its true home and identity. Through the acquisition by Prof. Achsanul Qosasi on January 10, 2016, the club officially moved to Madura Island. More than just a name change, this is a declaration of independence for Madura's people's football.",
+                    "body2": "Madura United made history as a club that unites four regencies at once — Bangkalan, Sampang, Pamekasan, and Sumenep — under one banner, Laskar Sape Kerrab.",
+                    "body3": "In a short time, the club has consistently been at the top of Liga 1. Most recently, Madura United secured the Runner-up position in the 2023/2024 season and began spreading its wings in international competition through the AFC Challenge League 2024/2025."
+                }
+            },
+            "vision": {
+                "eyebrow": "Club Vision",
+                "title": "To become a professional football club that is independent, modern, and a center of football development in Indonesia.",
+                "subtext": "This vision serves as the main compass in every step of Madura United FC, both on and off the field.",
+                "cards": {
+                    "development": {
+                        "title": "Early Youth Development",
+                        "text": "Through Madura United Football Academy (MUFA), the club is committed to producing talented native Madurese players to reach the national and international level."
+                    },
+                    "identity": {
+                        "title": "Regional Identity",
+                        "text": "Strengthening Madura's identity in the national football scene by upholding high local values."
+                    },
+                    "management": {
+                        "title": "Modern Management",
+                        "text": "Managing the club transparently, accountably, and based on a sustainable sports industry."
+                    }
+                }
+            },
+            "philosophy": {
+                "eyebrow": "Club Identity",
+                "title": "Logo & Color Philosophy",
+                "subtitle": "The identity of Madura United FC is not only visible, but also holds meaning about character, culture, and fighting spirit.",
+                "logo_caption": "Official Logo of Madura United FC",
+                "callout_pill": "Core",
+                "callout_text": "The logo becomes a symbol of pride, togetherness, and ambition for Madura United to always appear brave and dignified.",
+                "panel_title": "Meaning behind each element",
+                "items": {
+                    "01": {
+                        "title": "Shape Without Sharp Corners (Inclusive Shield)",
+                        "text1": "Unlike many club logos that have sharp corners at the bottom, Madura United's logo is round/curved (resembling a jar or blunt shield).",
+                        "text2_em": "Meaning:",
+                        "text2": "Symbolizes that this club is an inclusive vessel embracing all groups. This club is not rigid, but flexible and open to all Madurese people regardless of background."
+                    },
+                    "02": {
+                        "title": "Bull Figure (Sape Kerrab)",
+                        "text1": "Not just any bull, this represents the Karapan Bull.",
+                        "text2_em": "Meaning:",
+                        "text2": "Symbolizes the Self-Esteem (Dignity) and Prestige of Madurese people. Karapan bulls are known for their speed, strength, and toughness—reflecting the team's fighting spirit on the field."
+                    },
+                    "03": {
+                        "title": "Gold Ring in Bull's Nose (Keles)",
+                        "text1": "There is a gold detail on the bull's nose.",
+                        "text2_em": "Meaning:",
+                        "text2": "In Madurese culture, the best Karapan bulls wear gold jewelry. This symbolizes achievement, glory, and the club's ambition to always be in the highest caste (gold/champion)."
+                    },
+                    "04": {
+                        "title": "Red & White Colors",
+                        "text_em": "Meaning:",
+                        "text": "Taken from the Pesa'an traditional clothing motif. Red symbolizes courage and firmness, while White symbolizes honesty and sportsmanship."
+                    }
+                }
+            },
+            "homebase": {
+                "eyebrow": "Stadium",
+                "title": "Home Base",
+                "subtitle": "Two perspectives on Madura United's home — match atmosphere and the pulse of club activity.",
+                "stadium_main": "Main Stadium",
+                "sgmrp": "Gelora Madura Ratu Pamelingan Stadium",
+                "sgb": "Gelora Bangkalan Stadium"
+            },
+            "hero": {
+                "subtitle": "Club",
+                "title": "ABOUT MADURA UNITED FC"
+            },
+            "achievements": {
+                "eyebrow": "ABOUT US",
+                "title": "ACHIEVEMENTS & AWARDS",
+                "items": {
+                    "suramadu": {
+                        "title": "SURAMADU SUPER CUP CHAMPION",
+                        "desc": "Winner of the 2018 international pre-season tournament."
+                    },
+                    "runnerup": {
+                        "title": "LIGA 1 RUNNER-UP",
+                        "desc": "Highest achievement in the 2023/2024 Championship Series season."
+                    },
+                    "afc": {
+                        "title": "AFC CLUB LICENSING",
+                        "desc": "Professional club with Asian standards routinely recognized."
+                    },
+                    "fairplay": {
+                        "title": "FAIR PLAY TEAM AWARD",
+                        "desc": "Award for the most sporting team in the 2021/2022 season."
+                    }
+                }
+            }
+        }
+    },
+    "mufa": {
+        "brand_name": "Madura United",
+        "brand_sub": "Football Academy",
+        "nav": {
+            "home": "Home",
+            "program": "Program",
+            "facilities": "Facilities",
+            "news": "News",
+            "gallery": "Gallery",
+            "video": "Video"
+        },
+        "hero": {
+            "view_program": "View Programs",
+            "explore_facilities": "Explore Facilities",
+            "loading": "Loading..."
+        },
+        "program": {
+            "eyebrow": "Our Programs",
+            "title_main": "Tiered Development",
+            "title_highlight": "Program",
+            "junior_badge": "Junior Development",
+            "junior_title": "MUFA Junior Development U-16",
+            "junior_desc": "Focus on mastering basic techniques, character, and simple tactical understanding as the foundation for modern players.",
+            "youth_badge": "Youth Elite",
+            "youth_title": "MUFA Youth Elite U-18",
+            "youth_desc": "Deepening tactics, high-intensity training, and acclimatization to the rhythm of elite national competition.",
+            "pro_badge": "Pro Transition",
+            "pro_title": "MUFA Pro Transition U-20",
+            "pro_desc": "Preparing players for the transition to the professional level, including EPA, Liga 2, and promotion to the senior team.",
+            "subtitle": "Three interconnected program levels, designed to guide young players towards a professional career with Madura United FC.",
+            "pathway": "Pathway",
+            "monitoring_note": "Each participant will undergo a selection process, structured training, and regular development monitoring by the MUFA coaching staff.",
+            "register_now": "Register Now",
+            "download_guidebook": "Download Guidebook"
+        },
+        "facilities": {
+            "eyebrow": "Living & Training Environment",
+            "title_main": "Complete",
+            "title_highlight": "Facilities",
+            "title_suffix": "For Your Journey",
+            "homebase_label": "Homebase MUFA",
+            "homebase_cat": "Residential",
+            "homebase_subtitle": "A comfortable and controlled dormitory environment to support the development of young players.",
+            "mutg_label": "MUTG",
+            "mutg_cat": "Training Ground",
+            "mutg_full": "Madura United Training Ground",
+            "mutg_subtitle": "The main training facility of the Madura United Training Ground (MUTG).",
+            "equipment_label": "Training Equipment",
+            "equipment_cat": "Support System",
+            "equipment_full": "Training & Career Path",
+            "equipment_subtitle": "Professional-standard training equipment to support player development.",
+            "equipment_note": "*Does not include personal sports equipment (such as football boots, etc.)."
+        },
+        "news": {
+            "eyebrow": "MUFA Updates",
+            "title_main": "Latest News",
+            "title_highlight": "Academy",
+            "view_all": "View All News",
+            "headline": "Headline",
+            "read_more": "Read More",
+            "archive_title": "News Archive",
+            "archive_highlight": "MUFA"
+        },
+        "gallery": {
+            "eyebrow": "Visual Stories",
+            "title_main": "Gallery",
+            "title_highlight": "MUFA",
+            "view_more": "See More",
+            "featured": "Featured Moments"
+        },
+        "video": {
+            "eyebrow": "MUFA Videos",
+            "title_main": "Watch",
+            "title_highlight": "MUFA",
+            "title_suffix": "In Action",
+            "view_all": "View All Videos"
+        },
+        "berita_page": {
+            "hero_eyebrow": "MUFA Newsroom",
+            "hero_title": "Latest News",
+            "hero_title_highlight": "Football Academy",
+            "hero_desc": "Stay updated on programs, matches, and development activities for young players at Madura United Football Academy.",
+            "list_eyebrow": "News List",
+            "archive_title": "News Archive",
+            "archive_highlight": "MUFA",
+            "archive_desc": "Explore the latest stories and developments from every development program running at the academy.",
+            "news_showing": "news showing",
+            "reset_filter": "Reset Filter",
+            "read_detail": "Read Detail",
+            "no_news_title": "No news found.",
+            "no_news_desc": "Try different keywords or filters.",
+            "filter_title": "Filter News",
+            "search_title": "Keyword Search",
+            "search_placeholder": "Type to search...",
+            "popular_tags": "Popular Tags"
+        },
+        "detail": {
+            "sourced_from": "Sourced from:",
+            "about_author": "ABOUT",
+            "author_desc": "MUFA consistently delivers the latest information about programs, matches, and the development of young talents within the Madura United Football Academy.",
+            "view_all_by": "View all news by",
+            "previous_post": "Previous Post",
+            "next_post": "Next Post",
+            "you_may_like": "You May Also Like",
+            "read_more": "Read More",
+            "filter_insight": "Filter & Insight",
+            "search_news": "News Search",
+            "search_placeholder": "Search MUFA news...",
+            "tags_label": "TAGS:",
+            "share_label": "SHARE:",
+            "related_news": "Related News",
+            "sidebar_menu": "Sidebar Menu",
+            "search_widget": "Search",
+            "categories_widget": "Categories",
+            "link_copied": "Link copied! You can paste it in your Instagram Story or DM."
+        },
+        "gallery_page": {
+            "hero_eyebrow": "Visual Stories",
+            "hero_title": "Activity Gallery",
+            "hero_title_highlight": "Football Academy",
+            "hero_desc": "Capturing every precious moment, spirit, and dedication of the young talents at Madura United Football Academy.",
+            "content_eyebrow": "Our Memories",
+            "content_title": "Club",
+            "content_title_highlight": "Photo Gallery",
+            "all_filter": "All",
+            "loading": "Loading Gallery...",
+            "no_gallery": "No gallery found for this category."
+        },
+        "video_page": {
+            "hero_eyebrow": "Motion Stories",
+            "hero_title": "Video Gallery",
+            "hero_title_highlight": "Football Academy",
+            "hero_desc": "Watch the action, spirit, and best moments from the young talents at Madura United Football Academy.",
+            "content_eyebrow": "Latest Updates",
+            "content_title": "Watch",
+            "content_title_highlight": "Highlights",
+            "from_label": "From:",
+            "to_label": "To:",
+            "loading": "Loading MUFA videos...",
+            "no_video": "No videos found for this date range."
+        },
+        "footer": {
+            "navigation": "Navigation",
+            "gallery": "Gallery",
+            "explore_more": "Explore More",
+            "explore_desc": "Want to know complete information about the first team, match schedules, and the latest news from Madura United FC?",
+            "explore_cta": "Go to Main Madura United FC Website",
+            "brand_desc": "MUFA is the official development program of Madura United FC that prepares young talents through a structured curriculum, modern facilities, and a clear path to professional football.",
+            "copyright": "© 2026 Madura United Football Academy. All rights reserved.",
+            "image_counter": "Image {current} of {total}"
+        }
+    }
+}

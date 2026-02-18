@@ -1,0 +1,471 @@
+{
+  "meta": {
+    "title": "Madura United FC - Website Resmi",
+    "description": "Website resmi Madura United Football Club - Sape Kerrab Madura United!"
+  },
+  "nav": {
+    "home": "Beranda",
+    "team": "Tim",
+    "main_team": "Tim Utama",
+    "academy": "Academy",
+    "u20": "U-20",
+    "players": "Pemain",
+    "officials": "Officials",
+    "matches": "Pertandingan",
+    "schedule": "Jadwal dan Hasil",
+    "standings": "Klasemen",
+    "media": "Media",
+    "news": "Berita",
+    "gallery": "Galeri",
+    "video": "Video",
+    "club": "Klub",
+    "about": "Tentang Madura United FC",
+    "mufa": "MUFA"
+  },
+  "section": {
+    "next_match": "PERTANDINGAN SELANJUTNYA",
+    "latest_results": "Hasil Pertandingan Terakhir",
+    "our_blog": "Blog Kami",
+    "recent_club_news": "Berita Terbaru",
+    "news_highlight": "Klub",
+    "season": "Musim 2025-2026",
+    "league_table": "Tabel Liga",
+    "football_club": "KLUB SEPAK BOLA",
+    "fixtures_and_matches": "Jadwal dan Pertandingan",
+    "our_videos": "Video Kami",
+    "watch": "Tonton",
+    "highlights": "Sorotan",
+    "watch_highlight_bg": "TONTON SOROTAN",
+    "our_memories": "Kenangan Kami",
+    "latest": "Galeri",
+    "gallery_highlight": "Terbaru",
+    "online_store": "Toko Online",
+    "support_team": "Dukung Tim Favoritmu Dengan",
+    "branded_accessories": "Aksesoris Bermerek",
+    "club_merch_bg": "MERCH KLUB",
+    "partnership": "Kemitraan",
+    "general_partners": "Partner Umum & Sponsor",
+    "of_madura_united": "Madura United",
+    "latest_matches": "Pertandingan Terbaru",
+    "updates_last_game": "Update Hasil Laga Terakhir"
+  },
+  "footer": {
+    "essential_links": "Link Penting",
+    "get_in_touch": "Hubungi Kami",
+    "post_gallery": "Galeri Pos",
+    "email": "EMAIL",
+    "phone": "TELEPON",
+    "location": "LOKASI",
+    "address": "Jl. Raya Panglegur No. 10, Pamekasan, Madura, Jawa Timur",
+    "brand_desc": "Sebuah periode di akhir tahun 1980-an dimana seakan setiap pertandingan kejuaraan menampilkan klub olahraga Laskar Sape Kerrab.",
+    "copyright": "HAK CIPTA & DESAIN OLEH",
+    "view_album": "Lihat Album",
+    "home": "Beranda",
+    "match": "Pertandingan",
+    "results": "Hasil",
+    "news_standings": "Berita & Klasemen",
+    "videos": "Video",
+    "gallery": "Galeri",
+    "merchandise": "Merchandise",
+    "partners": "Partner",
+    "schedule": "Pertandingan",
+    "standings": "Klasemen",
+    "main_team": "Tim Utama",
+    "academy_team": "Tim Akademi",
+    "officials": "Officials",
+    "news": "Berita",
+    "about_us": "Tentang Kami",
+    "mufa": "MUFA"
+  },
+  "common": {
+    "view_all": "Lihat Semua",
+    "read_more": "Selengkapnya",
+    "buy_now": "Beli Sekarang",
+    "see_more": "Lihat Lainnya",
+    "close": "Tutup",
+    "loading": "Memuat...",
+    "loading_gallery": "Memuat Galeri...",
+    "loading_videos": "Memuat Video...",
+    "no_data": "Tidak ada data",
+    "vs": "VS",
+    "played": "Main",
+    "won": "M",
+    "draw": "S",
+    "lost": "K",
+    "gd": "SG",
+    "pts": "Poin",
+    "pos": "Pos",
+    "team": "Tim",
+    "latest": "Terbaru",
+    "no_images": "Tidak ada gambar",
+    "days": "Hari",
+    "hours": "Jam",
+    "minutes": "Menit",
+    "seconds": "Detik",
+    "reset": "Reset",
+    "all": "Semua",
+    "filter": "Filter",
+    "search": "Cari",
+    "image_of": "Gambar {current} dari {total}"
+  },
+  "match": {
+    "kick_off": "Kick Off",
+    "venue": "Stadion",
+    "full_time": "Babak Penuh",
+    "half_time": "Babak Pertama",
+    "live": "LIVE",
+    "upcoming": "Akan Datang",
+    "finished": "Selesai",
+    "next_match": "PERTANDINGAN SELANJUTNYA",
+    "months": [
+      "JANUARI",
+      "FEBRUARI",
+      "MARET",
+      "APRIL",
+      "MEI",
+      "JUNI",
+      "JULI",
+      "AGUSTUS",
+      "SEPTEMBER",
+      "OKTOBER",
+      "NOVEMBER",
+      "DESEMBER"
+    ]
+  },
+  "page": {
+    "officials": {
+      "title": "Petugas",
+      "breadcrumb": "Daftar Officials",
+      "list_title": "Daftar Officials",
+      "no_data": "Tidak ada data officials.",
+      "main_team": "Tim Utama",
+      "academy": "Akademi"
+    },
+    "players": {
+      "title": "Pemain",
+      "breadcrumb": "Daftar Pemain",
+      "list_title": "Daftar Pemain",
+      "no_players": "Tidak ada pemain ditemukan.",
+      "description": "Jelajahi skuad lengkap Madura United mulai dari tim utama hingga pemain masa depan di Akademi."
+    },
+    "news": {
+      "title": "Berita",
+      "breadcrumb": "Berita",
+      "category_prefix": "Kategori",
+      "tag_prefix": "Tag",
+      "search_prefix": "Pencarian",
+      "author_prefix": "Penulis",
+      "filter_title": "Filter Berita",
+      "keyword_search": "Pencarian Kata Kunci",
+      "search_placeholder": "Ketik untuk mencari...",
+      "categories": "Kategori",
+      "popular_tags": "Penanda Terpopuler",
+      "no_news": "Tidak ada berita ditemukan.",
+      "try_other": "Coba kata kunci atau filter lain.",
+      "reset_filter": "Reset Filter",
+      "breadcrumb_home": "Beranda",
+      "breadcrumb_news": "Berita"
+    },
+    "gallery": {
+      "title": "Galeri",
+      "breadcrumb": "Galeri Foto",
+      "all_filter": "Semua",
+      "club1": "",
+      "club2": "Klub"
+    },
+    "video": {
+      "title": "Video",
+      "type_label": "Tipe",
+      "from_label": "Dari",
+      "to_label": "Sampai",
+      "all_type": "Semua"
+    },
+    "standings": {
+      "title": "Klasemen",
+      "breadcrumb": "Klasemen"
+    },
+    "schedule": {
+      "title": "Jadwal dan Hasil",
+      "breadcrumb": "Jadwal dan Hasil",
+      "breadcrumb_detail": "Detail Pertandingan",
+      "senior_team": "Tim Senior",
+      "academy_u20": "Academy U20",
+      "next_match": "Pertandingan Berikutnya",
+      "last_match": "Pertandingan Terakhir",
+      "no_results": "Tidak ada hasil pertandingan.",
+      "no_upcoming": "Tidak ada pertandingan mendatang."
+    },
+    "about": {
+      "hero_title": "TENTANG MADURA UNITED FC",
+      "eyebrow": "Tentang Kami",
+      "about_us": "Tentang Kami",
+      "org_structure_title": "Struktur Organisasi",
+      "org_structure_subtitle": "Susunan kepengurusan Madura United FC ditampilkan dalam format bertingkat (piramida) berdasarkan jabatan.",
+      "loading_org": "Memuat data struktur organisasi...",
+      "no_org": "Tidak ada data struktur organisasi.",
+      "community_title": "Komunitas Suporter",
+      "loading_community": "Memuat data komunitas...",
+      "no_community": "Belum ada data komunitas.",
+      "history": {
+        "title": "Sejarah & Perjalanan Madura United FC",
+        "desc": "Perjalanan panjang Madura United FC berakar dari sejarah klub-klub pendahulunya. Dari era Pelita Jaya yang menjadi fondasi profesional, transformasi menjadi Pelita Bandung Raya, hingga kelahiran identitas baru sebagai Madura United FC yang mewakili empat kabupaten di Pulau Madura.",
+        "foundation": {
+          "label": "Era Fondasi",
+          "title": "Pelita Jaya (1986 – 2012)",
+          "body": "Semua bermula dari Pelita Jaya, salah satu pionir klub profesional di Indonesia. Di era ini, klub membangun reputasi besar di kompetisi Galatama dan dikenal sebagai tim elit yang melahirkan banyak legenda sepak bola nasional. Meskipun markasnya sempat berpindah-pindah, nilai profesionalisme yang ditanamkan sejak 1986 menjadi fondasi kuat bagi eksistensi klub di masa depan."
+        },
+        "transition": {
+          "label": "Era Transisi",
+          "title": "Pelita Bandung Raya (2012 – 2015)",
+          "body": "Memasuki tahun 2012, klub bertransformasi menjadi Pelita Bandung Raya (PBR). Masa ini adalah periode ujian sekaligus pembuktian. PBR sempat mengejutkan publik sepak bola tanah air dengan menembus babak semifinal Indonesia Super League (ISL) 2014. Namun, dinamika sepak bola nasional di akhir 2015 menuntut adanya perubahan besar untuk menjaga kelangsungan hidup klub."
+        },
+        "revival": {
+          "label": "Era Kebangkitan",
+          "title": "Madura United FC (2016 – Sekarang)",
+          "body1": "Ini adalah era di mana klub akhirnya menemukan rumah dan identitas sejatinya. Melalui akuisisi oleh Prof. Achsanul Qosasi pada 10 Januari 2016, klub resmi berpindah ke Pulau Madura. Bukan sekadar berganti nama, ini adalah deklarasi kemandirian sepak bola rakyat Madura.",
+          "body2": "Madura United mencetak sejarah sebagai klub yang menyatukan empat kabupaten sekaligus — Bangkalan, Sampang, Pamekasan, dan Sumenep — di bawah satu panji Laskar Sape Kerrab.",
+          "body3": "Dalam waktu singkat, klub konsisten berada di papan atas Liga 1. Puncaknya, Madura United meraih posisi Runner-up di musim 2023/2024 dan mulai melebarkan sayap di kompetisi internasional melalui AFC Challenge League 2024/2025."
+        }
+      },
+      "vision": {
+        "eyebrow": "Visi Klub",
+        "title": "Menjadi klub sepak bola profesional yang mandiri, modern, dan menjadi kiblat pembinaan sepak bola di Indonesia.",
+        "subtext": "Visi ini menjadi kompas utama dalam setiap langkah Madura United FC, baik di dalam maupun di luar lapangan.",
+        "cards": {
+          "development": {
+            "title": "Pembinaan Usia Dini",
+            "text": "Melalui Madura United Football Academy (MUFA), klub berkomitmen melahirkan pemain berbakat asli Madura untuk menembus level nasional dan internasional."
+          },
+          "identity": {
+            "title": "Identitas Daerah",
+            "text": "Memperkuat identitas Madura di kancah sepak bola nasional dengan menjunjung tinggi nilai-nilai lokal."
+          },
+          "management": {
+            "title": "Manajemen Modern",
+            "text": "Mengelola klub secara transparan, akuntabel, dan berbasis industri olahraga yang berkelanjutan."
+          }
+        }
+      },
+      "philosophy": {
+        "eyebrow": "Identitas Klub",
+        "title": "Filosofi Logo & Warna",
+        "subtitle": "Identitas Madura United FC tidak hanya terlihat, tetapi juga menyimpan makna tentang karakter, budaya, dan semangat juang.",
+        "logo_caption": "Logo resmi Madura United FC",
+        "callout_pill": "Inti",
+        "callout_text": "Logo menjadi simbol kebanggaan, kebersamaan, dan ambisi Madura United untuk selalu tampil berani dan bermartabat.",
+        "panel_title": "Makna di balik tiap elemen",
+        "items": {
+          "01": {
+            "title": "Bentuk Tanpa Sudut Tajam (Inclusive Shield)",
+            "text1": "Berbeda dengan banyak logo klub yang memiliki sudut tajam di bawah, logo Madura United berbentuk bulat/melengkung (menyerupai tempayan atau perisai tumpul).",
+            "text2_em": "Maknanya:",
+            "text2": "Melambangkan bahwa klub ini adalah wadah yang inklusif dan merangkul semua golongan. Klub ini tidak kaku, melainkan fleksibel dan terbuka bagi seluruh masyarakat Madura tanpa memandang latar belakang."
+          },
+          "02": {
+            "title": "Sosok Sapi (Sape Kerrab)",
+            "text1": "Bukan sembarang sapi, ini merepresentasikan Sapi Karapan.",
+            "text2_em": "Maknanya:",
+            "text2": "Melambangkan Harga Diri (Harkat) dan Martabat orang Madura. Sapi karapan dikenal karena kecepatan, kekuatan, dan ketangguhannya—mencerminkan semangat juang tim di lapangan."
+          },
+          "03": {
+            "title": "Cincin Emas di Hidung Sapi (Keles)",
+            "text1": "Terdapat detail warna emas pada bagian hidung sapi.",
+            "text2_em": "Maknanya:",
+            "text2": "Dalam budaya Madura, sapi karapan terbaik mengenakan perhiasan emas. Ini melambangkan prestasi, kemuliaan, dan ambisi klub untuk selalu berada di kasta tertinggi (emas/juara)."
+          },
+          "04": {
+            "title": "Warna Merah & Putih",
+            "text_em": "Maknanya:",
+            "text": "Diambil dari motif baju adat Pesa'an. Merah melambangkan keberanian dan ketegasan, sedangkan Putih melambangkan kejujuran dan sportivitas."
+          }
+        }
+      },
+      "homebase": {
+        "eyebrow": "Stadion",
+        "title": "Home Base",
+        "subtitle": "Dua sudut pandang tentang kandang Madura United — atmosfer pertandingan dan denyut aktivitas klub.",
+        "stadium_main": "Stadion Utama",
+        "sgmrp": "Stadion Gelora Madura Ratu Pamelingan",
+        "sgb": "Stadion Gelora Bangkalan"
+      },
+      "hero": {
+        "subtitle": "Klub",
+        "title": "TENTANG MADURA UNITED FC"
+      },
+      "achievements": {
+        "eyebrow": "TENTANG KAMI",
+        "title": "PRESTASI & PENGHARGAAN",
+        "items": {
+          "suramadu": {
+            "title": "JUARA SURAMADU SUPER CUP",
+            "desc": "Pemenang turnamen internasional pramusim 2018."
+          },
+          "runnerup": {
+            "title": "RUNNER-UP LIGA 1",
+            "desc": "Pencapaian tertinggi di Championship Series musim 2023/2024."
+          },
+          "afc": {
+            "title": "AFC CLUB LICENSING",
+            "desc": "Klub profesional berstandar Asia yang diakui secara rutin."
+          },
+          "fairplay": {
+            "title": "TIM FAIR PLAY AWARD",
+            "desc": "Penghargaan tim paling sportif pada musim 2021/2022."
+          }
+        }
+      }
+    }
+  },
+  "mufa": {
+    "brand_name": "Madura United",
+    "brand_sub": "Football Academy",
+    "nav": {
+      "home": "Beranda",
+      "program": "Program",
+      "facilities": "Fasilitas",
+      "news": "Berita",
+      "gallery": "Gallery",
+      "video": "Video"
+    },
+    "hero": {
+      "view_program": "Lihat Program",
+      "explore_facilities": "Jelajahi Fasilitas",
+      "loading": "Memuat..."
+    },
+    "program": {
+      "eyebrow": "Program Kami",
+      "title_main": "Program Pembinaan",
+      "title_highlight": "Berjenjang",
+      "junior_badge": "Junior Development",
+      "junior_title": "MUFA Junior Development U-16",
+      "junior_desc": "Fokus pada penguasaan teknik dasar, karakter, dan pemahaman taktik sederhana sebagai fondasi pemain modern.",
+      "youth_badge": "Youth Elite",
+      "youth_title": "MUFA Youth Elite U-18",
+      "youth_desc": "Pendalaman taktik, intensitas latihan tinggi, dan pembiasaan pada ritme kompetisi nasional tingkat elite.",
+      "pro_badge": "Pro Transition",
+      "pro_title": "MUFA Pro Transition U-20",
+      "pro_desc": "Mempersiapkan pemain untuk transisi ke level profesional, termasuk EPA, Liga 2, dan promosi ke tim utama.",
+      "subtitle": "Tiga level program yang saling terhubung, dirancang untuk mengantar pemain muda menuju jenjang profesional bersama Madura United FC.",
+      "pathway": "Pathway",
+      "monitoring_note": "Setiap peserta akan melalui proses seleksi, program latihan terukur, dan monitoring perkembangan secara berkala oleh tim pelatih MUFA.",
+      "register_now": "Daftar Sekarang",
+      "download_guidebook": "Download Guidebook"
+    },
+    "facilities": {
+      "eyebrow": "Lingkungan Tinggal & Latihan",
+      "title_main": "Fasilitas",
+      "title_highlight": "Lengkap",
+      "title_suffix": "Untuk Perjalananmu",
+      "homebase_label": "Homebase MUFA",
+      "homebase_cat": "Hunian",
+      "homebase_subtitle": "Lingkungan asrama yang nyaman dan terkontrol untuk mendukung perkembangan pemain muda.",
+      "mutg_label": "MUTG",
+      "mutg_cat": "Lapangan Latihan",
+      "mutg_full": "Madura United Training Ground",
+      "mutg_subtitle": "Fasilitas latihan utama Madura United Training Ground (MUTG).",
+      "equipment_label": "Peralatan Latihan",
+      "equipment_cat": "Sistem Pendukung",
+      "equipment_full": "Latihan & Jalur Karir",
+      "equipment_subtitle": "Perlengkapan latihan berstandar profesional untuk mendukung pengembangan pemain.",
+      "equipment_note": "*Tidak termasuk peralatan olahraga pribadi (seperti sepatu bola, dll)."
+    },
+    "news": {
+      "eyebrow": "Update MUFA",
+      "title_main": "Berita Terbaru",
+      "title_highlight": "Academy",
+      "view_all": "Lihat Semua Berita",
+      "headline": "Headline",
+      "read_more": "Baca Selengkapnya",
+      "archive_title": "Arsip Berita",
+      "archive_highlight": "MUFA"
+    },
+    "gallery": {
+      "eyebrow": "Cerita Visual",
+      "title_main": "Gallery",
+      "title_highlight": "MUFA",
+      "view_more": "Lihat Selengkapnya",
+      "featured": "Momen Unggulan"
+    },
+    "video": {
+      "eyebrow": "Video MUFA",
+      "title_main": "Tonton",
+      "title_highlight": "MUFA",
+      "title_suffix": "Beraksi",
+      "view_all": "Lihat Semua Video"
+    },
+    "berita_page": {
+      "hero_eyebrow": "Ruang Berita MUFA",
+      "hero_title": "Berita Terbaru",
+      "hero_title_highlight": "Football Academy",
+      "hero_desc": "Update terkini seputar program, pertandingan, dan aktivitas pengembangan pemain muda di Madura United Football Academy.",
+      "list_eyebrow": "Daftar Berita",
+      "archive_title": "Arsip Berita",
+      "archive_highlight": "MUFA",
+      "archive_desc": "Jelajahi rangkaian cerita dan perkembangan terbaru dari setiap program pembinaan yang berjalan di akademi.",
+      "news_showing": "berita tampil",
+      "reset_filter": "Reset Filter",
+      "read_detail": "Baca Detail",
+      "no_news_title": "Tidak ada berita ditemukan.",
+      "no_news_desc": "Coba kata kunci atau filter lain.",
+      "filter_title": "Filter Berita",
+      "search_title": "Pencarian Kata Kunci",
+      "search_placeholder": "Ketik untuk mencari...",
+      "popular_tags": "Penanda Populer"
+    },
+    "detail": {
+      "sourced_from": "Dilansir dari:",
+      "about_author": "TENTANG",
+      "author_desc": "MUFA secara konsisten menghadirkan informasi terkini seputar program, pertandingan, dan pengembangan talenta muda di lingkungan Madura United Football Academy.",
+      "view_all_by": "Lihat semua berita dari",
+      "previous_post": "Post Sebelumnya",
+      "next_post": "Post Berikutnya",
+      "you_may_like": "Anda Mungkin Suka",
+      "read_more": "Baca Selengkapnya",
+      "filter_insight": "Filter & Insight",
+      "search_news": "Pencarian Berita",
+      "search_placeholder": "Cari di berita MUFA...",
+      "tags_label": "PENANDA:",
+      "share_label": "SEBAR:",
+      "related_news": "Berita Terkait",
+      "sidebar_menu": "Menu Sidebar",
+      "search_widget": "Pencarian",
+      "categories_widget": "Kategori",
+      "link_copied": "Link berhasil disalin! Kamu bisa paste di Instagram Story atau DM."
+    },
+    "gallery_page": {
+      "hero_eyebrow": "Cerita Visual",
+      "hero_title": "Galeri Aktivitas",
+      "hero_title_highlight": "Football Academy",
+      "hero_desc": "Menangkap setiap momen berharga, semangat, dan dedikasi para talenta muda Madura United Football Academy.",
+      "content_eyebrow": "Kenangan Kami",
+      "content_title": "Galeri Foto",
+      "content_title_highlight": "Klub",
+      "all_filter": "Semua",
+      "loading": "Memuat Galeri...",
+      "no_gallery": "Tidak ada galeri ditemukan untuk kategori ini."
+    },
+    "video_page": {
+      "hero_eyebrow": "Cerita Gerak",
+      "hero_title": "Galeri Video",
+      "hero_title_highlight": "Football Academy",
+      "hero_desc": "Saksikan aksi, semangat, dan momen terbaik dari talenta muda Madura United Football Academy.",
+      "content_eyebrow": "Update Terbaru",
+      "content_title": "Tonton",
+      "content_title_highlight": "Sorotan",
+      "from_label": "Dari:",
+      "to_label": "Sampai:",
+      "loading": "Memuat video MUFA...",
+      "no_video": "Tidak ada video ditemukan untuk rentang tanggal ini."
+    },
+    "footer": {
+      "navigation": "Navigasi",
+      "gallery": "Gallery",
+      "explore_more": "Jelajahi Lebih Jauh",
+      "explore_desc": "Ingin mengetahui informasi lengkap mengenai tim utama, jadwal pertandingan, dan berita terbaru Madura United FC?",
+      "explore_cta": "Ke Website Utama Madura United FC",
+      "brand_desc": "MUFA merupakan program pembinaan resmi Madura United FC yang mempersiapkan talenta muda melalui kurikulum terstruktur, fasilitas modern, dan jalur jelas menuju sepak bola profesional.",
+      "copyright": "© 2026 Madura United Football Academy. Hak cipta dilindungi.",
+      "image_counter": "Gambar {current} dari {total}"
+    }
+  }
+}

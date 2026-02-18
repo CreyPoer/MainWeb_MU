@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // --- DATA TYPE ---
 interface PartnerItem {
@@ -14,6 +15,7 @@ interface PartnerItem {
 }
 
 export default function PartnerSection() {
+    const { t } = useLanguage();
     const [hoveredId, setHoveredId] = useState<string | number | null>(null);
     const [partnersData, setPartnersData] = useState<PartnerItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -56,7 +58,7 @@ export default function PartnerSection() {
                         fontSize: '14px',
                         marginBottom: '8px'
                     }}>
-                        Partnership
+                        {t('section.partnership')}
                     </h5>
                     <h2 style={{
                         fontSize: '36px',
@@ -65,8 +67,8 @@ export default function PartnerSection() {
                         color: '#111827',
                         lineHeight: '1.2'
                     }} className="header-title">
-                        General Partners & Sponsors <br />
-                        <span style={{ color: '#DC2626' }}>Of Madura United</span>
+                        {t('section.general_partners')} <br />
+                        <span style={{ color: '#DC2626' }}>{t('section.of_madura_united')}</span>
                     </h2>
                 </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaPlay, FaTimes, FaArrowRight } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Video {
   id: string;
@@ -11,6 +12,7 @@ interface Video {
 }
 
 export default function MUFAVideoSection() {
+  const { t, lang } = useLanguage();
   const [active, setActive] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
@@ -34,7 +36,7 @@ export default function MUFAVideoSection() {
   }, []);
 
   if (isLoading) {
-    return <div className="py-20 text-center text-white">Loading Videos...</div>;
+    return <div className="py-20 text-center text-white">{t('mufa.hero.loading')}</div>;
   }
 
   // If no videos, do we hide or show empty? 
@@ -49,22 +51,22 @@ export default function MUFAVideoSection() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
           <div>
             <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
-              Video Highlight
+              {t('mufa.video.eyebrow')}
             </p>
             <h2
               data-aos="fade-up"
               className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight"
             >
-              Watch <span className="text-red-400">MUFA</span> In Action
+              {t('mufa.video.title_main')} <span className="text-red-400">{t('mufa.video.title_highlight')}</span> {t('mufa.video.title_suffix')}
             </h2>
           </div>
           <Link
-            href="/mufa/video"
+            href={`/${lang}/mufa/video`}
             data-aos="fade-left"
             className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase text-slate-100/90 hover:text-amber-300"
             onClick={e => e.stopPropagation()}
           >
-            Lihat Selengkapnya <FaArrowRight size={12} />
+            {t('mufa.video.view_all')} <FaArrowRight size={12} />
           </Link>
         </div>
 

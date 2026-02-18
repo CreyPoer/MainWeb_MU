@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NewsItem {
   id: number;
@@ -17,6 +18,7 @@ interface NewsItem {
 }
 
 export default function MUFANewsSection() {
+  const { t, lang } = useLanguage();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,21 +62,21 @@ export default function MUFANewsSection() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
           <div>
             <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
-              MUFA Updates
+              {t('mufa.news.eyebrow')}
             </p>
             <h2
               data-aos="fade-up"
               className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight"
             >
-              Berita Terbaru <span className="text-red-400">Academy</span>
+              {t('mufa.news.title_main')} <span className="text-red-400">{t('mufa.news.title_highlight')}</span>
             </h2>
           </div>
           <Link
-            href="/mufa/berita"
+            href={`/${lang}/mufa/berita`}
             data-aos="fade-left"
             className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase text-slate-100/90 hover:text-amber-300"
           >
-            Lihat Semua Berita <FaArrowRight size={12} />
+            {t('mufa.news.view_all')} <FaArrowRight size={12} />
           </Link>
         </div>
 
@@ -82,7 +84,7 @@ export default function MUFANewsSection() {
           {/* Featured */}
           {featured && (
             <Link
-              href={`/news/${featured.slug}`}
+              href={`/${lang}/mufa/berita/${featured.slug}`}
               data-aos="fade-right"
               className="group block relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/80 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/30 hover:border-red-500/70 h-full"
             >
@@ -97,7 +99,7 @@ export default function MUFANewsSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col gap-3">
                   <span className="inline-flex px-3 py-1 rounded-full bg-red-500 text-xs font-semibold tracking-[0.18em] uppercase text-white/90 self-start">
-                    Headline
+                    {t('mufa.news.headline')}
                   </span>
                   <p className="text-xs text-slate-200/80">{featured.date} | {featured.author}</p>
                   <h3 className="text-xl md:text-2xl font-bold text-white leading-snug line-clamp-2">
@@ -140,6 +142,11 @@ export default function MUFANewsSection() {
                   <p className="text-[11px] md:text-xs text-slate-300/90 line-clamp-2 md:line-clamp-3">
                     {item.excerpt}
                   </p>
+                  <div className="mt-3">
+                    <span className="inline-flex items-center justify-center px-6 py-2 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-bold uppercase tracking-wider rounded-full transition-colors duration-300">
+                      {t('mufa.news.read_more')}
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}

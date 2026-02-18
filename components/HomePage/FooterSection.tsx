@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // --- DATA TYPE ---
 interface GalleryAlbum {
@@ -12,39 +13,42 @@ interface GalleryAlbum {
     images: string[];
 }
 
-const ESSENTIAL_LINKS_1 = [
-    { label: "Home", href: "#home" },
-    { label: "Match", href: "#match" },
-    { label: "Results", href: "#results" },
-    { label: "News & Standings", href: "#news" },
-];
-
-const ESSENTIAL_LINKS_2 = [
-    { label: "Videos", href: "#videos" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "Merchandise", href: "#merchandise" },
-    { label: "Partners", href: "#partners" },
-];
-
-const ESSENTIAL_LINKS_3 = [
-    { label: "Pertandingan", href: "/pertandingan/jadwal" },
-    { label: "Klasemen", href: "/pertandingan/klasemen" },
-    { label: "Tim Utama", href: "/tim/utama/pemain" },
-    { label: "Tim Akademi", href: "/tim/utama/pemain?tab=akademi" },
-    { label: "Officials", href: "/tim/utama/officials" },
-];
-
-const ESSENTIAL_LINKS_4 = [
-    { label: "Berita", href: "/media/berita" },
-    { label: "Gallery", href: "/media/gallery" },
-    { label: "Video", href: "/media/video" },
-    { label: "Tentang Kami", href: "/klub/tentang" },
-    { label: "MUFA", href: "/mufa" },
-];
+// Links are now built inside the component using useLanguage()
 
 export default function FooterSection() {
     const pathname = usePathname();
-    const isHomepage = pathname === "/";
+    const { lang, t } = useLanguage();
+    const isHomepage = pathname === `/${lang}` || pathname === `/${lang}/`;
+
+    const ESSENTIAL_LINKS_1 = [
+        { label: t('footer.home'), href: "#home" },
+        { label: t('footer.match'), href: "#match" },
+        { label: t('footer.results'), href: "#results" },
+        { label: t('footer.news_standings'), href: "#news" },
+    ];
+
+    const ESSENTIAL_LINKS_2 = [
+        { label: t('footer.videos'), href: "#videos" },
+        { label: t('footer.gallery'), href: "#gallery" },
+        { label: t('footer.merchandise'), href: "#merchandise" },
+        { label: t('footer.partners'), href: "#partners" },
+    ];
+
+    const ESSENTIAL_LINKS_3 = [
+        { label: t('footer.schedule'), href: `/${lang}/pertandingan/jadwal` },
+        { label: t('footer.standings'), href: `/${lang}/pertandingan/klasemen` },
+        { label: t('footer.main_team'), href: `/${lang}/tim/utama/pemain` },
+        { label: t('footer.academy_team'), href: `/${lang}/tim/utama/pemain?tab=akademi` },
+        { label: t('footer.officials'), href: `/${lang}/tim/utama/officials` },
+    ];
+
+    const ESSENTIAL_LINKS_4 = [
+        { label: t('footer.news'), href: `/${lang}/media/berita` },
+        { label: t('footer.gallery'), href: `/${lang}/media/gallery` },
+        { label: t('nav.video'), href: `/${lang}/media/video` },
+        { label: t('footer.about_us'), href: `/${lang}/klub/tentang` },
+        { label: t('footer.mufa'), href: `/${lang}/mufa` },
+    ];
 
     const [galleryImages, setGalleryImages] = useState<GalleryAlbum[]>([]);
     const [activeAlbum, setActiveAlbum] = useState<GalleryAlbum | null>(null);
@@ -133,7 +137,7 @@ export default function FooterSection() {
                             </div>
                         </div>
                         <p style={{ fontSize: "14px", lineHeight: "1.6", marginBottom: "32px", color: "#D1D5DB" }}>
-                            It was the end of a period in the 1980s in which it seemed like every championship matchup featured the Laskar Sape Kerrab sports club.
+                            {t('footer.brand_desc')}
                         </p>
 
                         {/* Social Icons */}
@@ -158,7 +162,7 @@ export default function FooterSection() {
                     {/* COLUMN 2: ESSENTIAL LINKS */}
                     <div className="footer-col" data-aos="fade-up" data-aos-delay="100">
                         <h4 className="footer-heading">
-                            <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> Essential Links
+                            <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> {t('footer.essential_links')}
                         </h4>
 
                         {isHomepage ? (
@@ -229,29 +233,29 @@ export default function FooterSection() {
                     {/* COLUMN 3: GET IN TOUCH */}
                     <div className="footer-col" data-aos="fade-up" data-aos-delay="200">
                         <h4 className="footer-heading">
-                            <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> Get In Touch
+                            <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> {t('footer.get_in_touch')}
                         </h4>
 
                         <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "24px" }}>
                             <li style={{ display: "flex", gap: "16px" }}>
                                 <FaEnvelope style={{ color: "#DC2626", marginTop: "4px" }} />
                                 <div>
-                                    <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>EMAIL</span>
+                                    <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>{t('footer.email')}</span>
                                     <span style={{ fontSize: "14px" }}>info@maduraunited.com</span>
                                 </div>
                             </li>
                             <li style={{ display: "flex", gap: "16px" }}>
                                 <FaPhoneAlt style={{ color: "#DC2626", marginTop: "4px" }} />
                                 <div>
-                                    <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>PHONE</span>
+                                    <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>{t('footer.phone')}</span>
                                     <span style={{ fontSize: "14px" }}>098 777 888 90</span>
                                 </div>
                             </li>
                             <li style={{ display: "flex", gap: "16px" }}>
                                 <FaMapMarkerAlt style={{ color: "#DC2626", marginTop: "4px", flexShrink: 0 }} />
                                 <div>
-                                    <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>LOCATION</span>
-                                    <span style={{ fontSize: "14px" }}>Jl. Raya Panglegur No. 10, Pamekasan, Madura, Jawa Timur</span>
+                                    <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>{t('footer.location')}</span>
+                                    <span style={{ fontSize: "14px" }}>{t('footer.address')}</span>
                                 </div>
                             </li>
                         </ul>
@@ -260,7 +264,7 @@ export default function FooterSection() {
                     {/* COLUMN 4: POST GALLERY */}
                     <div className="footer-col" data-aos="fade-up" data-aos-delay="300">
                         <h4 className="footer-heading">
-                            <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> Post Gallery
+                            <span style={{ color: "#DC2626", marginRight: "8px" }}>—</span> {t('footer.post_gallery')}
                         </h4>
 
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
@@ -273,7 +277,7 @@ export default function FooterSection() {
                                         style={{ objectFit: "cover" }}
                                     />
                                     <div className="gallery-overlay">
-                                        <div style={{ color: "white", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", border: "1px solid white", padding: "4px 8px" }}>View Album</div>
+                                        <div style={{ color: "white", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", border: "1px solid white", padding: "4px 8px" }}>{t('footer.view_album')}</div>
                                     </div>
                                 </div>
                             ))}
@@ -286,7 +290,7 @@ export default function FooterSection() {
             {/* Copyright BOttom */}
             <div style={{ borderTop: "1px solid #1F2937", padding: "24px", textAlign: "center", backgroundColor: "#0f0f0f" }}>
                 <p style={{ fontSize: "13px", color: "#6B7280", letterSpacing: "0.5px" }}>
-                    COPYRIGHT & DESIGN BY <span style={{ color: "white", fontWeight: "bold" }}>MADURA UNITED</span> - 2026
+                    {t('footer.copyright')} <span style={{ color: "white", fontWeight: "bold" }}>MADURA UNITED</span> - 2026
                 </p>
             </div>
 
@@ -313,7 +317,7 @@ export default function FooterSection() {
                                     style={{ objectFit: "contain" }}
                                 />
                             ) : (
-                                <div style={{ color: 'white' }}>No images available</div>
+                                <div style={{ color: 'white' }}>{t('common.no_images')}</div>
                             )}
                         </div>
 

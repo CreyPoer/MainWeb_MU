@@ -6,14 +6,16 @@ import Navbar from "@/components/HomePage/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import type { Locale } from "@/i18n.config";
 
 interface Props {
   children: React.ReactNode;
+  lang: Locale;
 }
 
-export default function AppShell({ children }: Props) {
+export default function AppShell({ children, lang }: Props) {
   const pathname = usePathname();
-  const isMUFA = pathname.startsWith("/mufa");
+  const isMUFA = pathname.startsWith(`/${lang}/mufa`) || pathname === `/${lang}/mufa`;
 
   useEffect(() => {
     AOS.init({

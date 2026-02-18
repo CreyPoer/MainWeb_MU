@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // --- DATA TYPE ---
 interface VideoItem {
@@ -13,6 +14,7 @@ interface VideoItem {
 }
 
 export default function VideoHighlightSection() {
+    const { t } = useLanguage();
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
     const [videoData, setVideoData] = useState<VideoItem[]>([]);
@@ -73,7 +75,7 @@ export default function VideoHighlightSection() {
                 pointerEvents: "none",
                 zIndex: 0
             }} data-aos="zoom-in" data-aos-duration="1500">
-                WATCH HIGHLIGHT
+                {t('section.watch_highlight_bg')}
             </div>
 
             <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
@@ -81,10 +83,10 @@ export default function VideoHighlightSection() {
                 {/* HEADER */}
                 <div style={{ marginBottom: "40px", textAlign: "left" }} data-aos="fade-down">
                     <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "14px", marginBottom: "8px" }}>
-                        Our Videos
+                        {t('section.our_videos')}
                     </h4>
                     <h2 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", color: "white", lineHeight: "1.2" }}>
-                        Watch <span style={{ color: "#DC2626" }}>Highlights</span>
+                        {t('section.watch')} <span style={{ color: "#DC2626" }}>{t('section.highlights')}</span>
                     </h2>
                 </div>
 

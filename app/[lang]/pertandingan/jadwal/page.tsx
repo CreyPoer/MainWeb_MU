@@ -13,9 +13,7 @@ export default function JadwalPage() {
     return (
         <main className="bg-neutral-900 min-h-screen">
             <CustomHero
-                title="Jadwal dan Hasil"
                 bgImage="/jadwal.jpg"
-                breadcrumbActive="Jadwal dan Hasil"
             />
             <MatchContent />
             <FooterSection />

@@ -4,6 +4,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes, FaCalendarAlt } from "react-icons/fa";
 import styles from "../HomePage/MUFAHome.module.css";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const VIDEO_API_URL = "/api/videos/list";
 
@@ -18,6 +19,7 @@ interface Video {
 }
 
 export default function MUFAVideoContent() {
+    const { t } = useLanguage();
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
     const [startDate, setStartDate] = useState("");
@@ -77,16 +79,16 @@ export default function MUFAVideoContent() {
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10" data-aos="fade-up">
                     <div>
                         <p className="text-xs md:text-sm font-semibold tracking-[0.32em] uppercase text-red-400 mb-2">
-                            Latest Updates
+                            {t('mufa.video_page.content_eyebrow')}
                         </p>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase leading-tight">
-                            Watch <span className="text-red-400">Highlights</span>
+                            {t('mufa.video_page.content_title')} <span className="text-red-400">{t('mufa.video_page.content_title_highlight')}</span>
                         </h2>
                     </div>
 
                     <div className="flex flex-wrap gap-2 md:gap-3 items-center bg-slate-900 p-3 rounded-xl border border-slate-800">
                         <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Dari:</span>
+                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('mufa.video_page.from_label')}</span>
                             <input
                                 type="date"
                                 className="bg-slate-950 text-white text-xs px-3 py-1.5 rounded-lg border border-slate-700 focus:border-red-500 outline-none"
@@ -95,7 +97,7 @@ export default function MUFAVideoContent() {
                             />
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Sampai:</span>
+                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('mufa.video_page.to_label')}</span>
                             <input
                                 type="date"
                                 className="bg-slate-950 text-white text-xs px-3 py-1.5 rounded-lg border border-slate-700 focus:border-red-500 outline-none"
@@ -105,13 +107,10 @@ export default function MUFAVideoContent() {
                         </div>
                         <button
                             type="button"
-                            onClick={() => {
-                                setStartDate("");
-                                setEndDate("");
-                            }}
-                            className="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors ml-2"
+                            onClick={() => { setStartDate(""); setEndDate(""); }}
+                            className="bg-slate-800 hover:bg-red-600 text-xs text-white font-bold px-4 py-2 rounded-lg transition-colors uppercase"
                         >
-                            Reset
+                            {t('mufa.berita_page.reset_filter')}
                         </button>
                     </div>
                 </div>
@@ -120,7 +119,7 @@ export default function MUFAVideoContent() {
                 {isLoading && (
                     <div className="flex flex-col items-center justify-center py-20 text-slate-500">
                         <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-                        <p>Memuat video MUFA...</p>
+                        <p>{t('mufa.video_page.loading')}</p>
                     </div>
                 )}
 

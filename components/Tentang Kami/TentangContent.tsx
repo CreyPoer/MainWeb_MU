@@ -5,10 +5,12 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import StrukturOrganisasiSection from "./StrukturOrganisasiSection";
 import KomunitasSuporterSection from "./KomunitasSuporterSection";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type TimelinePoint = { x: number; y: number };
 
 export default function TentangContent() {
+  const { t } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
   const [isSwapped, setIsSwapped] = useState(false);
   const [swapCycle, setSwapCycle] = useState(0);
@@ -264,7 +266,7 @@ export default function TentangContent() {
                   color: "#b91c1c",
                 }}
               >
-                Sejarah &amp; Perjalanan Madura United FC
+                {t('page.about.history.title')}
               </h2>
               <p
                 style={{
@@ -274,10 +276,7 @@ export default function TentangContent() {
                   color: "#374151",
                 }}
               >
-                Perjalanan panjang Madura United FC berakar dari sejarah klub-klub
-                pendahulunya. Dari era Pelita Jaya yang menjadi fondasi profesional,
-                transformasi menjadi Pelita Bandung Raya, hingga kelahiran identitas baru
-                sebagai Madura United FC yang mewakili empat kabupaten di Pulau Madura.
+                {t('page.about.history.desc')}
               </p>
             </div>
 
@@ -306,15 +305,10 @@ export default function TentangContent() {
                   <div ref={circle1Ref} className="circle">1</div>
                 </div>
                 <div className="col-6">
-                  <div className="mu-step-label">Era Fondasi</div>
-                  <div className="mu-step-title">Pelita Jaya (1986 &ndash; 2012)</div>
+                  <div className="mu-step-label">{t('page.about.history.foundation.label')}</div>
+                  <div className="mu-step-title">{t('page.about.history.foundation.title')}</div>
                   <p className="mu-step-body">
-                    Semua bermula dari Pelita Jaya, salah satu pionir klub profesional di
-                    Indonesia. Di era ini, klub membangun reputasi besar di kompetisi
-                    Galatama dan dikenal sebagai tim elit yang melahirkan banyak legenda
-                    sepak bola nasional. Meskipun markasnya sempat berpindah-pindah,
-                    nilai profesionalisme yang ditanamkan sejak 1986 menjadi fondasi kuat
-                    bagi eksistensi klub di masa depan.
+                    {t('page.about.history.foundation.body')}
                   </p>
                 </div>
               </div>
@@ -335,15 +329,10 @@ export default function TentangContent() {
               {/* Era Transisi */}
               <div className="timeline-row how-it-works justify-end">
                 <div className="col-6 text-right">
-                  <div className="mu-step-label">Era Transisi</div>
-                  <div className="mu-step-title">Pelita Bandung Raya (2012 &ndash; 2015)</div>
+                  <div className="mu-step-label">{t('page.about.history.transition.label')}</div>
+                  <div className="mu-step-title">{t('page.about.history.transition.title')}</div>
                   <p className="mu-step-body">
-                    Memasuki tahun 2012, klub bertransformasi menjadi Pelita Bandung Raya
-                    (PBR). Masa ini adalah periode ujian sekaligus pembuktian. PBR sempat
-                    mengejutkan publik sepak bola tanah air dengan menembus babak
-                    semifinal Indonesia Super League (ISL) 2014. Namun, dinamika sepak
-                    bola nasional di akhir 2015 menuntut adanya perubahan besar untuk
-                    menjaga kelangsungan hidup klub.
+                    {t('page.about.history.transition.body')}
                   </p>
                 </div>
                 <div className="col-2 text-center full">
@@ -380,24 +369,16 @@ export default function TentangContent() {
                   </div>
                 </div>
                 <div className="col-6">
-                  <div className="mu-step-label">Era Kebangkitan</div>
-                  <div className="mu-step-title">Madura United FC (2016 &ndash; Sekarang)</div>
+                  <div className="mu-step-label">{t('page.about.history.revival.label')}</div>
+                  <div className="mu-step-title">{t('page.about.history.revival.title')}</div>
                   <p className="mu-step-body">
-                    Ini adalah era di mana klub akhirnya menemukan rumah dan identitas
-                    sejatinya. Melalui akuisisi oleh Prof. Achsanul Qosasi pada 10 Januari
-                    2016, klub resmi berpindah ke Pulau Madura. Bukan sekadar berganti
-                    nama, ini adalah deklarasi kemandirian sepak bola rakyat Madura.
+                    {t('page.about.history.revival.body1')}
                   </p>
                   <p className="mu-step-body">
-                    Madura United mencetak sejarah sebagai klub yang menyatukan empat
-                    kabupaten sekaligus &mdash; Bangkalan, Sampang, Pamekasan, dan Sumenep
-                    &mdash; di bawah satu panji Laskar Sape Kerrab.
+                    {t('page.about.history.revival.body2')}
                   </p>
                   <p className="mu-step-body">
-                    Dalam waktu singkat, klub konsisten berada di papan atas Liga 1.
-                    Puncaknya, Madura United meraih posisi Runner-up di musim 2023/2024
-                    dan mulai melebarkan sayap di kompetisi internasional melalui AFC
-                    Challenge League 2024/2025.
+                    {t('page.about.history.revival.body3')}
                   </p>
                 </div>
               </div>
@@ -421,14 +402,12 @@ export default function TentangContent() {
             <div className="visi-misi-grid">
               {/* Visi */}
               <div className="visi-misi-vision" data-aos="fade-right" data-aos-delay="950" data-aos-duration="700">
-                <p className="visi-misi-eyebrow">Visi Klub</p>
+                <p className="visi-misi-eyebrow">{t('page.about.vision.eyebrow')}</p>
                 <h2 className="visi-misi-title">
-                  Menjadi klub sepak bola profesional yang mandiri, modern, dan
-                  menjadi kiblat pembinaan sepak bola di Indonesia.
+                  {t('page.about.vision.title')}
                 </h2>
                 <p className="visi-misi-subtext">
-                  Visi ini menjadi kompas utama dalam setiap langkah Madura
-                  United FC, baik di dalam maupun di luar lapangan.
+                  {t('page.about.vision.subtext')}
                 </p>
               </div>
 
@@ -448,11 +427,9 @@ export default function TentangContent() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="visi-misi-card-title">Pembinaan Usia Dini</h3>
+                    <h3 className="visi-misi-card-title">{t('page.about.vision.cards.development.title')}</h3>
                     <p className="visi-misi-card-text">
-                      Melalui Madura United Football Academy (MUFA), klub
-                      berkomitmen melahirkan pemain berbakat asli Madura untuk
-                      menembus level nasional dan internasional.
+                      {t('page.about.vision.cards.development.text')}
                     </p>
                   </div>
                 </article>
@@ -472,10 +449,9 @@ export default function TentangContent() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="visi-misi-card-title">Identitas Daerah</h3>
+                    <h3 className="visi-misi-card-title">{t('page.about.vision.cards.identity.title')}</h3>
                     <p className="visi-misi-card-text">
-                      Memperkuat identitas Madura di kancah sepak bola nasional
-                      dengan menjunjung tinggi nilai-nilai lokal.
+                      {t('page.about.vision.cards.identity.text')}
                     </p>
                   </div>
                 </article>
@@ -495,10 +471,9 @@ export default function TentangContent() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="visi-misi-card-title">Manajemen Modern</h3>
+                    <h3 className="visi-misi-card-title">{t('page.about.vision.cards.management.title')}</h3>
                     <p className="visi-misi-card-text">
-                      Mengelola klub secara transparan, akuntabel, dan berbasis
-                      industri olahraga yang berkelanjutan.
+                      {t('page.about.vision.cards.management.text')}
                     </p>
                   </div>
                 </article>
@@ -518,11 +493,10 @@ export default function TentangContent() {
             <div className="mu-philosophy__inner">
               <header className="mu-philosophy__header">
                 <div className="mu-philosophy__headerText">
-                  <p className="mu-philosophy__eyebrow">Identitas Klub</p>
-                  <h2 className="mu-philosophy__title">Filosofi Logo &amp; Warna</h2>
+                  <p className="mu-philosophy__eyebrow">{t('page.about.philosophy.eyebrow')}</p>
+                  <h2 className="mu-philosophy__title">{t('page.about.philosophy.title')}</h2>
                   <p className="mu-philosophy__subtitle">
-                    Identitas Madura United FC tidak hanya terlihat, tetapi juga menyimpan makna tentang karakter,
-                    budaya, dan semangat juang.
+                    {t('page.about.philosophy.subtitle')}
                   </p>
                 </div>
                 <div className="mu-philosophy__divider" aria-hidden="true" />
@@ -547,14 +521,13 @@ export default function TentangContent() {
                         loading="lazy"
                         priority={false}
                       />
-                      <p className="mu-philosophy__logoCaption">Logo resmi Madura United FC</p>
+                      <p className="mu-philosophy__logoCaption">{t('page.about.philosophy.logo_caption')}</p>
                     </div>
 
                     <div className="mu-philosophy__callout" data-aos="fade-up" data-aos-delay="1200" data-aos-duration="650">
-                      <span className="mu-philosophy__pill">Inti</span>
+                      <span className="mu-philosophy__pill">{t('page.about.philosophy.callout_pill')}</span>
                       <p className="mu-philosophy__calloutText">
-                        Logo menjadi simbol kebanggaan, kebersamaan, dan ambisi Madura United untuk selalu tampil
-                        berani dan bermartabat.
+                        {t('page.about.philosophy.callout_text')}
                       </p>
                     </div>
                   </div>
@@ -562,7 +535,7 @@ export default function TentangContent() {
 
                 <div className="mu-philosophy__panel" data-aos="fade-left" data-aos-delay="1250" data-aos-duration="750">
                   <div className="mu-philosophy__panelHeader">
-                    <h3 className="mu-philosophy__panelTitle">Makna di balik tiap elemen</h3>
+                    <h3 className="mu-philosophy__panelTitle">{t('page.about.philosophy.panel_title')}</h3>
                     <div className="mu-philosophy__panelRule" aria-hidden="true" />
                   </div>
 
@@ -570,15 +543,12 @@ export default function TentangContent() {
                     <article className="mu-philosophy__item" data-aos="fade-right" data-aos-delay="1450" data-aos-duration="650">
                       <div className="mu-philosophy__badge">01</div>
                       <div className="mu-philosophy__itemBody">
-                        <h4 className="mu-philosophy__itemTitle">Bentuk Tanpa Sudut Tajam (Inclusive Shield)</h4>
+                        <h4 className="mu-philosophy__itemTitle">{t('page.about.philosophy.items.01.title')}</h4>
                         <p className="mu-philosophy__itemText">
-                          Berbeda dengan banyak logo klub yang memiliki sudut tajam di bawah, logo Madura United
-                          berbentuk bulat/melengkung (menyerupai tempayan atau perisai tumpul).
+                          {t('page.about.philosophy.items.01.text1')}
                         </p>
                         <p className="mu-philosophy__itemText">
-                          <span className="mu-philosophy__itemEm">Maknanya:</span> Melambangkan bahwa klub ini adalah
-                          wadah yang inklusif dan merangkul semua golongan. Klub ini tidak kaku, melainkan fleksibel dan
-                          terbuka bagi seluruh masyarakat Madura tanpa memandang latar belakang.
+                          <span className="mu-philosophy__itemEm">{t('page.about.philosophy.items.01.text2_em')}</span> {t('page.about.philosophy.items.01.text2')}
                         </p>
                       </div>
                     </article>
@@ -586,12 +556,10 @@ export default function TentangContent() {
                     <article className="mu-philosophy__item" data-aos="flip-up" data-aos-delay="1600" data-aos-duration="700">
                       <div className="mu-philosophy__badge">02</div>
                       <div className="mu-philosophy__itemBody">
-                        <h4 className="mu-philosophy__itemTitle">Sosok Sapi (Sape Kerrab)</h4>
-                        <p className="mu-philosophy__itemText">Bukan sembarang sapi, ini merepresentasikan Sapi Karapan.</p>
+                        <h4 className="mu-philosophy__itemTitle">{t('page.about.philosophy.items.02.title')}</h4>
+                        <p className="mu-philosophy__itemText">{t('page.about.philosophy.items.02.text1')}</p>
                         <p className="mu-philosophy__itemText">
-                          <span className="mu-philosophy__itemEm">Maknanya:</span> Melambangkan Harga Diri (Harkat) dan
-                          Martabat orang Madura. Sapi karapan dikenal karena kecepatan, kekuatan, dan ketangguhannya—
-                          mencerminkan semangat juang tim di lapangan.
+                          <span className="mu-philosophy__itemEm">{t('page.about.philosophy.items.02.text2_em')}</span> {t('page.about.philosophy.items.02.text2')}
                         </p>
                       </div>
                     </article>
@@ -599,12 +567,10 @@ export default function TentangContent() {
                     <article className="mu-philosophy__item" data-aos="zoom-in" data-aos-delay="1750" data-aos-duration="650">
                       <div className="mu-philosophy__badge">03</div>
                       <div className="mu-philosophy__itemBody">
-                        <h4 className="mu-philosophy__itemTitle">Cincin Emas di Hidung Sapi (Keles)</h4>
-                        <p className="mu-philosophy__itemText">Terdapat detail warna emas pada bagian hidung sapi.</p>
+                        <h4 className="mu-philosophy__itemTitle">{t('page.about.philosophy.items.03.title')}</h4>
+                        <p className="mu-philosophy__itemText">{t('page.about.philosophy.items.03.text1')}</p>
                         <p className="mu-philosophy__itemText">
-                          <span className="mu-philosophy__itemEm">Maknanya:</span> Dalam budaya Madura, sapi karapan
-                          terbaik mengenakan perhiasan emas. Ini melambangkan prestasi, kemuliaan, dan ambisi klub untuk
-                          selalu berada di kasta tertinggi (emas/juara).
+                          <span className="mu-philosophy__itemEm">{t('page.about.philosophy.items.03.text2_em')}</span> {t('page.about.philosophy.items.03.text2')}
                         </p>
                       </div>
                     </article>
@@ -612,11 +578,9 @@ export default function TentangContent() {
                     <article className="mu-philosophy__item" data-aos="fade-left" data-aos-delay="1900" data-aos-duration="650">
                       <div className="mu-philosophy__badge">04</div>
                       <div className="mu-philosophy__itemBody">
-                        <h4 className="mu-philosophy__itemTitle">Warna Merah &amp; Putih</h4>
+                        <h4 className="mu-philosophy__itemTitle">{t('page.about.philosophy.items.04.title')}</h4>
                         <p className="mu-philosophy__itemText">
-                          <span className="mu-philosophy__itemEm">Maknanya:</span> Diambil dari motif baju adat Pesa&apos;an.
-                          Merah melambangkan keberanian dan ketegasan, sedangkan Putih melambangkan kejujuran dan
-                          sportivitas.
+                          <span className="mu-philosophy__itemEm">{t('page.about.philosophy.items.04.text_em')}</span> {t('page.about.philosophy.items.04.text')}
                         </p>
                       </div>
                     </article>
@@ -633,11 +597,10 @@ export default function TentangContent() {
             <div className="mu-homebase__inner">
               <header className="mu-homebase__header">
                 <div>
-                  <p className="mu-homebase__eyebrow">Stadion</p>
-                  <h2 className="mu-homebase__title">Home Base</h2>
+                  <p className="mu-homebase__eyebrow">{t('page.about.homebase.eyebrow')}</p>
+                  <h2 className="mu-homebase__title">{t('page.about.homebase.title')}</h2>
                   <p className="mu-homebase__subtitle">
-                    Dua sudut pandang tentang kandang Madura United &mdash; atmosfer pertandingan dan
-                    denyut aktivitas klub.
+                    {t('page.about.homebase.subtitle')}
                   </p>
                 </div>
                 <div className="mu-homebase__divider" aria-hidden="true" />
@@ -763,9 +726,9 @@ export default function TentangContent() {
                       loading="lazy"
                       priority={false}
                     />
-                    <div className="mu-homebase__badge">Stadion Utama</div>
+                    <div className="mu-homebase__badge">{t('page.about.homebase.stadium_main')}</div>
                     <div className="mu-homebase__cardOverlay" aria-hidden="true" />
-                    <p className="mu-homebase__caption">Stadion Gelora Madura Ratu Pamelingan</p>
+                    <p className="mu-homebase__caption">{t('page.about.homebase.sgmrp')}</p>
                   </motion.div>
                 </div>
 
@@ -793,10 +756,10 @@ export default function TentangContent() {
                       priority={false}
                     />
                     <div className="mu-homebase__cardOverlay" aria-hidden="true" />
-                    <p className="mu-homebase__caption">Stadion Gelora Bangkalan</p>
+                    <p className="mu-homebase__caption">{t('page.about.homebase.sgb')}</p>
                   </motion.div>
                 </div>
-                
+
               </motion.div>
             </div>
           </div>
@@ -814,9 +777,9 @@ export default function TentangContent() {
         >
           <div className="mu-achievements__shell">
             <header className="mu-achievements__header">
-              <p className="mu-achievements__eyebrow">TENTANG KAMI</p>
+              <p className="mu-achievements__eyebrow">{t('page.about.achievements.eyebrow')}</p>
               <h2 id="mu-achievements-title" className="mu-achievements__title">
-                PRESTASI &amp; PENGHARGAAN
+                {t('page.about.achievements.title')}
               </h2>
             </header>
 
@@ -842,9 +805,9 @@ export default function TentangContent() {
                     priority={false}
                   />
                 </div>
-                <h3 className="mu-achievements__itemTitle">JUARA SURAMADU SUPER CUP</h3>
+                <h3 className="mu-achievements__itemTitle">{t('page.about.achievements.items.suramadu.title')}</h3>
                 <p className="mu-achievements__itemDesc">
-                  Pemenang turnamen internasional pramusim 2018.
+                  {t('page.about.achievements.items.suramadu.desc')}
                 </p>
               </li>
 
@@ -869,9 +832,9 @@ export default function TentangContent() {
                     priority={false}
                   />
                 </div>
-                <h3 className="mu-achievements__itemTitle">RUNNER-UP LIGA 1</h3>
+                <h3 className="mu-achievements__itemTitle">{t('page.about.achievements.items.runnerup.title')}</h3>
                 <p className="mu-achievements__itemDesc">
-                  Pencapaian tertinggi di Championship Series musim 2023/2024.
+                  {t('page.about.achievements.items.runnerup.desc')}
                 </p>
               </li>
 
@@ -896,9 +859,9 @@ export default function TentangContent() {
                     priority={false}
                   />
                 </div>
-                <h3 className="mu-achievements__itemTitle">AFC CLUB LICENSING</h3>
+                <h3 className="mu-achievements__itemTitle">{t('page.about.achievements.items.afc.title')}</h3>
                 <p className="mu-achievements__itemDesc">
-                  Klub profesional berstandar Asia yang diakui secara rutin.
+                  {t('page.about.achievements.items.afc.desc')}
                 </p>
               </li>
 
@@ -923,9 +886,9 @@ export default function TentangContent() {
                     priority={false}
                   />
                 </div>
-                <h3 className="mu-achievements__itemTitle">TIM FAIR PLAY AWARD</h3>
+                <h3 className="mu-achievements__itemTitle">{t('page.about.achievements.items.fairplay.title')}</h3>
                 <p className="mu-achievements__itemDesc">
-                  Penghargaan tim paling sportif pada musim 2021/2022.
+                  {t('page.about.achievements.items.fairplay.desc')}
                 </p>
               </li>
             </ul>
