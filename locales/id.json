@@ -152,7 +152,7 @@
       "title": "Berita",
       "breadcrumb": "Berita",
       "category_prefix": "Kategori",
-      "tag_prefix": "Tag",
+      "tag_prefix": "Penanda",
       "search_prefix": "Pencarian",
       "author_prefix": "Penulis",
       "filter_title": "Filter Berita",
@@ -324,7 +324,7 @@
       "program": "Program",
       "facilities": "Fasilitas",
       "news": "Berita",
-      "gallery": "Gallery",
+      "gallery": "Galeri",
       "video": "Video"
     },
     "hero": {
@@ -381,7 +381,7 @@
     },
     "gallery": {
       "eyebrow": "Cerita Visual",
-      "title_main": "Gallery",
+      "title_main": "Galeri",
       "title_highlight": "MUFA",
       "view_more": "Lihat Selengkapnya",
       "featured": "Momen Unggulan"
@@ -459,7 +459,7 @@
     },
     "footer": {
       "navigation": "Navigasi",
-      "gallery": "Gallery",
+      "gallery": "Galeri",
       "explore_more": "Jelajahi Lebih Jauh",
       "explore_desc": "Ingin mengetahui informasi lengkap mengenai tim utama, jadwal pertandingan, dan berita terbaru Madura United FC?",
       "explore_cta": "Ke Website Utama Madura United FC",

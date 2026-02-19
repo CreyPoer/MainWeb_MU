@@ -41,7 +41,7 @@ export default function CustomHero({
             };
             const prefixKey = prefixKeyMap[activeFilter.type];
             if (prefixKey) {
-                displayTitle = `${t(`news.${prefixKey}`)}: ${activeFilter.type === 'tag' ? '#' : ''}${activeFilter.type === 'q' ? `"${activeFilter.value}"` : activeFilter.value}`;
+                displayTitle = `${t(`page.news.${prefixKey}`)}: ${activeFilter.type === 'tag' ? '#' : ''}${activeFilter.type === 'q' ? `"${activeFilter.value}"` : activeFilter.value}`;
             } else {
                 displayTitle = activeFilter.value;
             }

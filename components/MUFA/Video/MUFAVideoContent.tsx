@@ -105,13 +105,15 @@ export default function MUFAVideoContent() {
                                 onChange={(e) => setEndDate(e.target.value)}
                             />
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => { setStartDate(""); setEndDate(""); }}
-                            className="bg-slate-800 hover:bg-red-600 text-xs text-white font-bold px-4 py-2 rounded-lg transition-colors uppercase"
-                        >
-                            {t('mufa.berita_page.reset_filter')}
-                        </button>
+                        {startDate && endDate && (
+                            <button
+                                type="button"
+                                onClick={() => { setStartDate(""); setEndDate(""); }}
+                                className="bg-slate-800 hover:bg-red-600 text-xs text-white font-bold px-4 py-2 rounded-lg transition-colors uppercase"
+                            >
+                                {t('mufa.berita_page.reset_filter')}
+                            </button>
+                        )}
                     </div>
                 </div>
 

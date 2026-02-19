@@ -14,9 +14,9 @@ export default function GalleryPage() {
     return (
         <main className="bg-neutral-900 min-h-screen">
             <CustomHero
-                title="GALLERY"
+                titleKey="page.gallery.title"
                 bgImage="/gallery.jpg"
-                breadcrumbActive="Gallery"
+                breadcrumbKey="page.gallery.breadcrumb"
             />
 
             <GalleryContent />

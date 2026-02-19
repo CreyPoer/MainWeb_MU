@@ -818,7 +818,7 @@ export default function PemainContent() {
 				@media (min-width: 1024px) {
 					.players-list {
 						height: auto;
-						max-height: 650px;
+						max-height:780px;
 					}
 				}
 
