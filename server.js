@@ -3,10 +3,11 @@ const { parse } = require('url');
 const next = require('next');
 
 console.log('Starting custom server...');
-console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('NODE_ENV (from env):', process.env.NODE_ENV);
 
-// FORCE PROD: Ensure we are NOT in dev mode unless explicitly set to 'development'
-const dev = process.env.NODE_ENV === 'development';
+// HARDCODED PRODUCTION: We are forcing dev = false because this script
+// is only intended to run on the production cPanel server.
+const dev = false;
 console.log('Is Dev Mode?', dev);
 
 const hostname = 'localhost';
