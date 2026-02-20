@@ -2,13 +2,14 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
-console.log('Starting custom server...');
-console.log('NODE_ENV (from env):', process.env.NODE_ENV);
+console.log('--- STARTING CUSTOM SERVER ---');
+console.log('NODE_ENV:', process.env.NODE_ENV);
 
-// HARDCODED PRODUCTION: We are forcing dev = false because this script
-// is only intended to run on the production cPanel server.
+// CRITICAL: We hardcode dev to FALSE because this is the production server.
+// If this is TRUE, Next.js will ignore the .next folder and try to use Turbopack.
 const dev = false;
 console.log('Is Dev Mode?', dev);
+console.log('------------------------------');
 
 const hostname = 'localhost';
 const port = process.env.PORT || 3000;
