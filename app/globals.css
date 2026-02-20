@@ -1960,13 +1960,48 @@ body {
 
     .mobile-menu-item>a,
     .mobile-menu-item>details>summary {
-        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
         text-decoration: none;
         padding: 1rem;
-        display: block;
-        font-weight: 600;
+        font-size: 1.1rem;
+        font-weight: 800;
         text-transform: uppercase;
+        letter-spacing: 1px;
         cursor: pointer;
+        list-style: none;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-menu-item>details>summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .mobile-dropdown-arrow {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-left: auto;
+    }
+
+    .mobile-menu-item details[open]>summary {
+        background: rgba(220, 38, 38, 0.1);
+        color: #DC2626;
+    }
+
+    .mobile-menu-item details[open]>summary .mobile-dropdown-arrow {
+        transform: rotate(180deg);
+        color: #DC2626;
+    }
+
+    .mobile-submenu,
+    .mobile-submenu-nested,
+    .mobile-submenu-deep {
+        padding-left: 1rem;
+        border-left: 1px solid rgba(255, 255, 255, 0.05);
+        margin-left: 1rem;
     }
 
     .mobile-menu-item>a:hover,

@@ -23,47 +23,60 @@ export async function getNewsDetail(idOrSlug: string): Promise<NewsDetail | null
         const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin-mu.maduraunitedfc.id/api';
         const storageUrl = baseUrl.replace('/api', '');
 
-        // Fetch the LIST instead of single item (workaround for broken v2/news/{id})
-        // Fetch more items to ensure we find it if it's not in the first page
-        const queryParams = new URLSearchParams();
-        queryParams.set('limit', '50');
+        // 1. Initial lookup: Try to find the specific item first
+        // We use search param + per_page=1 to find the exact match regardless of how old it is
+        const searchParams = new URLSearchParams();
+        searchParams.set('search', idOrSlug);
+        searchParams.set('per_page', '1');
 
-        const response = await fetch(`${baseUrl}/v2/news?${queryParams.toString()}`, {
+        const searchRes = await fetch(`${baseUrl}/v2/news?${searchParams.toString()}`, { cache: 'no-store' });
+        const searchData = await searchRes.json();
+
+        let foundItem: any = null;
+        if (searchData && searchData.data && searchData.data.length > 0) {
+            foundItem = searchData.data[0];
+        }
+
+        // 2. Fallback: Fetch latest 500 items to find the item and its neighbors
+        // This is still needed for 'previous' and 'next' functionality
+        const listParams = new URLSearchParams();
+        listParams.set('per_page', '500');
+
+        const response = await fetch(`${baseUrl}/v2/news?${listParams.toString()}`, {
             cache: 'no-store'
         });
 
-        if (!response.ok) {
+        if (!response.ok && !foundItem) {
             console.error(`External API fetch failed: ${response.status}`);
             return null;
         }
 
         const data = await response.json();
-
         let newsList: any[] = [];
-        if (Array.isArray(data)) {
-            newsList = data;
-        } else if (data.data && Array.isArray(data.data)) {
+        if (data && Array.isArray(data.data)) {
             newsList = data.data;
+        } else if (Array.isArray(data)) {
+            newsList = data;
         }
 
-        // Determine if looked up by ID or Slug
+        // Determine if looked up by ID or Slug from the list
         const targetId = parseInt(idOrSlug);
         const isNumericId = !isNaN(targetId) && targetId.toString() === idOrSlug;
 
         let currentIndex = -1;
-
         if (isNumericId) {
-            currentIndex = newsList.findIndex((item: any) => item.id === targetId);
+            currentIndex = newsList.findIndex((item: any) => Number(item.id) === targetId);
         } else {
-            // Look up by slug
             currentIndex = newsList.findIndex((item: any) => item.slug === idOrSlug);
         }
 
-        if (currentIndex === -1) {
+        // If not found in the latest 500 list, use the specific item found in step 1
+        const item = currentIndex !== -1 ? newsList[currentIndex] : foundItem;
+
+        if (!item) {
+            console.log(`News not found for: ${idOrSlug}`);
             return null;
         }
-
-        const item = newsList[currentIndex];
 
         // Construct Detail
         const newsDetail: NewsDetail = {
@@ -79,30 +92,32 @@ export async function getNewsDetail(idOrSlug: string): Promise<NewsDetail | null
             author_image: item.author?.image ? `${storageUrl}/storage/authors/${item.author.image}` : '/logo.png',
             tags: item.tags ? item.tags.split(',') : [],
             penerbit: item.source || 'Madura United FC',
-            link_berita: item.source_url || '#'
-            ,
+            link_berita: item.source_url || '#',
             previous: null,
             next: null,
             related: []
         };
 
-        // Previous (Item at index + 1, because list is usually desc)
-        const prevItem = newsList[currentIndex + 1];
-        newsDetail.previous = prevItem ? {
-            id: prevItem.id,
-            title: prevItem.title,
-            slug: prevItem.slug
-        } : null;
+        // Neighbors (only available if item was found in the latest list)
+        if (currentIndex !== -1) {
+            // Previous (Item at index + 1, because list is usually desc)
+            const prevItem = newsList[currentIndex + 1];
+            newsDetail.previous = prevItem ? {
+                id: prevItem.id,
+                title: prevItem.title,
+                slug: prevItem.slug
+            } : null;
 
-        // Next (Item at index - 1)
-        const nextItem = newsList[currentIndex - 1];
-        newsDetail.next = nextItem ? {
-            id: nextItem.id,
-            title: nextItem.title,
-            slug: nextItem.slug
-        } : null;
+            // Next (Item at index - 1)
+            const nextItem = newsList[currentIndex - 1];
+            newsDetail.next = nextItem ? {
+                id: nextItem.id,
+                title: nextItem.title,
+                slug: nextItem.slug
+            } : null;
+        }
 
-        // Related
+        // Related (from neighbors or top of list if item not in list)
         newsDetail.related = newsList
             .filter((n: any) => n.id !== item.id && n.section?.id === item.section?.id)
             .slice(0, 2)

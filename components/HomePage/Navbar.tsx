@@ -202,7 +202,10 @@ export default function Navbar() {
                                 </Link>
                             ) : (
                                 <details>
-                                    <summary>{item.label}</summary>
+                                    <summary>
+                                        {item.label}
+                                        <FaChevronDown className="mobile-dropdown-arrow" />
+                                    </summary>
                                     {item.submenu && (
                                         <div className="mobile-submenu">
                                             {item.submenu.map((subItem, subIndex) => (
@@ -213,7 +216,10 @@ export default function Navbar() {
                                                         </Link>
                                                     ) : (
                                                         <details>
-                                                            <summary>{subItem.label}</summary>
+                                                            <summary>
+                                                                {subItem.label}
+                                                                <FaChevronDown className="mobile-dropdown-arrow" />
+                                                            </summary>
                                                             {subItem.submenu && (
                                                                 <div className="mobile-submenu-nested">
                                                                     {subItem.submenu.map((nestedItem, nestedIndex) => (
@@ -224,7 +230,10 @@ export default function Navbar() {
                                                                                 </Link>
                                                                             ) : (
                                                                                 <details>
-                                                                                    <summary>{nestedItem.label}</summary>
+                                                                                    <summary>
+                                                                                        {nestedItem.label}
+                                                                                        <FaChevronDown className="mobile-dropdown-arrow" />
+                                                                                    </summary>
                                                                                     {nestedItem.submenu && (
                                                                                         <div className="mobile-submenu-deep">
                                                                                             {nestedItem.submenu.map((deepItem, deepIndex) => (

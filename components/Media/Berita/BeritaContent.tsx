@@ -20,7 +20,7 @@ export default function BeritaContent() {
     const [newsData, setNewsData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
+    const [totalPages, setTotalPages] = useState(1);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -73,17 +73,10 @@ export default function BeritaContent() {
             const data = await res.json();
 
             if (data.data) {
-                if (isNewFilter) {
-                    setNewsData(data.data);
-                } else {
-                    setNewsData(prev => [...prev, ...data.data]);
-                }
+                setNewsData(data.data);
 
-                // Check if we have more pages
-                if (data.meta && data.meta.current_page >= data.meta.last_page) {
-                    setHasMore(false);
-                } else {
-                    setHasMore(true);
+                if (data.meta) {
+                    setTotalPages(data.meta.last_page || 1);
                 }
             }
         } catch (error) {
@@ -93,19 +86,20 @@ export default function BeritaContent() {
         }
     };
 
+    // Page Change Handler
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setPage(newPage);
+            fetchNews(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     // Reset and fetch when filters change
     useEffect(() => {
         setPage(1);
-        setHasMore(true);
-        fetchNews(1, true);
+        fetchNews(1);
     }, [activeCategory, activeTag, activeQuery, activeAuthor]);
-
-    // Load More Handler
-    const handleLoadMore = () => {
-        const nextPage = page + 1;
-        setPage(nextPage);
-        fetchNews(nextPage, false);
-    };
 
     // Filter Logic - Replaced by API fetching, so just use newsData directly
     const filteredNews = newsData;
@@ -325,6 +319,102 @@ export default function BeritaContent() {
                             style={{ marginTop: "20px", padding: "10px 20px", backgroundColor: "#DC2626", color: "white", borderRadius: "8px", fontWeight: "bold", border: "none", cursor: "pointer" }}
                         >
                             {t('page.news.reset_filter')}
+                        </button>
+                    </div>
+                )}
+
+                {/* --- PAGINATION --- */}
+                {totalPages > 1 && (
+                    <div style={{
+                        gridColumn: "1 / -1",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: "60px 0",
+                        gap: "10px",
+                        backgroundColor: "#111827",
+                        order: 9999 // Ensure it stays at the bottom of the grid
+                    }}>
+                        <button
+                            disabled={page === 1 || loading}
+                            onClick={() => handlePageChange(page - 1)}
+                            style={{
+                                padding: "10px 20px",
+                                backgroundColor: page === 1 ? "#374151" : "#DC2626",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "8px",
+                                fontWeight: "800",
+                                cursor: page === 1 ? "not-allowed" : "pointer",
+                                textTransform: "uppercase",
+                                fontSize: "12px",
+                                opacity: page === 1 ? 0.5 : 1,
+                                transition: "all 0.3s"
+                            }}
+                        >
+                            Prev
+                        </button>
+
+                        <div style={{ display: "flex", gap: "5px" }}>
+                            {[...Array(totalPages)].map((_, i) => {
+                                const pageNum = i + 1;
+                                // Basic logic to show limited page numbers if there are too many
+                                if (
+                                    totalPages <= 7 ||
+                                    pageNum === 1 ||
+                                    pageNum === totalPages ||
+                                    (pageNum >= page - 1 && pageNum <= page + 1)
+                                ) {
+                                    return (
+                                        <button
+                                            key={pageNum}
+                                            onClick={() => handlePageChange(pageNum)}
+                                            style={{
+                                                width: "40px",
+                                                height: "40px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                backgroundColor: page === pageNum ? "#DC2626" : "transparent",
+                                                color: "white",
+                                                border: "2px solid #374151",
+                                                borderRadius: "8px",
+                                                fontWeight: "800",
+                                                cursor: "pointer",
+                                                transition: "all 0.3s"
+                                            }}
+                                        >
+                                            {pageNum}
+                                        </button>
+                                    );
+                                } else if (
+                                    (pageNum === page - 2 && page > 3) ||
+                                    (pageNum === page + 2 && page < totalPages - 2)
+                                ) {
+                                    return <span key={pageNum} style={{ color: "white", alignSelf: "center" }}>...</span>;
+                                }
+                                return null;
+                            })}
+                        </div>
+
+                        <button
+                            disabled={page === totalPages || loading}
+                            onClick={() => handlePageChange(page + 1)}
+                            style={{
+                                padding: "10px 20px",
+                                backgroundColor: page === totalPages ? "#374151" : "#DC2626",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "8px",
+                                fontWeight: "800",
+                                cursor: page === totalPages ? "not-allowed" : "pointer",
+                                textTransform: "uppercase",
+                                fontSize: "12px",
+                                opacity: page === totalPages ? 0.5 : 1,
+                                transition: "all 0.3s"
+                            }}
+                        >
+                            Next
                         </button>
                     </div>
                 )}

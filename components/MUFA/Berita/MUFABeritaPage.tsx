@@ -42,9 +42,11 @@ export default function MUFABeritaPage() {
     // but the filter logic below will pick it up.
   }, [searchParams]);
 
-  const [news, setNews] = useState<any[]>([]); // Replace with proper type if available
+  const [news, setNews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTags, setActiveTags] = useState<string[]>([]); // For popular tags from backend
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [activeTags, setActiveTags] = useState<string[]>([]);
 
   // Fetch Tags (Popular tags for MUFA category)
   useEffect(() => {
@@ -104,38 +106,32 @@ export default function MUFABeritaPage() {
         // params.set("q", activeQuery); ... const res = await fetch(`/api/news?${params.toString()}`);
 
         // So `api/news/route.ts` SHOULD support 'q' and 'tag' if `BeritaContent.tsx` relies on it.
-        // But `api/news/route.ts` (Step 7) ONLY reads `category` and `limit`. 
-        // Use `searchParams.get('category')`. 
-        // It does NOT seem to read `q` or `tag`.
-        // Wait, did I miss something in `api/news/route.ts`?
-        // Step 7 confirmed: only `category` and `limit` are read.
-        // So `BeritaContent.tsx` sending `q` and `tag` might be ignored by the proxy right now?
-        // AHH, `BeritaContent.tsx` (Step 14) uses `/api/news` but maybe it expects the backend to handle it, but the proxy strips it?
-        // Yes, the proxy creates new URLSearchParams and ONLY sets category and per_page.
+        params.set('page', page.toString());
+        params.set('limit', '12');
 
-        // CORRECTION: I should update `api/news/route.ts` to forward ALL params or at least `q` and `tag`.
-        // I will do that in the NEXT step. For now, let's assume I WILL fix the proxy.
-
-        if (searchTerm) params.set('search', searchTerm); // Backend V2 NewsController uses 'search' (Step 26), not 'q'.
+        if (searchTerm) params.set('search', searchTerm);
         if (activeTag) params.set('tag', activeTag);
-
-        // We might need to increase limit if we want "all data" for client side, but server side filtering is better.
-        // Let's stick to server side filtering. pagination? 
-        // The current UI shows "X of Y news".
-        params.set('limit', '12'); // Fetch more items per page? 
 
         const res = await fetch(`/api/news?${params.toString()}`);
         const result = await res.json();
-        const items = Array.isArray(result) ? result : (result.data || []);
 
-        {
-          const adapted = items.map((item: any) => ({
-            ...item,
-            category: "MUFA", // We know it's MUFA because we filtered
-            tags: item.tags || [] // route.ts needs to return tags
-          }));
-          setNews(adapted);
+        let items = [];
+        if (result.data) {
+          items = result.data;
+          if (result.meta) {
+            setTotalPages(result.meta.last_page || 1);
+          }
+        } else if (Array.isArray(result)) {
+          items = result;
         }
+
+        const adapted = items.map((item: any) => ({
+          ...item,
+          category: "MUFA",
+          tags: item.tags || []
+        }));
+        setNews(adapted);
+
       } catch (err) {
         console.error(err);
       } finally {
@@ -144,7 +140,15 @@ export default function MUFABeritaPage() {
     }
 
     fetchNews();
-  }, [searchTerm, activeTag]);
+  }, [searchTerm, activeTag, page]);
+
+  // Page Change Handler
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // Client-side filtering is REPLACED by Server-side fetching above.
   // So 'filteredNews' is just 'news'.
@@ -183,6 +187,7 @@ export default function MUFABeritaPage() {
   const resetAll = () => {
     setSearchTerm("");
     setActiveTag(null);
+    setPage(1);
     router.push(`/${lang}/mufa/berita`, { scroll: false });
     if (window.innerWidth < 1024) setIsFilterOpen(false);
   };
@@ -334,6 +339,60 @@ export default function MUFABeritaPage() {
                 </article>
               ))}
             </div>
+
+            {/* Pagination UI */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-12" data-aos="fade-up">
+                <button
+                  disabled={page === 1 || loading}
+                  onClick={() => handlePageChange(page - 1)}
+                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold uppercase tracking-wider text-[10px] hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-300 disabled:hover:border-slate-700 transition duration-300"
+                >
+                  Prev
+                </button>
+
+                <div className="flex gap-1.5">
+                  {[...Array(totalPages)].map((_, i) => {
+                    const p = i + 1;
+                    const isActive = p === page;
+                    // Show dots logic similar to BeritaContent but simplified or same
+                    if (
+                      totalPages <= 7 ||
+                      p === 1 ||
+                      p === totalPages ||
+                      (p >= page - 1 && p <= page + 1)
+                    ) {
+                      return (
+                        <button
+                          key={p}
+                          onClick={() => handlePageChange(p)}
+                          className={`w-9 h-9 flex items-center justify-center rounded-lg border font-bold text-xs transition duration-300 ${isActive
+                            ? "bg-red-600 border-red-600 text-white"
+                            : "bg-slate-900 border-slate-700 text-slate-400 hover:border-red-500 hover:text-red-500"
+                            }`}
+                        >
+                          {p}
+                        </button>
+                      );
+                    } else if (
+                      (p === page - 2 && page > 3) ||
+                      (p === page + 2 && page < totalPages - 2)
+                    ) {
+                      return <span key={p} className="text-slate-600 self-center">...</span>;
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <button
+                  disabled={page === totalPages || loading}
+                  onClick={() => handlePageChange(page + 1)}
+                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold uppercase tracking-wider text-[10px] hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-300 disabled:hover:border-slate-700 transition duration-300"
+                >
+                  Next
+                </button>
+              </div>
+            )}
 
             {filteredNews.length === 0 && (
               <div
