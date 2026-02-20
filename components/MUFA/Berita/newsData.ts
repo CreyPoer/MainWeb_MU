@@ -9,7 +9,7 @@ export type MufaNewsBase = {
 };
 
 export type MufaNewsDetail = MufaNewsBase & {
-  content: string[];
+  content: string | string[];
   author: string;
   author_image?: string;
   author_bio?: string;

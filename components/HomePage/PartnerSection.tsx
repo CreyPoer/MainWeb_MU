@@ -132,15 +132,14 @@ export default function PartnerSection() {
                                 <div className="card-content">
 
                                     {/* LOGO */}
-                                    <div className="logo-container" style={{
-                                        width: isMain ? '260px' : '100px',
-                                        height: isMain ? '260px' : '100px',
+                                    <div className={`logo-container logo-adaptive ${isMain ? 'logo-main' : ''}`} style={{
                                         position: 'relative'
                                     }}>
                                         <Image
                                             src={partner.logo || '/images/placeholder.png'}
                                             alt={partner.name}
                                             fill
+                                            unoptimized
                                             style={{
                                                 objectFit: 'contain',
                                                 filter: isHovered ? 'none' : 'grayscale(100%)',
@@ -248,6 +247,53 @@ export default function PartnerSection() {
                     .main-sponsor {
                         grid-column: span 2; /* Full width on mobile */
                         min-height: 300px;
+                    }
+                }
+
+                /* LOGO SIZES RESPONSIVE */
+                /* Screen < 425px */
+                .logo-adaptive {
+                    width: 125px;
+                    height: 125px;
+                }
+                .logo-adaptive.logo-main {
+                    width: 155px; /* +30px */
+                    height: 155px;
+                }
+
+                /* Screen >= 425px */
+                @media (min-width: 425px) {
+                    .logo-adaptive {
+                        width: 180px;
+                        height: 180px;
+                    }
+                    .logo-adaptive.logo-main {
+                        width: 260px;
+                        height: 260px;
+                    }
+                }
+
+                /* Screen >= 768px */
+                @media (min-width: 768px) {
+                    .logo-adaptive {
+                        width: 200px;
+                        height: 200px;
+                    }
+                    .logo-adaptive.logo-main {
+                        width: 260px;
+                        height: 260px;
+                    }
+                }
+
+                /* Screen >= 1024px */
+                @media (min-width: 1024px) {
+                    .logo-adaptive {
+                        width: 230px;
+                        height: 230px;
+                    }
+                    .logo-adaptive.logo-main {
+                        width: 300px;
+                        height: 300px;
                     }
                 }
             `}</style>
