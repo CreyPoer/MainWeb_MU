@@ -6,7 +6,6 @@ export async function GET(
 ) {
     try {
         const { id } = await params;
-        const targetId = parseInt(id);
         const { searchParams } = new URL(request.url);
         const category = searchParams.get('category');
 
@@ -20,6 +19,13 @@ export async function GET(
         // Fetch the LIST instead of single item, because v2/news/{id} is broken on production
         // and v2/news?id=x is ignored.
         // We will find the item in the list.
+        // Fetch more items to ensure we find it if it's not in the first page?
+        // For now, let's keep it simple or maybe fetch slightly more?
+        // Default pagination often 15. Let's try to fetch a bit more just in case.
+        if (!queryParams.has('limit')) {
+            queryParams.set('limit', '50');
+        }
+
         const response = await fetch(`${baseUrl}/v2/news?${queryParams.toString()}`, {
             cache: 'no-store'
         });
@@ -30,15 +36,6 @@ export async function GET(
         }
 
         const data = await response.json();
-        // data.data is the array of news (Laravel pagination structure usually puts items in 'data')
-        // Based on "Chunk content" seen earlier, the root might be the array itself OR data.data. 
-        // Let's inspect the structure from previous view_content_chunk.
-        // It looked like a direct array in the first chunk? 
-        // "Chunk content at position 0: text:..." -> It starts with the content of the first item?
-        // Wait, the chunk showed JSON text? No, it showed the body HTML. 
-        // Ah, read_url_content returns the text content. 
-        // Let's assume standard Laravel API: it returns { data: [...] } or [...]
-        // I will assume it is an array or { data: Array } and handle both.
 
         let newsList: any[] = [];
         if (Array.isArray(data)) {
@@ -47,7 +44,18 @@ export async function GET(
             newsList = data.data;
         }
 
-        const currentIndex = newsList.findIndex((item: any) => item.id === targetId);
+        // Determine if looked up by ID or Slug
+        const targetId = parseInt(id);
+        const isNumericId = !isNaN(targetId) && targetId.toString() === id;
+
+        let currentIndex = -1;
+
+        if (isNumericId) {
+            currentIndex = newsList.findIndex((item: any) => item.id === targetId);
+        } else {
+            // Look up by slug
+            currentIndex = newsList.findIndex((item: any) => item.slug === id);
+        }
 
         if (currentIndex === -1) {
             return NextResponse.json({ error: 'News not found in recent list' }, { status: 404 });
@@ -100,7 +108,8 @@ export async function GET(
                 image: rel.image_url || ((rel.image_show_fp && !rel.image_show_fp.startsWith('http')) ? `${storageUrl}/storage/articles/${rel.image_show_fp}` : rel.image_show_fp),
                 date: rel.created_at ? new Date(rel.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
                 category: rel.section?.title || 'General',
-                author: rel.author?.name || 'Admin'
+                author: rel.author?.name || 'Admin',
+                slug: rel.slug // Ensure slug is available for related items if needed
             }));
 
         return NextResponse.json({
