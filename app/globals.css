@@ -644,11 +644,12 @@ body {
 
 .mufa-news-detail-authorAvatar {
     position: relative;
-    width: 90px;
-    height: 55px;
-    border-radius: 999px;
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
     overflow: hidden;
     background: #020617;
+    flex-shrink: 0;
 }
 
 .mufa-news-detail-authorBody h3 {
@@ -863,6 +864,21 @@ body {
 
     .mufa-news-detail-author {
         flex-direction: column;
+    }
+
+    .mufa-news-detail-authorAvatar {
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+
+    .mufa-news-detail-authorAvatar img {
+        object-fit: contain !important;
+        padding: 4px;
+        /* Optional: give some breathing room inside the container */
+        background: #fff;
+        /* Optional: background for transparent logos */
     }
 }
 

@@ -383,7 +383,7 @@ export default function OfficialsContent() {
           display: grid;
           grid-template-columns: 1fr;
           gap: 1.5rem;
-          grid-auto-rows: 1fr;
+          /* Removed grid-auto-rows: 1fr; to fix mobile stretch issues */
         }
 
         @media (min-width: 640px) {
@@ -453,6 +453,7 @@ export default function OfficialsContent() {
 
         .official-card-inner {
           position: relative;
+          width: 100%;
           border-radius: 22px;
           background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.26), transparent 45%),
             rgba(15, 23, 42, 0.96);
@@ -504,7 +505,8 @@ export default function OfficialsContent() {
         .official-photo-wrapper {
           position: relative;
           width: 100%;
-          height: 60vh;
+          height: auto;
+          aspect-ratio: 3/4;
           border-radius: 18px;
           overflow: hidden;
           border: 1px solid rgba(15, 23, 42, 0.9);

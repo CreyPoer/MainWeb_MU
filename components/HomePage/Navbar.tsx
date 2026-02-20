@@ -250,6 +250,43 @@ export default function Navbar() {
                             )}
                         </div>
                     ))}
+
+                    {/* Mobile Footer: Social Media & Language Switcher */}
+                    <div className="mobile-menu-footer" style={{ marginTop: 'auto', padding: '20px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+                        {/* Social Media Icons */}
+                        <div className="flex justify-center gap-6">
+                            <a href="https://www.instagram.com/maduraunited.fc?igsh=bmYxY201MWx6Yjkz" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#DC2626] transition-colors">
+                                <FaInstagram size={24} />
+                            </a>
+                            <a href="https://www.facebook.com/Maduraunitedfc.official/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#DC2626] transition-colors">
+                                <FaFacebookF size={24} />
+                            </a>
+                            <a href="https://x.com/MaduraUnitedFC" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#DC2626] transition-colors">
+                                <FaTwitter size={24} />
+                            </a>
+                            <a href="https://youtube.com/@maduraunitedfc?si=nVakpGhvYmyS3HBb" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#DC2626] transition-colors">
+                                <FaYoutube size={24} />
+                            </a>
+                        </div>
+
+                        {/* Language Switcher */}
+                        <div className="flex justify-center">
+                            <button
+                                onClick={handleToggleLanguage}
+                                className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all font-bold text-sm tracking-wider"
+                            >
+                                <Image
+                                    src={lang === 'id' ? 'https://flagcdn.com/w40/id.png' : 'https://flagcdn.com/w40/gb.png'}
+                                    alt={lang === 'id' ? 'Indonesia' : 'English'}
+                                    width={24}
+                                    height={18}
+                                    className="rounded-sm object-cover"
+                                />
+                                {lang === 'id' ? 'INDONESIA' : 'ENGLISH'}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </nav>

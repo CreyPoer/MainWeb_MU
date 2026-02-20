@@ -208,7 +208,32 @@
             "latest_match": "Latest Match Update",
             "upcoming": "Upcoming Matches",
             "no_results": "No match results available.",
-            "no_upcoming": "No upcoming matches."
+            "no_upcoming": "No upcoming matches.",
+            "detail": {
+                "league_name": "Liga 1 Indonesia",
+                "tabs": {
+                    "statistics": "Statistics",
+                    "events": "Match Events"
+                },
+                "stats": {
+                    "possession": "Ball Possession",
+                    "shots_total": "Total Shots",
+                    "shots_on_target": "Shots on Target",
+                    "shots_off_target": "Shots off Target",
+                    "corners": "Corner Kicks",
+                    "offsides": "Offsides",
+                    "fouls": "Fouls",
+                    "yellow_cards_count": "Yellow Cards",
+                    "red_cards_count": "Red Cards",
+                    "free_kicks": "Free Kicks",
+                    "throw_ins": "Throw-ins"
+                },
+                "labels": {
+                    "ball_possession": "Ball Possession",
+                    "no_stats": "No statistics available for this match.",
+                    "no_events": "No event data available for this match."
+                }
+            }
         },
         "about": {
             "hero_title": "ABOUT MADURA UNITED FC",

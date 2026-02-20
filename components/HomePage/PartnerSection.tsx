@@ -133,8 +133,8 @@ export default function PartnerSection() {
 
                                     {/* LOGO */}
                                     <div className="logo-container" style={{
-                                        width: isMain ? '280px' : '140px',
-                                        height: isMain ? '280px' : '140px',
+                                        width: isMain ? '260px' : '100px',
+                                        height: isMain ? '260px' : '100px',
                                         position: 'relative'
                                     }}>
                                         <Image

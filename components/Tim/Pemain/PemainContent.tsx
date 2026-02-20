@@ -750,6 +750,10 @@ export default function PemainContent() {
 					left: 0;
 				}
 
+				.mobile-sidebar .players-detail-label {
+					display: none;
+				}
+
 				/* Desktop Sidebar Specifics */
 				.desktop-sidebar {
 					display: none;

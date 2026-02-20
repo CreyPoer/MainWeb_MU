@@ -24,7 +24,7 @@ export default function MUFAHeroDetail({ title, image }: MUFAHeroDetailProps) {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full mt-5 md:mt-10 lg:mt-10">
             <div className={styles.mufaContainer}>
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase leading-tight max-w-full text-left">
+              <h1 className="text-lg md:text-3xl lg:text-4xl font-extrabold text-white uppercase leading-tight max-w-full text-left">
                 {title}
               </h1>
             </div>

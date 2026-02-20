@@ -169,7 +169,7 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
             <div className="mufa-news-detail-author">
               <div className="mufa-news-detail-authorAvatar">
                 <Image
-                  src="/logoMUFA.jpg"
+                  src={newsItem.author_image || '/logo.png'}
                   alt={newsItem.author}
                   fill
                   className="object-cover"
@@ -178,9 +178,9 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
               <div className="mufa-news-detail-authorBody">
                 <h3>{t('mufa.detail.about_author')} {newsItem.author}</h3>
                 <p className="mufa-news-detail-authorDesc">
-                  {t('mufa.detail.author_desc')}
+                  {newsItem.author_bio || t('mufa.detail.author_desc')}
                 </p>
-                <button className="mufa-news-detail-authorLink">
+                <button className="mufa-news-detail-authorLink text-left">
                   {t('mufa.detail.view_all_by')} {newsItem.author}
                 </button>
               </div>

@@ -178,11 +178,11 @@ export default function MUFAGalleryContent() {
             {
                 modalData && (
                     <div
-                        className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-8 md:p-12 animate-in fade-in duration-300"
+                        className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
                         onClick={closeModal}
                     >
                         <div
-                            className="relative w-full max-w-5xl max-h-[85vh] aspect-[16/9] md:aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col"
+                            className="relative w-full max-w-5xl max-h-[90vh] h-[80vh] md:h-auto aspect-auto md:aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Close Button */}
@@ -218,7 +218,7 @@ export default function MUFAGalleryContent() {
                             </div>
 
                             {/* Caption / Footer */}
-                            <div className="bg-slate-900/90 border-t border-slate-800 p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-xl absolute bottom-0 w-full">
+                            <div className="bg-slate-900/90 border-t border-slate-800 p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-xl w-full z-20">
                                 <div>
                                     <div className="flex items-center gap-3 mb-1">
                                         <span className="text-[10px] font-bold tracking-widest uppercase text-red-400">

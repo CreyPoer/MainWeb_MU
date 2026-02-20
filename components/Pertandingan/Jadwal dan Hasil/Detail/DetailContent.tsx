@@ -8,18 +8,20 @@ import 'aos/dist/aos.css';
 
 import { MatchData } from "../matchData";
 
-const MATCH_STATS_LABELS = [
-    { key: "possession", label: "Penguasaan Bola" },
-    { key: "shots_total", label: "Total Tembakan" },
-    { key: "shots_on_target", label: "Tembakan ke Gawang" },
-    { key: "shots_off_target", label: "Tembakan Meleset" },
-    { key: "corners", label: "Tendangan Sudut" },
-    { key: "offsides", label: "Offsides" },
-    { key: "fouls", label: "Pelanggaran" },
-    { key: "yellow_cards_count", label: "Kartu Kuning" },
-    { key: "red_cards_count", label: "Kartu Merah" },
-    { key: "free_kicks", label: "Tendangan Bebas" },
-    { key: "throw_ins", label: "Lemparan ke Dalam" },
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const MATCH_STATS_KEYS = [
+    "possession",
+    "shots_total",
+    "shots_on_target",
+    "shots_off_target",
+    "corners",
+    "offsides",
+    "fouls",
+    "yellow_cards_count",
+    "red_cards_count",
+    "free_kicks",
+    "throw_ins",
 ];
 
 interface DetailContentProps {
@@ -27,6 +29,7 @@ interface DetailContentProps {
 }
 
 export default function DetailContent({ match }: DetailContentProps) {
+    const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<'statistics' | 'events'>('statistics');
 
     useEffect(() => {
@@ -61,7 +64,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                         textTransform: "uppercase",
                         boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
                     }}>
-                        Liga 1 Indonesia
+                        {t('page.schedule.detail.league_name')}
                     </div>
 
                     <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0 20px" }}>
@@ -164,7 +167,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                         transition: "all 0.3s"
                     }}
                 >
-                    Statistics
+                    {t('page.schedule.detail.tabs.statistics')}
                 </button>
                 <button
                     onClick={() => setActiveTab('events')}
@@ -182,7 +185,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                         transition: "all 0.3s"
                     }}
                 >
-                    Match Events
+                    {t('page.schedule.detail.tabs.events')}
                 </button>
             </div>
 
@@ -200,7 +203,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                                         <Image src={match.homeLogo} width={32} height={32} alt="Home" style={{ objectFit: "contain" }} unoptimized />
                                         <span>{match.statistics.possession.home}%</span>
                                     </div>
-                                    <span style={{ fontSize: "14px", color: "#6B7280", textTransform: "uppercase" }}>Ball Possession</span>
+                                    <span style={{ fontSize: "14px", color: "#6B7280", textTransform: "uppercase" }}>{t('page.schedule.detail.labels.ball_possession')}</span>
                                     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                         <span>{match.statistics.possession.away}%</span>
                                         <Image src={match.awayLogo} width={32} height={32} alt="Away" style={{ objectFit: "contain" }} unoptimized />
@@ -215,20 +218,21 @@ export default function DetailContent({ match }: DetailContentProps) {
 
                         {/* Stats Table */}
                         <div className="stats-list" style={{ maxWidth: "600px", margin: "0 auto", display: "flex", flexDirection: "column" }}>
-                            {MATCH_STATS_LABELS.map((stat, idx) => {
-                                const key = stat.key as keyof typeof match.statistics;
+                            {MATCH_STATS_KEYS.map((keyName, idx) => {
+                                const key = keyName as keyof typeof match.statistics;
                                 let data = match.statistics ? match.statistics[key] : null;
+                                const label = t(`page.schedule.detail.stats.${key}`);
 
                                 // Force display for Red Cards even if 0 or undefined
-                                if (stat.key === 'red_cards_count' && !data) {
+                                if (key === 'red_cards_count' && !data) {
                                     data = { home: 0, away: 0 };
                                 }
 
-                                if (!data && stat.key !== 'red_cards_count') return null; // Skip others if no data
-                                if (stat.key === 'possession') return null; // Already shown above
+                                if (!data && key !== 'red_cards_count') return null; // Skip others if no data
+                                if (key === 'possession') return null; // Already shown above
 
-                                const isYellow = stat.label === "Kartu Kuning";
-                                const isRed = stat.label === "Kartu Merah";
+                                const isYellow = key === "yellow_cards_count";
+                                const isRed = key === "red_cards_count";
 
                                 return (
                                     <div key={idx} data-aos="fade-up" data-aos-delay={idx * 50} style={{
@@ -248,7 +252,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                                         </div>
 
                                         {/* Label */}
-                                        <div style={{ flex: 2, textAlign: "center", color: "#6B7280", fontWeight: "normal" }}>{stat.label}</div>
+                                        <div style={{ flex: 2, textAlign: "center", color: "#6B7280", fontWeight: "normal" }}>{label}</div>
 
                                         {/* Away Stat */}
                                         <div style={{ flex: 1, textAlign: "right", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px" }}>
@@ -265,7 +269,7 @@ export default function DetailContent({ match }: DetailContentProps) {
 
                 {activeTab === 'statistics' && !match.statistics && (
                     <div style={{ textAlign: "center", padding: "40px", color: "#6B7280" }}>
-                        No statistics available for this match.
+                        {t('page.schedule.detail.labels.no_stats')}
                     </div>
                 )}
 
@@ -371,7 +375,7 @@ export default function DetailContent({ match }: DetailContentProps) {
 
                 {activeTab === 'events' && match.events.length === 0 && (
                     <div style={{ textAlign: "center", padding: "40px", color: "#6B7280" }}>
-                        No event data available for this match.
+                        {t('page.schedule.detail.labels.no_events')}
                     </div>
                 )}
 
@@ -448,7 +452,6 @@ export default function DetailContent({ match }: DetailContentProps) {
                     }
 
                     .event-row {
-                        padding: 10px !important;
                         font-size: 12px; 
                     }
                 }

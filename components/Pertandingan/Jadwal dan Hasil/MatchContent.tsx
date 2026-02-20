@@ -441,6 +441,7 @@ export default function MatchContent() {
                         }
                     }
 
+
                     @media (min-width: 1024px) {
                         .results-grid {
                             grid-template-columns: repeat(3, 1fr);
@@ -451,6 +452,32 @@ export default function MatchContent() {
                             grid-column: auto;
                             width: auto;
                             margin: 0;
+                        }
+                    }
+
+                    /* Mobile Optimization < 425px */
+                    @media (max-width: 425px) {
+                        /* Header Date & Time */
+                        .upcoming-card > div:first-child {
+                            font-size: 9px !important;
+                            padding: 10px 14px !important;
+                        }
+
+                        /* Team Names in Match Body */
+                        .upcoming-card span[style*="font-size: 16px"] {
+                            font-size: 10px !important;
+                        }
+                        
+                        /* Adjust logo size slightly for balance */
+                        .upcoming-card div[style*="width: 50px"] {
+                            width: 36px !important;
+                            height: 36px !important;
+                        }
+                        
+                        /* VS Text */
+                        .upcoming-card div[style*="font-size: 24px"] {
+                             font-size: 16px !important;
+                             margin: 0 10px !important;
                         }
                     }
                 `}</style>

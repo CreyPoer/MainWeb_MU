@@ -63,31 +63,42 @@ export default function VideoHighlightSection() {
         <section style={{ background: "linear-gradient(to top, #2a2a2a 0%, #151515 100%)", padding: "80px 0", position: "relative", overflow: "hidden" }}>
 
             {/* BACKGROUND TEXT DECORATION (Optional "WATCH HIGHLIGHT" big text behind) */}
-            <div style={{
-                position: "absolute",
-                top: "1%",
-                left: "50%",
-                transform: "translateX(-50%)",
-                fontSize: "12vw",
-                fontWeight: "900",
-                color: "rgba(136, 136, 136, 0.84)",
-                whiteSpace: "nowrap",
-                pointerEvents: "none",
-                zIndex: 0
-            }} data-aos="zoom-in" data-aos-duration="1500">
-                {t('section.watch_highlight_bg')}
-            </div>
+
 
             <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 1 }}>
 
                 {/* HEADER */}
-                <div style={{ marginBottom: "40px", textAlign: "left" }} data-aos="fade-down">
-                    <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "14px", marginBottom: "8px" }}>
-                        {t('section.our_videos')}
-                    </h4>
-                    <h2 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", color: "white", lineHeight: "1.2" }}>
-                        {t('section.watch')} <span style={{ color: "#DC2626" }}>{t('section.highlights')}</span>
-                    </h2>
+                <div style={{ position: "relative", marginBottom: "40px", textAlign: "left" }}>
+                    {/* BACKGROUND TEXT (Moved here for alignment) */}
+                    <h1
+                        data-aos="zoom-in"
+                        data-aos-duration="1500"
+                        style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            fontSize: "clamp(50px, 12vw, 150px)",
+                            fontWeight: "900",
+                            color: "rgba(255, 255, 255, 0.05)",
+                            whiteSpace: "nowrap",
+                            zIndex: 0,
+                            pointerEvents: "none",
+                            fontFamily: "fantasy, sans-serif",
+                            textTransform: "uppercase"
+                        }}
+                    >
+                        {t('section.watch_highlight_bg')}
+                    </h1>
+
+                    <div style={{ position: "relative", zIndex: 1 }} data-aos="fade-down">
+                        <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "14px", marginBottom: "8px" }}>
+                            {t('section.our_videos')}
+                        </h4>
+                        <h2 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", color: "white", lineHeight: "1.2" }}>
+                            {t('section.watch')} <span style={{ color: "#DC2626" }}>{t('section.highlights')}</span>
+                        </h2>
+                    </div>
                 </div>
 
                 {/* GRID LAYOUT */}
@@ -154,7 +165,7 @@ export default function VideoHighlightSection() {
                                             {/* INFO (BOTTOM) */}
                                             <div style={{ position: "absolute", bottom: 0, left: 0, padding: "24px", width: "100%" }}>
                                                 <p style={{ color: "#9CA3AF", fontSize: "12px", marginBottom: "4px" }}>{video.date}</p>
-                                                <h3 style={{ color: "white", fontSize: isFeatured ? "24px" : "18px", fontWeight: "bold", lineHeight: "1.3", textTransform: "uppercase" }}>
+                                                <h3 style={{ color: "white", fontSize: isFeatured ? "18px" : "12px", fontWeight: "bold", lineHeight: "1.3", textTransform: "uppercase" }}>
                                                     {video.title}
                                                 </h3>
                                             </div>

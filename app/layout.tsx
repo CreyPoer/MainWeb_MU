@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Madura United FC",
   description: "Official website of Madura United Football Club",
+  icons: {
+    icon: "https://upload.wikimedia.org/wikipedia/id/8/8a/Madura_United_FC.png",
+  },
 };
 
 export default function RootLayout({

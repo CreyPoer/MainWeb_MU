@@ -59,8 +59,9 @@ export default function HeroDetail({ title, image }: HeroDetailProps) {
                 }}
             >
                 <h1
+                    className="hero-title"
                     style={{
-                        fontSize: "36px", // Large title
+                        // fontSize removed here, handled by style jsx
                         fontWeight: "900",
                         textTransform: "uppercase",
                         marginBottom: "16px",
@@ -72,8 +73,9 @@ export default function HeroDetail({ title, image }: HeroDetailProps) {
 
                 {/* Breadcrumb: Beranda > Berita > Judul */}
                 <div
+                    className="hero-breadcrumb"
                     style={{
-                        fontSize: "14px",
+                        // fontSize moved to style jsx
                         fontWeight: "600",
                         textTransform: "uppercase",
                         letterSpacing: "1px",
@@ -91,6 +93,27 @@ export default function HeroDetail({ title, image }: HeroDetailProps) {
                     <span style={{ color: "#DC2626" }}>{title}</span> {/* Judul highlight red */}
                 </div>
             </div>
+
+            <style jsx>{`
+                .hero-title {
+                    font-size: 36px;
+                }
+                .hero-breadcrumb {
+                    font-size: 14px;
+                }
+
+                @media (max-width: 1024px) {
+                    .hero-title {
+                        font-size: 24px;
+                    }
+                }
+
+                @media (max-width: 425px) {
+                    .hero-breadcrumb {
+                        font-size: 10px;
+                    }
+                }
+            `}</style>
         </div >
     );
 }

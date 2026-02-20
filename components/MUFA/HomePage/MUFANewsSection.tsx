@@ -117,7 +117,7 @@ export default function MUFANewsSection() {
           <div className="flex flex-col gap-4 h-full">
             {rest.map((item, index) => (
               <Link
-                href={`/news/${item.slug}`}
+                href={`/${lang}/mufa/berita/${item.slug}`}
                 key={item.id}
                 data-aos="fade-left"
                 data-aos-delay={index * 100}

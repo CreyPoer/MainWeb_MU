@@ -303,7 +303,7 @@ export default function NewsStandingsSection() {
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.1, duration: 0.3 }}
-                                                style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '16px', lineHeight: 1.1 }}
+                                                style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '16px', lineHeight: 1.1 }}
                                             >
                                                 {currentNews.title}
                                             </motion.h3>

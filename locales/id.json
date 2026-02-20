@@ -10,7 +10,7 @@
     "academy": "Academy",
     "u20": "U-20",
     "players": "Pemain",
-    "officials": "Officials",
+    "officials": "Petugas",
     "matches": "Pertandingan",
     "schedule": "Jadwal dan Hasil",
     "standings": "Klasemen",
@@ -72,7 +72,7 @@
     "standings": "Klasemen",
     "main_team": "Tim Utama",
     "academy_team": "Tim Akademi",
-    "officials": "Officials",
+    "officials": "Petugas",
     "news": "Berita",
     "about_us": "Tentang Kami",
     "mufa": "MUFA"
@@ -135,9 +135,9 @@
   "page": {
     "officials": {
       "title": "Petugas",
-      "breadcrumb": "Daftar Officials",
-      "list_title": "Daftar Officials",
-      "no_data": "Tidak ada data officials.",
+      "breadcrumb": "Daftar Petugas",
+      "list_title": "Daftar Petugas",
+      "no_data": "Tidak ada data petugas.",
       "main_team": "Tim Utama",
       "academy": "Akademi"
     },
@@ -182,7 +182,20 @@
     },
     "standings": {
       "title": "Klasemen",
-      "breadcrumb": "Klasemen"
+      "breadcrumb": "Klasemen",
+      "overview": {
+        "title": "STATISTIK RINGKASAN",
+        "season": "Musim",
+        "most_goals": "Gol Terbanyak",
+        "best_defense": "Pertahanan Terbaik",
+        "hardest_beat": "Sulit Dikalahkan",
+        "most_losses": "Kekalahan Terbanyak",
+        "draw_specialist": "Spesialis Seri",
+        "scored_label": "GOL DICETAK",
+        "conceded_label": "GOL KEMASUKAN",
+        "losses_label": "KEKALAHAN",
+        "draws_label": "SERI"
+      }
     },
     "schedule": {
       "title": "Jadwal dan Hasil",
@@ -191,9 +204,35 @@
       "senior_team": "Tim Senior",
       "academy_u20": "Academy U20",
       "next_match": "Pertandingan Berikutnya",
+      "latest_match": "Pertandingan Terakhir",
       "last_match": "Pertandingan Terakhir",
       "no_results": "Tidak ada hasil pertandingan.",
-      "no_upcoming": "Tidak ada pertandingan mendatang."
+      "no_upcoming": "Tidak ada pertandingan mendatang.",
+      "detail": {
+        "league_name": "Liga 1 Indonesia",
+        "tabs": {
+          "statistics": "Statistik",
+          "events": "Linimasa"
+        },
+        "stats": {
+          "possession": "Penguasaan Bola",
+          "shots_total": "Total Tembakan",
+          "shots_on_target": "Tembakan ke Gawang",
+          "shots_off_target": "Tembakan Meleset",
+          "corners": "Tendangan Sudut",
+          "offsides": "Offsides",
+          "fouls": "Pelanggaran",
+          "yellow_cards_count": "Kartu Kuning",
+          "red_cards_count": "Kartu Merah",
+          "free_kicks": "Tendangan Bebas",
+          "throw_ins": "Lemparan ke Dalam"
+        },
+        "labels": {
+          "ball_possession": "Penguasaan Bola",
+          "no_stats": "Tidak ada statistik tersedia untuk pertandingan ini.",
+          "no_events": "Tidak ada data kejadian untuk pertandingan ini."
+        }
+      }
     },
     "about": {
       "hero_title": "TENTANG MADURA UNITED FC",
@@ -336,20 +375,20 @@
       "eyebrow": "Program Kami",
       "title_main": "Program Pembinaan",
       "title_highlight": "Berjenjang",
-      "junior_badge": "Junior Development",
-      "junior_title": "MUFA Junior Development U-16",
+      "junior_badge": "Pengembangan Junior",
+      "junior_title": "MUFA Pengembangan Junior U-16",
       "junior_desc": "Fokus pada penguasaan teknik dasar, karakter, dan pemahaman taktik sederhana sebagai fondasi pemain modern.",
-      "youth_badge": "Youth Elite",
-      "youth_title": "MUFA Youth Elite U-18",
+      "youth_badge": "Elite Muda",
+      "youth_title": "MUFA Elite Muda U-18",
       "youth_desc": "Pendalaman taktik, intensitas latihan tinggi, dan pembiasaan pada ritme kompetisi nasional tingkat elite.",
-      "pro_badge": "Pro Transition",
-      "pro_title": "MUFA Pro Transition U-20",
+      "pro_badge": "Transisi Profesional",
+      "pro_title": "MUFA Transisi Profesional U-20",
       "pro_desc": "Mempersiapkan pemain untuk transisi ke level profesional, termasuk EPA, Liga 2, dan promosi ke tim utama.",
       "subtitle": "Tiga level program yang saling terhubung, dirancang untuk mengantar pemain muda menuju jenjang profesional bersama Madura United FC.",
-      "pathway": "Pathway",
+      "pathway": "Jenjang",
       "monitoring_note": "Setiap peserta akan melalui proses seleksi, program latihan terukur, dan monitoring perkembangan secara berkala oleh tim pelatih MUFA.",
       "register_now": "Daftar Sekarang",
-      "download_guidebook": "Download Guidebook"
+      "download_guidebook": "Unduh Buku Panduan"
     },
     "facilities": {
       "eyebrow": "Lingkungan Tinggal & Latihan",

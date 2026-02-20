@@ -86,7 +86,7 @@ export default function MatchSection() {
                             padding: 'clamp(0.75rem, 1.5vw, 1rem) clamp(2rem, 3vw, 3rem)'
                         }}>
 
-                        <span className="block transform skew-x-12 text-white font-black uppercase tracking-[0.2em] leading-none drop-shadow-md"
+                        <span className="block transform skew-x-12 text-white font-black uppercase tracking-[0.2em] leading-none drop-shadow-md max-[380px]:!text-[0.6rem]"
                             style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1.6rem)' }}>
                             {t('match.next_match')}
                         </span>
