@@ -2,9 +2,17 @@ const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
-const dev = process.env.NODE_ENV === 'development'; // Defaults to false (production) if NODE_ENV is not set
+console.log('Starting custom server...');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
+// FORCE PROD: Ensure we are NOT in dev mode unless explicitly set to 'development'
+const dev = process.env.NODE_ENV === 'development';
+console.log('Is Dev Mode?', dev);
+
 const hostname = 'localhost';
 const port = process.env.PORT || 3000;
+console.log('Port:', port);
+
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
