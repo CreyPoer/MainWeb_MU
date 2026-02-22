@@ -39,9 +39,24 @@ export default function DetailContent({ match }: DetailContentProps) {
         });
     }, []);
 
+    // Sort events correctly handling 45+1, 90+3, etc.
+    const sortedEvents = [...match.events].sort((a, b) => {
+        const parseMinute = (minStr: string | number) => {
+            if (!minStr) return 0;
+            const clean = minStr.toString().replace(/['"´`]/g, '').trim();
+            if (clean.includes('+')) {
+                const parts = clean.split('+');
+                // 45+1 -> 45.01 to keep it after 45 and before 46
+                return parseInt(parts[0]) + (parseInt(parts[1]) / 100);
+            }
+            return parseInt(clean);
+        };
+        return parseMinute(a.minute) - parseMinute(b.minute);
+    });
+
     // Filter Goals for Header
-    const homeGoals = match.events.filter(e => e.team === 'home' && e.type === 'goal');
-    const awayGoals = match.events.filter(e => e.team === 'away' && e.type === 'goal');
+    const homeGoals = sortedEvents.filter(e => e.team === 'home' && e.type === 'goal');
+    const awayGoals = sortedEvents.filter(e => e.team === 'away' && e.type === 'goal');
 
     return (
         <div style={{ backgroundColor: "#F9FAFB", paddingBottom: "60px" }}>
@@ -285,7 +300,7 @@ export default function DetailContent({ match }: DetailContentProps) {
 
                         <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
 
-                            {match.events.map((event, idx) => (
+                            {sortedEvents.map((event, idx) => (
                                 <div key={idx} className="event-row" data-aos="fade-up" data-aos-delay={idx * 50} style={{
                                     display: "flex",
                                     alignItems: "stretch", // Changed to stretch to allow line to fill height

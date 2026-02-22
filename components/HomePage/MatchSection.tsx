@@ -104,7 +104,7 @@ export default function MatchSection() {
                 <div className="w-full" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)', gap: 'clamp(0.5rem, 2vw, 2rem)', alignItems: 'center' }} data-aos="fade-up" data-aos-delay="100">
 
                     {/* LEFT SIDE: Home Team -> Grid with 2 columns [Name | Logo] - Logo in center */}
-                    <div className="hidden md:grid" style={{ gridTemplateColumns: '1fr auto', gap: 'clamp(1rem, 3vw, 3rem)', alignItems: 'center', justifyContent: 'end' }}>
+                    <div className="hidden md:flex justify-end items-center" style={{ gap: 'clamp(1rem, 3vw, 3rem)' }}>
                         {/* Name Column - ALWAYS stays in its column (OUTER LEFT) */}
                         <div className="flex justify-end items-center" style={{ overflow: 'visible' }}>
                             <h2 className="font-black uppercase text-white tracking-tighter leading-none text-right" style={{ fontSize: 'clamp(2rem, 4vw, 5rem)', whiteSpace: 'normal' }}>
@@ -173,7 +173,7 @@ export default function MatchSection() {
                     </div>
 
                     {/* RIGHT SIDE: Away Team -> Grid with 2 columns [Logo | Name] - Logo in center */}
-                    <div className="hidden md:grid" style={{ gridTemplateColumns: 'auto 1fr', gap: 'clamp(1rem, 3vw, 3rem)', alignItems: 'center', justifyContent: 'start' }}>
+                    <div className="hidden md:flex justify-start items-center" style={{ gap: 'clamp(1rem, 3vw, 3rem)' }}>
                         {/* Logo Column - ALWAYS stays in its column (CENTER) */}
                         <div className="shrink-0 transition-transform duration-500 hover:scale-110">
                             {nextMatch.away_logo ? (
@@ -191,7 +191,7 @@ export default function MatchSection() {
                         </div>
                         {/* Name Column - ALWAYS stays in its column (OUTER) */}
                         <div className="flex justify-start items-center" style={{ overflow: 'visible' }}>
-                            <h2 className="font-black uppercase text-white tracking-tighter leading-none text-left" style={{ fontSize: 'clamp(2rem, 4vw, 5rem)', whiteSpace: 'nowrap' }}>
+                            <h2 className="font-black uppercase text-white tracking-tighter leading-none text-left" style={{ fontSize: 'clamp(2rem, 4vw, 5rem)', whiteSpace: 'normal' }}>
                                 {nextMatch.away_team}
                             </h2>
                         </div>
