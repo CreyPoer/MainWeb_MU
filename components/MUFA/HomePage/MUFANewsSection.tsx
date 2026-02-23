@@ -61,7 +61,7 @@ export default function MUFANewsSection() {
       <div className={styles.mufaContainer}>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
           <div>
-            <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
+            <p className="text-xs md:text-sm font-semibold text-red-400 mb-2">
               {t('mufa.news.eyebrow')}
             </p>
             <h2
@@ -101,7 +101,6 @@ export default function MUFANewsSection() {
                   <span className="inline-flex px-3 py-1 rounded-full bg-red-500 text-xs font-semibold tracking-[0.18em] uppercase text-white/90 self-start">
                     {t('mufa.news.headline')}
                   </span>
-                  <p className="text-xs text-slate-200/80">{featured.date} | {featured.author}</p>
                   <h3 className="text-xl md:text-2xl font-bold text-white leading-snug line-clamp-2">
                     {featured.title}
                   </h3>
@@ -143,7 +142,7 @@ export default function MUFANewsSection() {
                     {item.excerpt}
                   </p>
                   <div className="mt-3">
-                    <span className="inline-flex items-center justify-center px-6 py-2 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-bold uppercase tracking-wider rounded-full transition-colors duration-300">
+                    <span className="inline-flex items-center justify-center px-6 py-2 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-bold rounded-full transition-colors duration-300">
                       {t('mufa.news.read_more')}
                     </span>
                   </div>

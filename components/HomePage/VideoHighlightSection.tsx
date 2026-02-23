@@ -75,10 +75,10 @@ export default function VideoHighlightSection() {
                         data-aos-duration="1500"
                         style={{
                             position: "absolute",
-                            top: "50%",
+                            top: "25%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
-                            fontSize: "clamp(50px, 12vw, 150px)",
+                            fontSize: "clamp(100px, 16vw, 200px)",
                             fontWeight: "900",
                             color: "rgba(255, 255, 255, 0.05)",
                             whiteSpace: "nowrap",
@@ -92,7 +92,7 @@ export default function VideoHighlightSection() {
                     </h1>
 
                     <div style={{ position: "relative", zIndex: 1 }} data-aos="fade-down">
-                        <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "14px", marginBottom: "8px" }}>
+                        <h4 style={{ color: "#DC2626", fontWeight: "bold", fontSize: "17px", marginBottom: "8px" }}>
                             {t('section.our_videos')}
                         </h4>
                         <h2 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", color: "white", lineHeight: "1.2" }}>

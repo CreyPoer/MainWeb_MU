@@ -91,7 +91,6 @@ export default function BeritaContent() {
         if (newPage >= 1 && newPage <= totalPages) {
             setPage(newPage);
             fetchNews(newPage);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -185,31 +184,26 @@ export default function BeritaContent() {
                                 }}
                                 className="group grid-image-cell"
                             >
-                                <Image
-                                    src={news.image || '/logo.png'}
-                                    alt={news.title}
-                                    fill
-                                    unoptimized
-                                    style={{
-                                        objectFit: "cover",
-                                        objectPosition: "center",
-                                        transition: "transform 0.5s ease"
-                                    }}
-                                    className="group-hover:scale-110"
-                                />
+                                <Link href={`/${lang}/media/berita/${news.id}`} style={{ position: "absolute", inset: 0, zIndex: 5, display: "block" }}>
+                                    <Image
+                                        src={news.image || '/logo.png'}
+                                        alt={news.title}
+                                        fill
+                                        unoptimized
+                                        style={{
+                                            objectFit: "cover",
+                                            objectPosition: "center",
+                                            transition: "transform 0.5s ease"
+                                        }}
+                                        className="group-hover:scale-110"
+                                    />
+                                </Link>
                                 {/* Overlay */}
                                 <div style={{
                                     position: "absolute",
                                     inset: 0,
                                     background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%)"
                                 }} />
-
-                                {/* Mobile Category Badge (Only show on mobile layout via CSS media query if needed, keeping simple here) */}
-                                <div className="mobile-only-badge" style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}>
-                                    <span style={{ backgroundColor: "#DC2626", color: "white", fontSize: "10px", padding: "2px 8px", borderRadius: "10px", fontWeight: "bold", textTransform: "uppercase" }}>
-                                        {news.category}
-                                    </span>
-                                </div>
                             </div>
                         );
 
@@ -236,7 +230,6 @@ export default function BeritaContent() {
                                         fontSize: "10px",
                                         fontWeight: "800",
                                         padding: "4px 10px",
-                                        textTransform: "uppercase",
                                         borderRadius: "20px",
                                         display: "inline-block",
                                         marginRight: "10px"
@@ -272,7 +265,6 @@ export default function BeritaContent() {
                                             padding: "8px 16px",
                                             fontSize: "10px",
                                             fontWeight: "800",
-                                            textTransform: "uppercase",
                                             letterSpacing: "1px",
                                             borderRadius: "20px",
                                             display: "inline-block",
@@ -352,7 +344,7 @@ export default function BeritaContent() {
                                 transition: "all 0.3s"
                             }}
                         >
-                            Prev
+                            {t('common.prev') || 'Prev'}
                         </button>
 
                         <div style={{ display: "flex", gap: "5px" }}>
@@ -414,7 +406,7 @@ export default function BeritaContent() {
                                 transition: "all 0.3s"
                             }}
                         >
-                            Next
+                            {t('common.next') || 'Next'}
                         </button>
                     </div>
                 )}
@@ -506,7 +498,7 @@ export default function BeritaContent() {
                 <div style={{ padding: "30px" }}>
                     {/* Search */}
                     <div style={{ marginBottom: "40px" }}>
-                        <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF", letterSpacing: "1px" }}>
+                        <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF" }}>
                             {t('page.news.keyword_search')}
                         </h4>
                         <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
@@ -546,7 +538,7 @@ export default function BeritaContent() {
 
                     {/* Categories */}
                     <div style={{ marginBottom: "40px" }}>
-                        <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF", letterSpacing: "1px" }}>
+                        <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF" }}>
                             {t('page.news.categories')}
                         </h4>
                         <ul style={{ listStyle: "none", padding: 0 }}>
@@ -558,7 +550,6 @@ export default function BeritaContent() {
                                             color: activeCategory === cat.title ? "#DC2626" : "#111827",
                                             fontWeight: "700",
                                             fontSize: "15px",
-                                            textTransform: "uppercase",
                                             display: "flex",
                                             justifyContent: "space-between",
                                             alignItems: "center",
@@ -581,7 +572,7 @@ export default function BeritaContent() {
 
                     {/* Tags */}
                     <div>
-                        <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF", letterSpacing: "1px" }}>
+                        <h4 style={{ fontSize: "14px", fontWeight: "900", textTransform: "uppercase", marginBottom: "15px", color: "#9CA3AF" }}>
                             {t('page.news.popular_tags')}
                         </h4>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>

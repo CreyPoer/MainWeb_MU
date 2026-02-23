@@ -448,7 +448,6 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                         fontWeight: "bold",
                                                         padding: "4px 8px",
                                                         borderRadius: "4px",
-                                                        textTransform: "uppercase"
                                                     }}>
                                                         {item.category}
                                                     </div>
@@ -462,7 +461,6 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                     color: "#111827",
                                                     lineHeight: "1.4",
                                                     margin: 0,
-                                                    textTransform: "uppercase"
                                                 }}
                                                     className="group-hover:text-red-600 transition-colors"
                                                 >
@@ -559,8 +557,6 @@ export default function ContentDetail({ newsItem }: ContentDetailProps) {
                                                         color: "#111827",
                                                         fontWeight: "700",
                                                         fontSize: "14px",
-                                                        textTransform: "uppercase",
-                                                        letterSpacing: "0.5px",
                                                         transition: "color 0.2s",
                                                         cursor: "pointer"
                                                     }}

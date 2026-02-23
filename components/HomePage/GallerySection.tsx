@@ -114,7 +114,7 @@ export default function GallerySection() {
             <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
                 {/* HEADER */}
                 <div style={{ marginBottom: "40px", textAlign: "left" }} data-aos="fade-right">
-                    <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", fontSize: "14px", marginBottom: "8px" }}>
+                    <h4 style={{ color: "#DC2626", fontWeight: "bold", fontSize: "17px", marginBottom: "8px" }}>
                         {t('section.our_memories')}
                     </h4>
                     <h2 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", color: "black", lineHeight: "1.2" }}>
@@ -279,7 +279,6 @@ export default function GallerySection() {
                 .overlay-title {
                     font-size: 24px;
                     font-weight: bold;
-                    text-transform: uppercase;
                 }
 
                 .power-btn {

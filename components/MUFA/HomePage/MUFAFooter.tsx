@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaChevronLeft, FaChevronRight, FaTimes, FaReply } from "react-icons/fa";
 import styles from "./MUFAHome.module.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -337,7 +337,9 @@ export default function MUFAFooter() {
               <Link
                 href={`/${lang}`}
                 className={styles.mufaFooterCta}
+                style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}
               >
+                <FaReply size={20} />
                 {t('mufa.footer.explore_cta')}
               </Link>
             </div>

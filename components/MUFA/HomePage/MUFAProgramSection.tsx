@@ -37,7 +37,7 @@ export default function MUFAProgramSection() {
       <div className={styles.mufaContainer}>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
           <div>
-            <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
+            <p className="text-xs md:text-sm font-semibold text-red-400 mb-2">
               {t('mufa.program.eyebrow')}
             </p>
             <h2
@@ -66,7 +66,7 @@ export default function MUFAProgramSection() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-red-500/25 border border-red-400/50 flex items-center justify-center text-amber-300">
+                  <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-amber-300">
                     {program.icon}
                   </div>
                   <div className="flex flex-col">
@@ -105,7 +105,7 @@ export default function MUFAProgramSection() {
               href="https://docs.google.com/forms/d/e/1FAIpQLSe_Gn9b1DIkdMei2MMc2LWTq9SRD6QyKsdZlovBjNAsOXmXgw/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-7 py-3 rounded-full bg-amber-400 text-black text-xs md:text-sm font-bold tracking-[0.22em] uppercase shadow-lg shadow-amber-500/40 hover:bg-amber-300 transition"
+              className="inline-flex items-center justify-center px-7 py-3 rounded-full bg-amber-400 text-black text-xs md:text-sm font-bold shadow-lg shadow-amber-500/40 hover:bg-amber-300 transition"
             >
               {t('mufa.program.register_now')}
             </a>
@@ -113,7 +113,7 @@ export default function MUFAProgramSection() {
               href="https://drive.google.com/file/d/145qqfm1E9BV3xuQcSpBN50KbqLFjoj1m/view"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-300/60 text-slate-50 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase hover:bg-white/5 transition"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-300/60 text-slate-50 text-xs md:text-sm font-semibold hover:bg-white/5 transition"
             >
               {t('mufa.program.download_guidebook')}
             </a>

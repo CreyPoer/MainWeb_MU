@@ -131,7 +131,7 @@ export default function FooterSection() {
                             />
                             <div>
                                 <h3 style={{ color: "white", fontWeight: "900", fontSize: "28px", lineHeight: "1", textTransform: "uppercase" }}>
-                                    Madura<br />United FC
+                                    Madura<br />United
                                 </h3>
                                 <span style={{ fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "2px", color: "#DC2626", display: "block", marginTop: "4px" }}>Football Club</span>
                             </div>
@@ -176,7 +176,7 @@ export default function FooterSection() {
                                                 onClick={(e) => handleSmoothScroll(e, link.href)}
                                             >
                                                 <span className="link-dot"></span>
-                                                {link.label.toUpperCase()}
+                                                {link.label}
                                             </a>
                                         </li>
                                     ))}
@@ -190,7 +190,7 @@ export default function FooterSection() {
                                                 onClick={(e) => handleSmoothScroll(e, link.href)}
                                             >
                                                 <span className="link-dot"></span>
-                                                {link.label.toUpperCase()}
+                                                {link.label}
                                             </a>
                                         </li>
                                     ))}
@@ -207,7 +207,7 @@ export default function FooterSection() {
                                                 onClick={(e) => handleSmoothScroll(e, link.href)}
                                             >
                                                 <span className="link-dot"></span>
-                                                {link.label.toUpperCase()}
+                                                {link.label}
                                             </a>
                                         </li>
                                     ))}
@@ -221,7 +221,7 @@ export default function FooterSection() {
                                                 onClick={(e) => handleSmoothScroll(e, link.href)}
                                             >
                                                 <span className="link-dot"></span>
-                                                {link.label.toUpperCase()}
+                                                {link.label}
                                             </a>
                                         </li>
                                     ))}
@@ -277,7 +277,7 @@ export default function FooterSection() {
                                         style={{ objectFit: "cover" }}
                                     />
                                     <div className="gallery-overlay">
-                                        <div style={{ color: "white", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", border: "1px solid white", padding: "4px 8px" }}>{t('footer.view_album')}</div>
+                                        <div style={{ color: "white", fontWeight: "bold", fontSize: "12px", border: "1px solid white", padding: "4px 8px" }}>{t('footer.view_album')}</div>
                                     </div>
                                 </div>
                             ))}
@@ -290,7 +290,7 @@ export default function FooterSection() {
             {/* Copyright BOttom */}
             <div style={{ borderTop: "1px solid #1F2937", padding: "24px", textAlign: "center", backgroundColor: "#0f0f0f" }}>
                 <p style={{ fontSize: "13px", color: "#6B7280", letterSpacing: "0.5px" }}>
-                    {t('footer.copyright')} <span style={{ color: "white", fontWeight: "bold" }}>MADURA UNITED</span> - 2026
+                    {t('footer.copyright')} <span style={{ color: "white", fontWeight: "bold" }}>MADURA UNITED FC</span> - 2026
                 </p>
             </div>
 
@@ -444,7 +444,6 @@ export default function FooterSection() {
                     text-decoration: none;
                     font-size: 15px;
                     font-weight: 600;
-                    text-transform: uppercase;
                     transition: color 0.2s;
                     display: flex;
                     align-items: center;

@@ -361,12 +361,12 @@ export default function PemainContent() {
 										className={`players-list-item ${isActive ? "active" : ""}`}
 									>
 										<div className={`players-number ${styleClass}`}>
-											<span>{player.position}</span>
+											<span>{player.number}</span>
 										</div>
 										<div className="players-list-main">
 											<div>
 												<p className="players-name">{player.name}</p>
-												<p className="players-info-label">No. {player.number}</p>
+												<p className="players-info-label">{player.positionFull}</p>
 											</div>
 											<span className="players-detail-label">Detail →</span>
 										</div>
@@ -400,12 +400,12 @@ export default function PemainContent() {
 											className={`players-list-item ${isActive ? "active" : ""}`}
 										>
 											<div className={`players-number ${styleClass}`}>
-												<span>{player.position}</span>
+												<span>{player.number}</span>
 											</div>
 											<div className="players-list-main">
 												<div>
 													<p className="players-name">{player.name}</p>
-													<p className="players-info-label">No. {player.number}</p>
+													<p className="players-info-label">{player.positionFull}</p>
 												</div>
 												<span className="players-detail-label">Detail →</span>
 											</div>
@@ -451,9 +451,6 @@ export default function PemainContent() {
 									{/* Player Info */}
 									<div className="players-info">
 										<div>
-											<p className="players-info-eyebrow">
-												No. {selectedPlayer.number} • {selectedPlayer.position}
-											</p>
 											<h3 className="players-info-name">{selectedPlayer.name}</h3>
 											<p className="players-info-position">
 												{selectedPlayer.positionFull}
@@ -486,7 +483,7 @@ export default function PemainContent() {
 											<div className="players-info-card">
 												<p className="players-info-label">Tinggi / Berat</p>
 												<p className="players-info-value">
-													{selectedPlayer.height} · {selectedPlayer.weight}
+													{selectedPlayer.height} / {selectedPlayer.weight}
 												</p>
 											</div>
 											<div className="players-info-card">
@@ -952,7 +949,8 @@ export default function PemainContent() {
 				}
 
 				.players-position-gk {
-					background: linear-gradient(135deg, #22c55e, #16a34a);
+					background: linear-gradient(135deg, #facc15, #eab308);
+					color: #1f2937;
 				}
 
 				.players-position-def {
@@ -960,8 +958,7 @@ export default function PemainContent() {
 				}
 
 				.players-position-mid {
-					background: linear-gradient(135deg, #facc15, #eab308);
-					color: #1f2937;
+					background: linear-gradient(135deg, #22c55e, #16a34a);
 				}
 
 				.players-position-wing {
@@ -985,14 +982,12 @@ export default function PemainContent() {
 							display: inline-flex;
 							align-items: center;
 							justify-content: center;
-							padding: 0.18rem 0.6rem;
+							padding: 0.18rem 0.9rem;
 							border-radius: 999px;
 							border: 1px solid rgba(248, 250, 252, 0.2);
 							background: rgba(15, 23, 42, 0.78);
 							font-size: 0.65rem;
 							font-weight: 700;
-							text-transform: uppercase;
-							letter-spacing: 0.18em;
 							color: rgba(249, 250, 251, 0.9);
 				}
 
@@ -1098,12 +1093,10 @@ export default function PemainContent() {
 				}
 
 				.players-info-name {
-					font-size: 1.8rem;
+					font-size: 2.5rem;
 					font-weight: 800;
 					line-height: 1.1;
 					color: #f9fafb;
-					text-transform: uppercase;
-					letter-spacing: 0.02em;
 				}
 
 				.players-info-position {
@@ -1129,7 +1122,6 @@ export default function PemainContent() {
 
 				.players-info-label {
 					font-size: 0.65rem;
-					text-transform: uppercase;
 					letter-spacing: 0.1em;
 					color: #94a3b8;
 					margin-bottom: 0.2rem;
@@ -1195,8 +1187,6 @@ export default function PemainContent() {
 				.players-bio-title {
 					font-size: 1rem;
 					font-weight: 700;
-					text-transform: uppercase;
-					letter-spacing: 0.1em;
 					color: #f9fafb;
 					margin-bottom: 0.75rem;
 				}

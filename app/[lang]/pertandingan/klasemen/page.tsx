@@ -34,11 +34,11 @@ export default function KlasemenPage() {
                         won: parseInt(item.w || 0),
                         drawn: parseInt(item.d || 0),
                         lost: parseInt(item.l || 0),
-                        // Try typical keys for goals: mg/kg/sg or gm/gk/gd
-                        goalsFor: parseInt(item.mg || item.gm || 0),
-                        goalsAgainst: parseInt(item.kg || item.gk || 0),
-                        goalDifference: parseInt(item.sg || item.gd || 0),
-                        points: parseInt(item.pt || item.poin || 0),
+                        // Try typical keys for goals: mg/kg/sg or gm/gk/gd or gm/ga/gd
+                        goalsFor: parseInt(item.gm ?? item.mg ?? item.gf ?? 0),
+                        goalsAgainst: parseInt(item.ga ?? item.kg ?? item.gk ?? 0),
+                        goalDifference: parseInt(item.gd ?? item.sg ?? 0),
+                        points: parseInt(item.pt ?? item.poin ?? 0),
                         // API does not currently return form or nextMatch
                         // Map form data (assuming space separated string like "W W L D W")
                         form: item.form ? item.form.split(' ').map((f: string) => f as "W" | "D" | "L") : undefined,
@@ -82,108 +82,19 @@ export default function KlasemenPage() {
 
             <StandingsHero />
 
-            {/* TAB SWITCHER SECTION */}
-            <div style={{ maxWidth: "1280px", margin: "-40px auto 40px", padding: "0 20px", position: "relative", zIndex: 20 }}>
-                <div style={{
-                    backgroundColor: "white",
-                    borderRadius: "12px",
-                    padding: "10px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    display: "inline-flex",
-                    gap: "8px",
-                    flexWrap: "wrap",
-                    border: "1px solid #F3F4F6"
-                }}>
-                    {/* Main Tabs */}
-                    <button
-                        onClick={() => setActiveCategory('senior')}
-                        style={{
-                            padding: "12px 24px",
-                            borderRadius: "8px",
-                            fontWeight: "bold",
-                            fontSize: "14px",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.5px",
-                            backgroundColor: activeCategory === 'senior' ? "#DC2626" : "transparent",
-                            color: activeCategory === 'senior' ? "white" : "#4B5563",
-                            transition: "all 0.3s",
-                            border: "none",
-                            cursor: "pointer"
-                        }}
-                    >
-                        Senior Team
-                    </button>
-                    <button
-                        onClick={() => setActiveCategory('u20')}
-                        style={{
-                            padding: "12px 24px",
-                            borderRadius: "8px",
-                            fontWeight: "bold",
-                            fontSize: "14px",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.5px",
-                            backgroundColor: activeCategory === 'u20' ? "#DC2626" : "transparent",
-                            color: activeCategory === 'u20' ? "white" : "#4B5563",
-                            transition: "all 0.3s",
-                            border: "none",
-                            cursor: "pointer"
-                        }}
-                    >
-                        U-20 Team
-                    </button>
-
-                    {/* Divider if U20 selected */}
-                    {activeCategory === 'u20' && (
-                        <div style={{ width: "1px", backgroundColor: "#E5E7EB", margin: "0 8px" }}></div>
-                    )}
-
-                    {/* Sub Tabs for U20 */}
-                    {activeCategory === 'u20' && (
-                        <>
-                            <button
-                                onClick={() => setActiveU20Group('A')}
-                                style={{
-                                    padding: "12px 20px",
-                                    borderRadius: "8px",
-                                    fontWeight: "bold",
-                                    fontSize: "14px",
-                                    backgroundColor: activeU20Group === 'A' ? "#1F2937" : "#F3F4F6",
-                                    color: activeU20Group === 'A' ? "white" : "#6B7280",
-                                    transition: "all 0.3s",
-                                    border: "none",
-                                    cursor: "pointer"
-                                }}
-                            >
-                                Group A
-                            </button>
-                            <button
-                                onClick={() => setActiveU20Group('B')}
-                                style={{
-                                    padding: "12px 20px",
-                                    borderRadius: "8px",
-                                    fontWeight: "bold",
-                                    fontSize: "14px",
-                                    backgroundColor: activeU20Group === 'B' ? "#1F2937" : "#F3F4F6",
-                                    color: activeU20Group === 'B' ? "white" : "#6B7280",
-                                    transition: "all 0.3s",
-                                    border: "none",
-                                    cursor: "pointer"
-                                }}
-                            >
-                                Group B
-                            </button>
-                        </>
-                    )}
-                </div>
-            </div>
-
             {activeCategory === 'senior' && isLoading ? (
                 <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "100px 20px", textAlign: "center" }}>
                     <div style={{ fontSize: "18px", fontWeight: "bold", color: "#6B7280" }}>Loading Standings...</div>
                 </div>
             ) : (
                 <>
-                    <StandingsOverview data={currentData} />
+                    <StandingsOverview
+                        data={currentData}
+                        activeCategory={activeCategory}
+                        setActiveCategory={setActiveCategory}
+                        activeU20Group={activeU20Group}
+                        setActiveU20Group={setActiveU20Group}
+                    />
                     <StandingsTable data={currentData} />
                 </>
             )}

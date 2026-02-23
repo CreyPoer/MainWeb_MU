@@ -71,7 +71,7 @@ export default function MUFAFacilitiesSection() {
       <div className={styles.mufaContainer}>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
           <div>
-            <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
+            <p className="text-xs md:text-sm font-semibold text-red-400 mb-2">
               {t('mufa.facilities.eyebrow')}
             </p>
             <h2

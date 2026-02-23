@@ -249,9 +249,6 @@ export default function MUFAContentDetail({ newsItem }: MUFAContentDetailProps) 
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
-                        <span className="inline-flex px-3 py-1 rounded-full bg-red-600/90 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/90">
-                          {item.category}
-                        </span>
                         <span className="text-[10px] text-slate-200/85 font-medium bg-black/40 px-2 py-1 rounded-full">
                           {item.date}
                         </span>

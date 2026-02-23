@@ -154,7 +154,7 @@ export default function MatchContent() {
                         {/* SECTION 1: LATEST MATCH RESULTS */}
                         <section style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 20px" }}>
                             <div style={{ textAlign: "center", marginBottom: "40px" }}>
-                                <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", fontSize: "14px", marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                <h4 style={{ color: "#DC2626", fontWeight: "bold", fontSize: "14px", marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                                     <span style={{ fontSize: "16px" }}>⚽</span> {activeTab === 'senior' ? t('page.schedule.senior_team') : t('page.schedule.academy_u20')}
                                 </h4>
                                 <h2 style={{ fontSize: "36px", fontWeight: "900", color: "#111827", textTransform: "uppercase" }}>
@@ -257,7 +257,7 @@ export default function MatchContent() {
 
                             <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 20px", position: "relative", zIndex: 10 }}>
                                 <div style={{ textAlign: "center", marginBottom: "50px" }} className="scroll-animate">
-                                    <h4 style={{ color: "#DC2626", fontWeight: "bold", textTransform: "uppercase", fontSize: "14px", marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                    <h4 style={{ color: "#DC2626", fontWeight: "bold", fontSize: "14px", marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                                         <span style={{ fontSize: "16px" }}>⚽</span> {t('page.schedule.upcoming')}
                                     </h4>
                                     <h2 style={{ fontSize: "36px", fontWeight: "900", color: "white", textTransform: "uppercase" }}>
@@ -295,8 +295,6 @@ export default function MatchContent() {
                                                         display: "flex",
                                                         justifyContent: "space-between",
                                                         alignItems: "center",
-                                                        textTransform: "uppercase",
-                                                        letterSpacing: "0.5px"
                                                     }}>
                                                         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                                             <FaCalendarAlt /> {match.date}
@@ -321,7 +319,7 @@ export default function MatchContent() {
                                                             <div style={{ position: "relative", width: "50px", height: "50px", flexShrink: 0 }}>
                                                                 {match.homeLogo && <Image src={match.homeLogo} alt={match.homeTeam} fill style={{ objectFit: "contain" }} unoptimized />}
                                                             </div>
-                                                            <span style={{ fontSize: "16px", fontWeight: "800", color: "#111827", textTransform: "uppercase" }}>{match.homeTeam}</span>
+                                                            <span style={{ fontSize: "16px", fontWeight: "800", color: "#111827" }}>{match.homeTeam}</span>
                                                         </div>
 
                                                         {/* VS Badge */}
@@ -338,7 +336,7 @@ export default function MatchContent() {
 
                                                         {/* Away Team */}
                                                         <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, justifyContent: "flex-end", textAlign: "right" }}>
-                                                            <span style={{ fontSize: "16px", fontWeight: "800", color: "#111827", textTransform: "uppercase" }}>{match.awayTeam}</span>
+                                                            <span style={{ fontSize: "16px", fontWeight: "800", color: "#111827" }}>{match.awayTeam}</span>
                                                             <div style={{ position: "relative", width: "50px", height: "50px", flexShrink: 0 }}>
                                                                 {match.awayLogo && <Image src={match.awayLogo} alt={match.awayTeam} fill style={{ objectFit: "contain" }} unoptimized />}
                                                             </div>
@@ -346,7 +344,7 @@ export default function MatchContent() {
                                                     </div>
 
                                                     {/* Action Button */}
-                                                    <div style={{ background: "#DC2626", color: "white", textAlign: "center", padding: "10px", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", cursor: "pointer", transition: "background 0.3s" }} className="hover:bg-red-700">
+                                                    <div style={{ background: "#DC2626", color: "white", textAlign: "center", padding: "10px", fontWeight: "bold", fontSize: "12px", textTransform: "uppercase", transition: "background 0.3s" }} className="hover:bg-red-700">
                                                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                                                             <FaClock /> {match.time}
                                                         </div>

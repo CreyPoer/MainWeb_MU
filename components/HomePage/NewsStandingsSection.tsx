@@ -238,6 +238,8 @@ export default function NewsStandingsSection() {
                 margin: '0 auto',
                 paddingTop: '100px',
                 paddingBottom: '50px',
+                paddingLeft: '20px',
+                paddingRight: '20px',
             }}
         >
 
@@ -254,7 +256,7 @@ export default function NewsStandingsSection() {
 
                     {/* Title */}
                     <div style={{ marginBottom: '24px' }} data-aos="fade-right">
-                        <h4 style={{ color: '#DC2626', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '14px', marginBottom: '4px' }}>{t('section.our_blog')}</h4>
+                        <h4 style={{ color: '#DC2626', fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{t('section.our_blog')}</h4>
                         <h2 style={{ fontSize: '32px', fontWeight: '900', textTransform: 'uppercase', color: '#111827', lineHeight: '1.2' }}>
                             {t('section.recent_club_news')} <span style={{ color: '#DC2626' }}>{t('section.news_highlight')}</span>
                         </h2>
@@ -320,7 +322,7 @@ export default function NewsStandingsSection() {
                                                     whileTap={{ scale: 0.95 }}
                                                     style={{
                                                         backgroundColor: '#DC2626', color: 'white', padding: '12px 28px',
-                                                        fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase',
+                                                        fontSize: '14px', fontWeight: 'bold',
                                                         borderRadius: '9999px', border: 'none', cursor: 'pointer',
                                                         boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)'
                                                     }}
@@ -399,7 +401,7 @@ export default function NewsStandingsSection() {
                 }}>
                     {/* Title */}
                     <div style={{ marginBottom: '24px' }} data-aos="fade-left">
-                        <h5 style={{ fontSize: '14px', fontWeight: 'bold', color: '#DC2626', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>{t('section.season')}</h5>
+                        <h5 style={{ fontSize: '14px', fontWeight: 'bold', color: '#DC2626', marginBottom: '4px' }}>{t('section.season')}</h5>
                         <h3 style={{ fontSize: '32px', fontWeight: '900', textTransform: 'uppercase', color: '#111827', lineHeight: '1.2' }}>{t('section.league_table')}</h3>
                     </div>
 
@@ -481,7 +483,7 @@ export default function NewsStandingsSection() {
                                 <motion.button
                                     whileHover={{ x: 5 }}
                                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#DC2626', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', background: 'none', border: 'none', cursor: 'pointer' }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#DC2626', fontSize: '12px', fontWeight: 'bold', background: 'none', border: 'none', cursor: 'pointer' }}
                                 >
                                     {t('section.fixtures_and_matches')} <FaArrowRight />
                                 </motion.button>

@@ -100,7 +100,7 @@ export default function MUFAGalleryContent() {
                 {/* HEADER & FILTER */}
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10" data-aos="fade-up">
                     <div>
-                        <p className="text-xs md:text-sm font-semibold tracking-[0.32em] uppercase text-red-400 mb-2">
+                        <p className="text-xs md:text-sm font-semibold text-red-400 mb-2">
                             {t('mufa.gallery_page.content_eyebrow')}
                         </p>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase leading-tight">

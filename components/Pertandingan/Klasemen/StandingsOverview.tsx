@@ -8,9 +8,13 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StandingsOverviewProps {
     data: StandingTeam[];
+    activeCategory: 'senior' | 'u20';
+    setActiveCategory: (cat: 'senior' | 'u20') => void;
+    activeU20Group: 'A' | 'B';
+    setActiveU20Group: (group: 'A' | 'B') => void;
 }
 
-export default function StandingsOverview({ data }: StandingsOverviewProps) {
+export default function StandingsOverview({ data, activeCategory, setActiveCategory, activeU20Group, setActiveU20Group }: StandingsOverviewProps) {
     const { t } = useLanguage();
     // --- CALCULATE METRICS ---
     const stats = useMemo(() => {
@@ -69,14 +73,110 @@ export default function StandingsOverview({ data }: StandingsOverviewProps) {
 
     return (
         <section style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 20px 40px" }} data-aos="fade-up">
-            <div style={{ marginBottom: "40px" }}>
-                <h2 style={{ fontSize: "32px", fontWeight: "900", textTransform: "uppercase", color: "#111827", marginBottom: "8px" }}>
-                    {t('page.standings.overview.title')}
-                </h2>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }} className="overview-header">
-                    <p style={{ fontSize: "14px", color: "#6B7280", fontWeight: "600", textTransform: "uppercase" }}>
-                        {t('page.standings.overview.season')} 2025-2026
-                    </p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "20px", marginBottom: "40px" }} className="overview-header-container">
+                {/* Titles (Left) */}
+                <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                        <p style={{ fontSize: "14px", color: "#6B7280", fontWeight: "600" }}>
+                            {t('page.standings.overview.season')} 2025-2026
+                        </p>
+                    </div>
+                    <h2 style={{ fontSize: "32px", fontWeight: "900", textTransform: "uppercase", color: "#111827", margin: 0 }}>
+                        {t('page.standings.overview.title')}
+                    </h2>
+                </div>
+
+                {/* TAB SWITCHER SECTION (Right) */}
+                <div style={{
+                    backgroundColor: "white",
+                    borderRadius: "12px",
+                    padding: "8px",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    display: "inline-flex",
+                    gap: "6px",
+                    flexWrap: "wrap",
+                    border: "1px solid #F3F4F6",
+                }}>
+                    {/* Main Tabs */}
+                    <button
+                        onClick={() => setActiveCategory('senior')}
+                        style={{
+                            padding: "8px 16px",
+                            borderRadius: "8px",
+                            fontWeight: "bold",
+                            fontSize: "12px",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.5px",
+                            backgroundColor: activeCategory === 'senior' ? "#DC2626" : "transparent",
+                            color: activeCategory === 'senior' ? "white" : "#4B5563",
+                            transition: "all 0.3s",
+                            border: "none",
+                            cursor: "pointer"
+                        }}
+                    >
+                        {t('page.schedule.senior_team') || 'Senior Team'}
+                    </button>
+                    <button
+                        onClick={() => setActiveCategory('u20')}
+                        style={{
+                            padding: "8px 16px",
+                            borderRadius: "8px",
+                            fontWeight: "bold",
+                            fontSize: "12px",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.5px",
+                            backgroundColor: activeCategory === 'u20' ? "#DC2626" : "transparent",
+                            color: activeCategory === 'u20' ? "white" : "#4B5563",
+                            transition: "all 0.3s",
+                            border: "none",
+                            cursor: "pointer"
+                        }}
+                    >
+                        {t('page.schedule.academy_u20') || 'U-20 Team'}
+                    </button>
+
+                    {/* Divider if U20 selected */}
+                    {activeCategory === 'u20' && (
+                        <div style={{ width: "1px", backgroundColor: "#E5E7EB", margin: "0 4px" }}></div>
+                    )}
+
+                    {/* Sub Tabs for U20 */}
+                    {activeCategory === 'u20' && (
+                        <>
+                            <button
+                                onClick={() => setActiveU20Group('A')}
+                                style={{
+                                    padding: "8px 16px",
+                                    borderRadius: "8px",
+                                    fontWeight: "bold",
+                                    fontSize: "12px",
+                                    backgroundColor: activeU20Group === 'A' ? "#1F2937" : "#F3F4F6",
+                                    color: activeU20Group === 'A' ? "white" : "#6B7280",
+                                    transition: "all 0.3s",
+                                    border: "none",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Group A
+                            </button>
+                            <button
+                                onClick={() => setActiveU20Group('B')}
+                                style={{
+                                    padding: "8px 16px",
+                                    borderRadius: "8px",
+                                    fontWeight: "bold",
+                                    fontSize: "12px",
+                                    backgroundColor: activeU20Group === 'B' ? "#1F2937" : "#F3F4F6",
+                                    color: activeU20Group === 'B' ? "white" : "#6B7280",
+                                    transition: "all 0.3s",
+                                    border: "none",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Group B
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -137,15 +237,15 @@ export default function StandingsOverview({ data }: StandingsOverviewProps) {
                     border: 1px solid #E5E7EB;
                     border-radius: 12px;
                     background-color: white;
-                    /* Solid Red Shadow: 6px to right, 6px down, 0 blur */
-                    box-shadow: 6px 6px 0px 0px #DC2626; 
+                    /* Show no box-shadow normally */
+                    box-shadow: none; 
                     transition: all 0.2s ease;
                 }
 
                 :global(.overview-card:hover) {
-                    /* On hover, move card slightly up-left and extend shadow for 'pop' effect */
+                    /* On hover, move card slightly up-left and reveal the red shadow */
                     transform: translate(-2px, -2px);
-                    box-shadow: 8px 8px 0px 0px #DC2626; 
+                    box-shadow: 6px 6px 0px 0px #DC2626; 
                 }
                 
                 @media (max-width: 1024px) {

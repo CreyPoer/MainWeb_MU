@@ -4,12 +4,14 @@ import React from "react";
 import Image from "next/image";
 import { STANDINGS_DATA, StandingTeam } from "./data";
 import { FaCheckCircle, FaMinusCircle, FaTimesCircle } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StandingsTableProps {
     data: StandingTeam[];
 }
 
 export default function StandingsTable({ data }: StandingsTableProps) {
+    const { t } = useLanguage();
     // Determine which team name to highlight (Madura Senior or U20)
     // We can check if any team id contains "madura"
 
@@ -21,18 +23,18 @@ export default function StandingsTable({ data }: StandingsTableProps) {
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
                         <thead>
                             <tr style={{ backgroundColor: "#B91C1C", color: "white", fontSize: "13px", textTransform: "uppercase", letterSpacing: "1px" }}>
-                                <th style={{ padding: "16px", textAlign: "center", width: "60px" }}>Pos</th>
-                                <th style={{ padding: "16px", textAlign: "left" }}>Club</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>P</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>W</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>D</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>L</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>GF</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>GA</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>GD</th>
-                                <th style={{ padding: "16px", textAlign: "center", fontWeight: "900", fontSize: "15px" }}>PTS</th>
-                                <th style={{ padding: "16px", textAlign: "center", minWidth: "160px" }}>Form</th>
-                                <th style={{ padding: "16px", textAlign: "center" }}>Next</th>
+                                <th style={{ padding: "16px", textAlign: "center", width: "60px" }}>{t('page.standings.table.pos') || 'Pos'}</th>
+                                <th style={{ padding: "16px", textAlign: "left" }}>{t('page.standings.table.club') || 'Club'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.played') || 'P'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.won') || 'W'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.drawn') || 'D'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.lost') || 'L'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.gf') || 'GF'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.ga') || 'GA'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.gd') || 'GD'}</th>
+                                <th style={{ padding: "16px", textAlign: "center", fontWeight: "900", fontSize: "15px" }}>{t('page.standings.table.pts') || 'PTS'}</th>
+                                <th style={{ padding: "16px", textAlign: "center", minWidth: "160px" }}>{t('page.standings.table.form') || 'Form'}</th>
+                                <th style={{ padding: "16px", textAlign: "center" }}>{t('page.standings.table.next') || 'Next'}</th>
                             </tr>
                         </thead>
                         <tbody>

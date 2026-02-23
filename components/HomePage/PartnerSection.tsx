@@ -53,9 +53,7 @@ export default function PartnerSection() {
                     <h5 style={{
                         color: '#DC2626',
                         fontWeight: 'bold',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        fontSize: '14px',
+                        fontSize: '17px',
                         marginBottom: '8px'
                     }}>
                         {t('section.partnership')}

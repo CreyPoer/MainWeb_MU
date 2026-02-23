@@ -18,7 +18,7 @@
     "news": "Berita",
     "gallery": "Galeri",
     "video": "Video",
-    "club": "Klub",
+    "club": "Tentang Klub",
     "about": "Tentang Madura United FC",
     "mufa": "MUFA"
   },
@@ -30,7 +30,7 @@
     "news_highlight": "Klub",
     "season": "Musim 2025-2026",
     "league_table": "Tabel Liga",
-    "football_club": "KLUB SEPAK BOLA",
+    "football_club": "Klub",
     "fixtures_and_matches": "Jadwal dan Pertandingan",
     "our_videos": "Video Kami",
     "watch": "Tonton",
@@ -52,13 +52,13 @@
   "footer": {
     "essential_links": "Link Penting",
     "get_in_touch": "Hubungi Kami",
-    "post_gallery": "Galeri Pos",
-    "email": "EMAIL",
-    "phone": "TELEPON",
-    "location": "LOKASI",
+    "post_gallery": "Galeri",
+    "email": "Email",
+    "phone": "Telepon",
+    "location": "Lokasi",
     "address": "Jl. Raya Panglegur No. 10, Pamekasan, Madura, Jawa Timur",
     "brand_desc": "Sebuah periode di akhir tahun 1980-an dimana seakan setiap pertandingan kejuaraan menampilkan klub olahraga Laskar Sape Kerrab.",
-    "copyright": "HAK CIPTA & DESAIN OLEH",
+    "copyright": "Hak Cipta & Desain Oleh",
     "view_album": "Lihat Album",
     "home": "Beranda",
     "match": "Pertandingan",
@@ -106,7 +106,9 @@
     "all": "Semua",
     "filter": "Filter",
     "search": "Cari",
-    "image_of": "Gambar {current} dari {total}"
+    "image_of": "Gambar {current} dari {total}",
+    "prev": "Sebelumnya",
+    "next": "Lanjut"
   },
   "match": {
     "kick_off": "Kick Off",
@@ -178,7 +180,8 @@
       "type_label": "Tipe",
       "from_label": "Dari",
       "to_label": "Sampai",
-      "all_type": "Semua"
+      "all_type": "Semua",
+      "date_range": "Rentang Tanggal"
     },
     "standings": {
       "title": "Klasemen",
@@ -195,6 +198,20 @@
         "conceded_label": "GOL KEMASUKAN",
         "losses_label": "KEKALAHAN",
         "draws_label": "SERI"
+      },
+      "table": {
+        "pos": "POS",
+        "club": "KLUB",
+        "played": "M",
+        "won": "M",
+        "drawn": "S",
+        "lost": "K",
+        "gf": "GM",
+        "ga": "GK",
+        "gd": "SG",
+        "pts": "POIN",
+        "form": "5 TERAKHIR",
+        "next": "SELANJUTNYA"
       }
     },
     "schedule": {
@@ -202,9 +219,10 @@
       "breadcrumb": "Jadwal dan Hasil",
       "breadcrumb_detail": "Detail Pertandingan",
       "senior_team": "Tim Senior",
-      "academy_u20": "Academy U20",
+      "academy_u20": "Akademi U20",
       "next_match": "Pertandingan Berikutnya",
-      "latest_match": "Pertandingan Terakhir",
+      "latest_match": "3 Pertandingan Terakhir",
+      "upcoming": "Pertandingan Selanjutnya",
       "last_match": "Pertandingan Terakhir",
       "no_results": "Tidak ada hasil pertandingan.",
       "no_upcoming": "Tidak ada pertandingan mendatang.",
@@ -321,7 +339,7 @@
       },
       "homebase": {
         "eyebrow": "Stadion",
-        "title": "Home Base",
+        "title": "Markas Utama",
         "subtitle": "Dua sudut pandang tentang kandang Madura United — atmosfer pertandingan dan denyut aktivitas klub.",
         "stadium_main": "Stadion Utama",
         "sgmrp": "Stadion Gelora Madura Ratu Pamelingan",
@@ -395,7 +413,7 @@
       "title_main": "Fasilitas",
       "title_highlight": "Lengkap",
       "title_suffix": "Untuk Perjalananmu",
-      "homebase_label": "Homebase MUFA",
+      "homebase_label": "Markas Utama MUFA",
       "homebase_cat": "Hunian",
       "homebase_subtitle": "Lingkungan asrama yang nyaman dan terkontrol untuk mendukung perkembangan pemain muda.",
       "mutg_label": "MUTG",
@@ -411,9 +429,9 @@
     "news": {
       "eyebrow": "Update MUFA",
       "title_main": "Berita Terbaru",
-      "title_highlight": "Academy",
+      "title_highlight": "Akademi",
       "view_all": "Lihat Semua Berita",
-      "headline": "Headline",
+      "headline": "Terbaru",
       "read_more": "Baca Selengkapnya",
       "archive_title": "Arsip Berita",
       "archive_highlight": "MUFA"
@@ -453,11 +471,11 @@
     },
     "detail": {
       "sourced_from": "Dilansir dari:",
-      "about_author": "TENTANG",
+      "about_author": "Tentang",
       "author_desc": "MUFA secara konsisten menghadirkan informasi terkini seputar program, pertandingan, dan pengembangan talenta muda di lingkungan Madura United Football Academy.",
       "view_all_by": "Lihat semua berita dari",
-      "previous_post": "Post Sebelumnya",
-      "next_post": "Post Berikutnya",
+      "previous_post": "Sebelumnya",
+      "next_post": "Berikutnya",
       "you_may_like": "Anda Mungkin Suka",
       "read_more": "Baca Selengkapnya",
       "filter_insight": "Filter & Insight",
@@ -491,8 +509,8 @@
       "content_eyebrow": "Update Terbaru",
       "content_title": "Tonton",
       "content_title_highlight": "Sorotan",
-      "from_label": "Dari:",
-      "to_label": "Sampai:",
+      "from_label": "Dari",
+      "to_label": "Sampai",
       "loading": "Memuat video MUFA...",
       "no_video": "Tidak ada video ditemukan untuk rentang tanggal ini."
     },

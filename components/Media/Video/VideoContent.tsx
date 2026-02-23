@@ -4,6 +4,8 @@ import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 // --- DATA TYPE ---
 interface VideoItem {
@@ -19,8 +21,8 @@ export default function VideoContent() {
     const { t } = useLanguage();
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+    const [startDate, endDate] = dateRange;
     const [selectedType, setSelectedType] = useState("Semua");
     const [videoData, setVideoData] = useState<VideoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -66,13 +68,10 @@ export default function VideoContent() {
         }
 
         if (startDate) {
-            const start = new Date(startDate);
-            items = items.filter((video) => new Date(video.publishedAt) >= start);
+            items = items.filter((video) => new Date(video.publishedAt) >= startDate);
         }
 
         if (endDate) {
-            const end = new Date(endDate);
-            // End date should include the whole day, so set time to 23:59:59
             const endDateTime = new Date(endDate);
             endDateTime.setHours(23, 59, 59, 999);
             items = items.filter((video) => new Date(video.publishedAt) <= endDateTime);
@@ -89,7 +88,7 @@ export default function VideoContent() {
     }, [startDate, endDate, selectedType, videoData]);
 
     // Check if any filter is active
-    const isFilterActive = startDate !== "" || endDate !== "" || selectedType !== "Semua";
+    const isFilterActive = startDate !== null || endDate !== null || selectedType !== "Semua";
 
     if (isLoading && videoData.length === 0) {
         return (
@@ -105,16 +104,15 @@ export default function VideoContent() {
                 backgroundColor: "#FFFFFF",
                 padding: "80px 0 100px",
                 position: "relative",
-                overflow: "hidden",
             }}
         >
             <div
                 style={{
                     position: "absolute",
-                    top: "2%",
+                    top: "0%",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    fontSize: "12vw",
+                    fontSize: "11vw",
                     fontWeight: 900,
                     color: "rgba(15, 23, 42, 0.06)",
                     whiteSpace: "nowrap",
@@ -122,9 +120,8 @@ export default function VideoContent() {
                     zIndex: 0,
                 }}
                 data-aos="zoom-in"
-                data-aos-duration="1500"
             >
-                WATCH HIGHLIGHT
+                {t('section.watch_highlight_bg')}
             </div>
 
             <div
@@ -194,22 +191,21 @@ export default function VideoContent() {
                         </div>
 
                         <div className="video-filter-group">
-                            <span className="video-filter-label">{t('page.video.from_label')}</span>
-                            <input
-                                type="date"
-                                className="video-filter-input"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                            />
-                        </div>
-                        <div className="video-filter-group">
-                            <span className="video-filter-label">{t('page.video.to_label')}</span>
-                            <input
-                                type="date"
-                                className="video-filter-input"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                            />
+                            <span className="video-filter-label">{t('page.video.date_range') || 'Rentang Tanggal'}</span>
+                            <div className="date-picker-wrapper">
+                                <DatePicker
+                                    selectsRange={true}
+                                    startDate={startDate ?? undefined}
+                                    endDate={endDate ?? undefined}
+                                    onChange={(update) => {
+                                        setDateRange(update);
+                                    }}
+                                    isClearable={false}
+                                    placeholderText={`${t('page.video.from_label')} - ${t('page.video.to_label')}`}
+                                    className="video-filter-input"
+                                    dateFormat="dd MMM yyyy"
+                                />
+                            </div>
                         </div>
 
                         {isFilterActive && (
@@ -217,8 +213,7 @@ export default function VideoContent() {
                                 type="button"
                                 className="video-filter-reset"
                                 onClick={() => {
-                                    setStartDate("");
-                                    setEndDate("");
+                                    setDateRange([null, null]);
                                     setSelectedType("Semua");
                                 }}
                             >
@@ -385,68 +380,70 @@ export default function VideoContent() {
                 </div>
             </div>
 
-            {modalVideo && (
-                <div
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        zIndex: 9999,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "rgba(220, 38, 38, 0.2)",
-                        backdropFilter: "blur(5px)",
-                    }}
-                    onClick={closeModal}
-                >
+            {
+                modalVideo && (
                     <div
                         style={{
-                            position: "relative",
-                            width: "90%",
-                            maxWidth: "1000px",
-                            aspectRatio: "16/9",
-                            backgroundColor: "black",
-                            borderRadius: "16px",
-                            overflow: "hidden",
-                            boxShadow:
-                                "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+                            position: "fixed",
+                            inset: 0,
+                            zIndex: 9999,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "rgba(220, 38, 38, 0.2)",
+                            backdropFilter: "blur(5px)",
                         }}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={closeModal}
                     >
-                        <button
-                            onClick={closeModal}
+                        <div
                             style={{
-                                position: "absolute",
-                                top: "16px",
-                                right: "16px",
-                                background: "rgba(0,0,0,0.5)",
-                                border: "none",
-                                color: "white",
-                                width: "40px",
-                                height: "40px",
-                                borderRadius: "50%",
-                                cursor: "pointer",
-                                zIndex: 10,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
+                                position: "relative",
+                                width: "90%",
+                                maxWidth: "1000px",
+                                aspectRatio: "16/9",
+                                backgroundColor: "black",
+                                borderRadius: "16px",
+                                overflow: "hidden",
+                                boxShadow:
+                                    "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
                             }}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <FaTimes size={20} />
-                        </button>
+                            <button
+                                onClick={closeModal}
+                                style={{
+                                    position: "absolute",
+                                    top: "16px",
+                                    right: "16px",
+                                    background: "rgba(0,0,0,0.5)",
+                                    border: "none",
+                                    color: "white",
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "50%",
+                                    cursor: "pointer",
+                                    zIndex: 10,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <FaTimes size={20} />
+                            </button>
 
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            src={`https://www.youtube.com/embed/${modalVideo}?autoplay=1`}
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                        ></iframe>
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src={`https://www.youtube.com/embed/${modalVideo}?autoplay=1`}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             <style jsx>{`
                 .video-header {
@@ -455,6 +452,8 @@ export default function VideoContent() {
                     gap: 16px;
                     margin-bottom: 40px;
                     text-align: left;
+                    position: relative;
+                    z-index: 50;
                 }
 
                 .video-filter {
@@ -466,6 +465,8 @@ export default function VideoContent() {
                     border-radius: 9px;
                     background: rgba(15, 23, 42, 0.95);
                     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+                    position: relative;
+                    z-index: 50;
                 }
 
                 .video-filter-group {
@@ -487,7 +488,7 @@ export default function VideoContent() {
                     border-radius: 999px;
                     border: 1px solid #e5e7eb;
                     font-size: 12px;
-                    color: #f9fafb;
+                    color: #ffffff;
                     background-color: #111827;
                     outline: none;
                 }
@@ -495,6 +496,67 @@ export default function VideoContent() {
                 .video-filter-input:focus {
                     border-color: #dc2626;
                     box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.2);
+                }
+
+                .date-picker-wrapper {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    width: 220px; /* Fixed width to fit both dates */
+                    z-index: 100;
+                }
+
+                .date-picker-wrapper :global(.react-datepicker-wrapper) {
+                    width: 100%;
+                }
+
+                .date-picker-wrapper :global(.video-filter-input) {
+                    width: 100%;
+                    padding: 6px 10px;
+                    border-radius: 999px;
+                    border: 1px solid #e5e7eb;
+                    font-size: 12px;
+                    color: #ffffff;
+                    background-color: #111827;
+                    outline: none;
+                    cursor: pointer;
+                }
+
+                .date-picker-wrapper :global(.video-filter-input)::placeholder {
+                    color: #ffffff;
+                    opacity: 1;
+                }
+                
+                .date-picker-wrapper :global(.video-filter-input):focus {
+                    border-color: #dc2626;
+                    box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.2);
+                }
+
+                /* Customizing calendar popup to match theme slightly */
+                :global(.react-datepicker__month-container) {
+                    background-color: white;
+                }
+                :global(.react-datepicker) {
+                    font-family: inherit;
+                    border-radius: 8px;
+                    border: 1px solid #e5e7eb;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                }
+                :global(.react-datepicker__header) {
+                    background-color: #f3f4f6;
+                    border-bottom: 1px solid #e5e7eb;
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
+                }
+                :global(.react-datepicker__day--selected),
+                :global(.react-datepicker__day--in-selecting-range),
+                :global(.react-datepicker__day--in-range) {
+                    background-color: #dc2626 !important;
+                    color: white !important;
+                }
+                :global(.react-datepicker__day--keyboard-selected) {
+                    background-color: rgba(220, 38, 38, 0.2);
+                    color: #111827;
                 }
 
                 .video-filter-reset {
@@ -575,7 +637,7 @@ export default function VideoContent() {
                     }
                 }
             `}</style>
-        </section>
+        </section >
     );
 }
 

@@ -525,7 +525,6 @@ export default function TentangContent() {
                     </div>
 
                     <div className="mu-philosophy__callout" data-aos="fade-up" data-aos-delay="1200" data-aos-duration="650">
-                      <span className="mu-philosophy__pill">{t('page.about.philosophy.callout_pill')}</span>
                       <p className="mu-philosophy__calloutText">
                         {t('page.about.philosophy.callout_text')}
                       </p>

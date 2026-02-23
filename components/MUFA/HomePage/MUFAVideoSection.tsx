@@ -50,7 +50,7 @@ export default function MUFAVideoSection() {
       <div className={styles.mufaContainer}>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
           <div>
-            <p className="text-xs md:text-sm font-semibold tracking-[0.32em] text-red-400 uppercase mb-2">
+            <p className="text-xs md:text-sm font-semibold text-red-400 mb-2">
               {t('mufa.video.eyebrow')}
             </p>
             <h2
@@ -103,7 +103,10 @@ export default function MUFAVideoSection() {
                         alt={video.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                      {/* Gradient at the bottom for title */}
+                      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+                      {/* Gradient at the top for date & duration */}
+                      <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-black/80 via-black/30 to-transparent" />
                     </>
                   )}
                 </div>

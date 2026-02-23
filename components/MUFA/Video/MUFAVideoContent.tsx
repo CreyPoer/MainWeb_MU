@@ -3,6 +3,8 @@
 import React, { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaTimes, FaCalendarAlt } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styles from "../HomePage/MUFAHome.module.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -22,8 +24,8 @@ export default function MUFAVideoContent() {
     const { t } = useLanguage();
     const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
     const [modalVideo, setModalVideo] = useState<string | null>(null);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+    const [startDate, endDate] = dateRange;
     const [videos, setVideos] = useState<Video[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -53,13 +55,13 @@ export default function MUFAVideoContent() {
         let items = [...videos];
 
         if (startDate) {
-            const start = new Date(startDate);
-            items = items.filter((video) => new Date(video.publishedAt) >= start);
+            items = items.filter((video) => new Date(video.publishedAt) >= startDate);
         }
 
         if (endDate) {
-            const end = new Date(endDate);
-            items = items.filter((video) => new Date(video.publishedAt) <= end);
+            const endDateTime = new Date(endDate);
+            endDateTime.setHours(23, 59, 59, 999);
+            items = items.filter((video) => new Date(video.publishedAt) <= endDateTime);
         }
 
         // Sort terbaru ke terlama
@@ -76,9 +78,9 @@ export default function MUFAVideoContent() {
         <section className="py-10 md:py-14 bg-slate-950 min-h-screen">
             <div className={styles.mufaContainer}>
                 {/* HEADER & FILTER */}
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10" data-aos="fade-up">
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 relative z-50" data-aos="fade-up">
                     <div>
-                        <p className="text-xs md:text-sm font-semibold tracking-[0.32em] uppercase text-red-400 mb-2">
+                        <p className="text-xs md:text-sm font-semibold text-red-400 mb-2">
                             {t('mufa.video_page.content_eyebrow')}
                         </p>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase leading-tight">
@@ -87,31 +89,28 @@ export default function MUFAVideoContent() {
                     </div>
 
                     <div className="flex flex-wrap gap-2 md:gap-3 items-center bg-slate-900 p-3 rounded-xl border border-slate-800">
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('mufa.video_page.from_label')}</span>
-                            <input
-                                type="date"
-                                className="bg-slate-950 text-white text-xs px-3 py-1.5 rounded-lg border border-slate-700 focus:border-red-500 outline-none"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
+                        <div className="flex items-center gap-2 mufa-date-picker-wrapper">
+                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                {t('page.video.date_range') || 'RENTANG TANGGAL'}
+                            </span>
+                            <DatePicker
+                                selectsRange={true}
+                                startDate={startDate ?? undefined}
+                                endDate={endDate ?? undefined}
+                                onChange={(update) => setDateRange(update)}
+                                isClearable={false}
+                                placeholderText={`${t('mufa.video_page.from_label')} - ${t('mufa.video_page.to_label')}`}
+                                className="bg-slate-950 text-white text-xs px-3 py-1.5 rounded-lg border border-slate-700 outline-none w-[200px] cursor-pointer"
+                                dateFormat="dd MMM yyyy"
                             />
                         </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t('mufa.video_page.to_label')}</span>
-                            <input
-                                type="date"
-                                className="bg-slate-950 text-white text-xs px-3 py-1.5 rounded-lg border border-slate-700 focus:border-red-500 outline-none"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                            />
-                        </div>
-                        {startDate && endDate && (
+                        {(startDate || endDate) && (
                             <button
                                 type="button"
-                                onClick={() => { setStartDate(""); setEndDate(""); }}
-                                className="bg-slate-800 hover:bg-red-600 text-xs text-white font-bold px-4 py-2 rounded-lg transition-colors uppercase"
+                                onClick={() => setDateRange([null, null])}
+                                className="bg-slate-800 hover:bg-red-600 text-xs text-white font-bold px-4 py-2 rounded-lg transition-colors uppercase border border-slate-700 hover:border-red-600 gap-2 flex items-center"
                             >
-                                {t('mufa.berita_page.reset_filter')}
+                                {t('common.reset') || 'Reset'} <FaTimes size={10} />
                             </button>
                         )}
                     </div>
@@ -155,10 +154,11 @@ export default function MUFAVideoContent() {
                                                 fill
                                                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
+                                            {/* Stronger gradient overlay for the bottom part */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 z-[5]" />
 
                                             {/* Play Button Icon */}
-                                            <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="absolute inset-0 flex items-center justify-center z-10">
                                                 <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center pl-1 shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:scale-110 transition-transform duration-300">
                                                     <FaPlay size={16} />
                                                 </div>
@@ -171,7 +171,7 @@ export default function MUFAVideoContent() {
                                     Let's keep it visible at bottom like requested design 
                                 */}
                                 {!hoveredVideo && (
-                                    <div className="absolute bottom-0 left-0 w-full p-4 z-10">
+                                    <div className="absolute bottom-0 left-0 w-full p-4 z-20">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
                                                 <FaPlay size={8} /> {video.duration}
@@ -225,6 +225,60 @@ export default function MUFAVideoContent() {
                     </div>
                 </div>
             )}
+
+            {/* Custom Styles for DatePicker in Dark Mode */}
+            <style jsx>{`
+                :global(.react-datepicker-popper) {
+                    z-index: 9999 !important;
+                }
+                .mufa-date-picker-wrapper :global(.react-datepicker-wrapper) {
+                    display: block;
+                }
+                .mufa-date-picker-wrapper :global(input:focus) {
+                    border-color: #ef4444; /* red-500 */
+                    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
+                }
+                .mufa-date-picker-wrapper :global(input)::placeholder {
+                    color: #94a3b8; /* slate-400 */
+                }
+                /* Dark theme calendar */
+                :global(.mufa-date-picker-wrapper .react-datepicker) {
+                    font-family: inherit;
+                    border-radius: 8px;
+                    border: 1px solid #334155;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+                    background-color: #0f172a;
+                    color: #fff;
+                }
+                :global(.mufa-date-picker-wrapper .react-datepicker__header) {
+                    background-color: #1e293b;
+                    border-bottom: 1px solid #334155;
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
+                }
+                :global(.mufa-date-picker-wrapper .react-datepicker__current-month),
+                :global(.mufa-date-picker-wrapper .react-datepicker-time__header),
+                :global(.mufa-date-picker-wrapper .react-datepicker-year-header),
+                :global(.mufa-date-picker-wrapper .react-datepicker__day-name) {
+                    color: #e2e8f0;
+                }
+                :global(.mufa-date-picker-wrapper .react-datepicker__day) {
+                    color: #cbd5e1;
+                }
+                :global(.mufa-date-picker-wrapper .react-datepicker__day:hover) {
+                    background-color: #334155;
+                }
+                :global(.mufa-date-picker-wrapper .react-datepicker__day--selected),
+                :global(.mufa-date-picker-wrapper .react-datepicker__day--in-selecting-range),
+                :global(.mufa-date-picker-wrapper .react-datepicker__day--in-range) {
+                    background-color: #dc2626 !important;
+                    color: white !important;
+                }
+                :global(.mufa-date-picker-wrapper .react-datepicker__day--keyboard-selected) {
+                    background-color: rgba(220, 38, 38, 0.2);
+                    color: #fff;
+                }
+            `}</style>
         </section>
     );
 }

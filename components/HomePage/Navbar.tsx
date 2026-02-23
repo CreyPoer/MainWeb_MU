@@ -72,12 +72,7 @@ export default function Navbar() {
                 { label: t('nav.video'), href: `/${lang}/media/video` }
             ]
         },
-        {
-            label: t('nav.club'),
-            submenu: [
-                { label: t('nav.about'), href: `/${lang}/klub/tentang` }
-            ]
-        },
+        {label: t('nav.club'), href: `/${lang}/klub/tentang`},
         { label: t('nav.mufa'), href: `/${lang}/mufa` }
     ];
 

@@ -46,6 +46,7 @@ export async function GET(request: NextRequest) {
                     title: item.title,
                     excerpt: item.body ? item.body.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : '', // Simple strip tags
                     date: item.stardate ? new Date(item.stardate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '',
+                    created_at: item.created_at || '',
                     image: imageUrl,
                     author: item.author ? item.author.name : 'Admin',
                     tags: item.tags ? item.tags.split(',').filter((t: string) => t.trim() !== '') : [],

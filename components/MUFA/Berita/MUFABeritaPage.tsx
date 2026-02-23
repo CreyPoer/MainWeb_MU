@@ -146,7 +146,6 @@ export default function MUFABeritaPage() {
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -240,7 +239,7 @@ export default function MUFABeritaPage() {
           <div className={styles.mufaContainer}>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
               <div data-aos="fade-up">
-                <p className="text-[11px] md:text-xs font-semibold tracking-[0.32em] uppercase text-red-400 mb-2">
+                <p className="text-[11px] md:text-xs font-semibold text-red-400 mb-2">
                   {t('mufa.berita_page.list_eyebrow')}
                 </p>
                 <h2 className="text-2xl md:text-3xl font-extrabold text-white uppercase leading-tight mb-2">
@@ -292,11 +291,14 @@ export default function MUFABeritaPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
-                      <span className="inline-flex px-3 py-1 rounded-full bg-red-600/90 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/90">
-                        {item.category}
-                      </span>
                       <span className="text-[10px] text-slate-200/85 font-medium bg-black/40 px-2 py-1 rounded-full">
-                        {item.date}
+                        {item.created_at
+                          ? new Date(item.created_at).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                          })
+                          : ''}
                       </span>
                     </div>
                   </div>
@@ -328,12 +330,6 @@ export default function MUFABeritaPage() {
                           </button>
                         ))}
                       </div>
-                      <Link
-                        href={`/${lang}/mufa/berita/${item.id}`}
-                        className="text-[10px] font-semibold tracking-[0.18em] uppercase text-slate-400 group-hover:text-amber-300 transition hidden md:inline-flex"
-                      >
-                        {t('mufa.berita_page.read_detail')}
-                      </Link>
                     </div>
                   </div>
                 </article>
@@ -346,9 +342,9 @@ export default function MUFABeritaPage() {
                 <button
                   disabled={page === 1 || loading}
                   onClick={() => handlePageChange(page - 1)}
-                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold uppercase tracking-wider text-[10px] hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-300 disabled:hover:border-slate-700 transition duration-300"
+                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold text-[10px] hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-300 disabled:hover:border-slate-700 transition duration-300"
                 >
-                  Prev
+                  {lang === 'en' ? 'Prev' : 'Sebelum'}
                 </button>
 
                 <div className="flex gap-1.5">
@@ -387,9 +383,9 @@ export default function MUFABeritaPage() {
                 <button
                   disabled={page === totalPages || loading}
                   onClick={() => handlePageChange(page + 1)}
-                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold uppercase tracking-wider text-[10px] hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-300 disabled:hover:border-slate-700 transition duration-300"
+                  className="px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold text-[10px] hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:hover:text-slate-300 disabled:hover:border-slate-700 transition duration-300"
                 >
-                  Next
+                  {lang === 'en' ? 'Next' : 'Lanjut'}
                 </button>
               </div>
             )}

@@ -35,6 +35,7 @@ export interface MatchData {
     time: string;
     events: MatchEvent[];
     statistics?: MatchStatistics;
+    leagueName?: string;
 }
 
 // API Response Interface mapping to Backend MatchSchedule model
@@ -58,6 +59,10 @@ export interface APIMatch {
             substitutions?: any[];
         };
     };
+    competition?: {
+        id: number;
+        name: string;
+    };
 }
 
 export const transformMatchData = (apiMatch: APIMatch, teamRole?: number): MatchData => {
@@ -73,6 +78,10 @@ export const transformMatchData = (apiMatch: APIMatch, teamRole?: number): Match
             awayTeam = "MADURA UNITED FC U20";
         }
     }
+
+    // Determine if Madura United is the home team
+    // This assumes that the home team name will always contain "MADURA" when they play at home
+    const isMaduraHome = homeTeam && homeTeam.toUpperCase().includes("MADURA");
 
     // Transform Events
     let events: MatchEvent[] = [];
@@ -146,15 +155,16 @@ export const transformMatchData = (apiMatch: APIMatch, teamRole?: number): Match
         id: apiMatch.id,
         homeTeam: homeTeam,
         homeLogo: apiMatch.home_team_logo,
-        homeScore: apiMatch.score,
+        homeScore: isMaduraHome ? apiMatch.score : apiMatch.oppponent_score,
         awayTeam: awayTeam,
         awayLogo: apiMatch.away_team_logo,
-        awayScore: apiMatch.oppponent_score,
+        awayScore: isMaduraHome ? apiMatch.oppponent_score : apiMatch.score,
         stadium: apiMatch.stadium || "Stadion Gelora Ratu Pamelingan", // Fallback if null
         date: formatDate(apiMatch.date),
         time: apiMatch.kickoff_time,
         events: events,
-        statistics: apiMatch.statistics ? statsOnly : undefined
+        statistics: apiMatch.statistics ? statsOnly : undefined,
+        leagueName: apiMatch.competition?.name
     };
 };
 

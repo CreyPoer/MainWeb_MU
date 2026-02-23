@@ -185,9 +185,6 @@ export default function OfficialsContent() {
                 <div className="official-card-inner">
                   {/* Ribbon */}
                   <div className="official-ribbon">
-                    <span className="official-ribbon-team">
-                      {teamLabel[official.team]}
-                    </span>
                     <span
                       className={`official-role-badge ${isMainTeam ? "utama" : "akademi"
                         }`}
@@ -268,16 +265,10 @@ export default function OfficialsContent() {
                   {/* Footer */}
                   <div className="official-footer">
                     <span className="official-footer-pill">
-                      Official {teamLabel[official.team]}
-                    </span>
-                    <div className="official-footer-birth">
-                      <span className="official-footer-birth-label">
-                        Tanggal Lahir
-                      </span>
                       <span className="official-footer-birth-value">
-                        {official.birthDate}
+                         Tanggal Lahir : {official.birthDate}
                       </span>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </article>
@@ -637,8 +628,6 @@ export default function OfficialsContent() {
           border: 1px solid rgba(249, 250, 251, 0.16);
           font-size: 0.68rem;
           font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.18em;
           color: #e5e7eb;
         }
 
@@ -650,8 +639,6 @@ export default function OfficialsContent() {
 
         .official-footer-birth-label {
           font-size: 0.6rem;
-          text-transform: uppercase;
-          letter-spacing: 0.22em;
           color: #6b7280;
         }
 

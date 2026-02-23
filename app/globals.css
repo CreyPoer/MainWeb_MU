@@ -44,7 +44,6 @@ body {
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.28em;
-    text-transform: uppercase;
 }
 
 .mu-philosophy__title {
@@ -52,7 +51,6 @@ body {
     font-size: 22px;
     font-weight: 900;
     letter-spacing: 0.10em;
-    text-transform: uppercase;
     margin-top: 6px;
 }
 
@@ -297,7 +295,6 @@ body {
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.28em;
-    text-transform: uppercase;
 }
 
 .mu-homebase__title {
@@ -305,7 +302,6 @@ body {
     font-size: 22px;
     font-weight: 900;
     letter-spacing: 0.10em;
-    text-transform: uppercase;
     margin-top: 6px;
 }
 
@@ -397,7 +393,6 @@ body {
     font-size: 11px;
     font-weight: 900;
     letter-spacing: 0.08em;
-    text-transform: uppercase;
     padding: 8px 10px;
     border-radius: 999px;
 }
@@ -533,7 +528,6 @@ body {
     background: #dc2626;
     color: #fff;
     font-weight: 800;
-    text-transform: uppercase;
     letter-spacing: 0.16em;
     font-size: 10px;
 }
@@ -576,7 +570,6 @@ body {
 
 .mufa-news-detail-tagsLabel {
     font-weight: 900;
-    text-transform: uppercase;
     font-size: 14px;
     letter-spacing: 0.16em;
     color: #e5e7eb;
@@ -600,7 +593,6 @@ body {
 
 .mufa-news-detail-shareLabel {
     font-weight: 900;
-    text-transform: uppercase;
     font-size: 14px;
     letter-spacing: 0.16em;
     color: #e5e7eb;
@@ -656,7 +648,6 @@ body {
     font-size: 16px;
     font-weight: 900;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
     color: #fef2f2;
     margin-bottom: 8px;
 }
@@ -676,7 +667,6 @@ body {
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
     cursor: pointer;
 }
 
@@ -788,7 +778,6 @@ body {
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.2em;
-    text-transform: uppercase;
 }
 
 .mufa-news-detail-backdrop {
@@ -840,7 +829,6 @@ body {
     .mufa-news-detail-sidebarHeader-mobile h4 {
         font-size: 14px;
         font-weight: 800;
-        text-transform: uppercase;
         letter-spacing: 0.18em;
         margin: 0;
     }
@@ -993,7 +981,6 @@ body {
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.22em;
-    text-transform: uppercase;
 }
 
 .mu-achievements__title {
@@ -1002,7 +989,6 @@ body {
     font-size: 28px;
     font-weight: 900;
     letter-spacing: 0.04em;
-    text-transform: uppercase;
     text-align: left;
 }
 
@@ -1064,7 +1050,6 @@ body {
     font-weight: 900;
     font-size: 13px;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
 }
 
 .mu-achievements__itemDesc {
@@ -1209,7 +1194,6 @@ body {
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.25em;
-    text-transform: uppercase;
     color: #B91C1C;
     margin-bottom: 0.4rem;
 }
@@ -1463,7 +1447,6 @@ body {
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1763,7 +1746,6 @@ body {
     font-size: 4rem;
     font-weight: 900;
     color: #fff;
-    text-transform: uppercase;
     line-height: 1.2;
     margin-bottom: 2rem;
     animation: slideInFromTop 0.8s ease-out;
@@ -1804,7 +1786,6 @@ body {
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
-    text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.3s ease;
     display: inline-flex;
@@ -1886,7 +1867,6 @@ body {
     gap: 0.25rem;
     font-size: 0.7rem;
     font-weight: 700;
-    text-transform: uppercase;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(211, 47, 47, 0.4);
 }
@@ -1968,7 +1948,6 @@ body {
         padding: 1rem;
         font-size: 1.1rem;
         font-weight: 800;
-        text-transform: uppercase;
         letter-spacing: 1px;
         cursor: pointer;
         list-style: none;
@@ -2122,7 +2101,6 @@ body {
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.35em;
-    text-transform: uppercase;
     color: rgba(252, 165, 165, 0.94);
     margin-bottom: 0.5rem;
 }
@@ -2233,7 +2211,6 @@ body {
     font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: 0.05em;
-    text-transform: uppercase;
     margin-bottom: 0.25rem;
     color: #ffffff;
 }

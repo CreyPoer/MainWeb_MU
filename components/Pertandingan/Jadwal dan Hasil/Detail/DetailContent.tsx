@@ -79,7 +79,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                         textTransform: "uppercase",
                         boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
                     }}>
-                        {t('page.schedule.detail.league_name')}
+                        {match.leagueName || t('page.schedule.detail.league_name')}
                     </div>
 
                     <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0 20px" }}>
@@ -218,7 +218,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                                         <Image src={match.homeLogo} width={32} height={32} alt="Home" style={{ objectFit: "contain" }} unoptimized />
                                         <span>{match.statistics.possession.home}%</span>
                                     </div>
-                                    <span style={{ fontSize: "14px", color: "#6B7280", textTransform: "uppercase" }}>{t('page.schedule.detail.labels.ball_possession')}</span>
+                                    <span style={{ fontSize: "14px", color: "#6B7280" }}>{t('page.schedule.detail.labels.ball_possession')}</span>
                                     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                         <span>{match.statistics.possession.away}%</span>
                                         <Image src={match.awayLogo} width={32} height={32} alt="Away" style={{ objectFit: "contain" }} unoptimized />
@@ -255,7 +255,7 @@ export default function DetailContent({ match }: DetailContentProps) {
                                         alignItems: "center",
                                         padding: "16px 20px",
                                         backgroundColor: idx % 2 === 0 ? "white" : "#F3F4F6",
-                                        fontSize: "18px",
+                                        fontSize: "15px",
                                         fontWeight: "bold",
                                         color: "#111827"
                                     }}>

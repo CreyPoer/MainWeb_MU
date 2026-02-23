@@ -164,8 +164,6 @@ export default function GalleryContent() {
                             style={{
                                 color: "#DC2626",
                                 fontWeight: "bold",
-                                textTransform: "uppercase",
-                                letterSpacing: "0.05em",
                                 fontSize: "14px",
                                 marginBottom: "8px",
                             }}
@@ -177,11 +175,11 @@ export default function GalleryContent() {
                                 fontSize: "36px",
                                 fontWeight: 900,
                                 textTransform: "uppercase",
-                                color: "#111827",
+                                color: "#DC2626",
                                 lineHeight: 1.2,
                             }}
                         >
-                            {t('page.gallery.club1')} <span style={{ color: "#DC2626" }}>{t('page.gallery.breadcrumb')}</span> {t('page.gallery.club2')}
+                            {t('page.gallery.club1')} <span style={{ color: "#111827" }}>{t('page.gallery.breadcrumb')}</span> {t('page.gallery.club2')}
                         </h2>
                     </div>
 
@@ -508,7 +506,6 @@ export default function GalleryContent() {
                 .overlay-title {
                     font-size: 15px;
                     font-weight: 800;
-                    text-transform: uppercase;
                     line-height: 1.35;
                 }
 

@@ -88,10 +88,8 @@ export default function MerchandiseSection() {
                         style={{
                             color: "#FFFFFF",
                             fontWeight: "bold",
-                            fontSize: "14px",
-                            letterSpacing: "2px",
+                            fontSize: "17px",
                             marginBottom: "10px",
-                            textTransform: "uppercase",
                             textShadow: "0 1px 2px rgba(0,0,0,0.3)"
                         }}
                     >
@@ -224,7 +222,6 @@ export default function MerchandiseSection() {
                                         color: "#DC2626",
                                         border: "none",
                                         fontWeight: "bold",
-                                        textTransform: "uppercase",
                                         fontSize: "14px",
                                         display: "flex",
                                         alignItems: "center",
@@ -257,7 +254,6 @@ export default function MerchandiseSection() {
                         color: "white",
                         fontSize: "14px",
                         fontWeight: "bold",
-                        textTransform: "uppercase",
                         borderRadius: "50px",
                         transition: "all 0.3s ease",
                         textDecoration: "none"
