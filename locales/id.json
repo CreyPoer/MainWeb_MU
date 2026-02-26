@@ -7,10 +7,10 @@
     "home": "Beranda",
     "team": "Tim",
     "main_team": "Tim Utama",
-    "academy": "Academy",
+    "academy": "Akademi",
     "u20": "U-20",
     "players": "Pemain",
-    "officials": "Petugas",
+    "officials": "Official",
     "matches": "Pertandingan",
     "schedule": "Jadwal dan Hasil",
     "standings": "Klasemen",
@@ -72,7 +72,7 @@
     "standings": "Klasemen",
     "main_team": "Tim Utama",
     "academy_team": "Tim Akademi",
-    "officials": "Petugas",
+    "officials": "Official",
     "news": "Berita",
     "about_us": "Tentang Kami",
     "mufa": "MUFA"
@@ -136,10 +136,10 @@
   },
   "page": {
     "officials": {
-      "title": "Petugas",
-      "breadcrumb": "Daftar Petugas",
-      "list_title": "Daftar Petugas",
-      "no_data": "Tidak ada data petugas.",
+      "title": "Official",
+      "breadcrumb": "Daftar Official",
+      "list_title": "Daftar Official",
+      "no_data": "Tidak ada data official.",
       "main_team": "Tim Utama",
       "academy": "Akademi"
     },
@@ -265,23 +265,23 @@
       "no_community": "Belum ada data komunitas.",
       "history": {
         "title": "Sejarah & Perjalanan Madura United FC",
-        "desc": "Perjalanan panjang Madura United FC berakar dari sejarah klub-klub pendahulunya. Dari era Pelita Jaya yang menjadi fondasi profesional, transformasi menjadi Pelita Bandung Raya, hingga kelahiran identitas baru sebagai Madura United FC yang mewakili empat kabupaten di Pulau Madura.",
+        "desc": "Madura United FC hadir sebagai manifestasi dari semangat dan gairah sepak bola masyarakat di Pulau Garam. Berawal dari visi besar untuk membangun klub profesional yang tangguh, identitas Laskar Sape Kerrab kini berdiri tegak mewakili kebanggaan serta harga diri masyarakat di empat kabupaten di Pulau Madura. Perjalanan ini mencerminkan sebuah evolusi dinamis dari sebuah langkah awal menuju posisi elit di kasta tertinggi kompetisi nasional.",
         "foundation": {
-          "label": "Era Fondasi",
-          "title": "Pelita Jaya (1986 – 2012)",
-          "body": "Semua bermula dari Pelita Jaya, salah satu pionir klub profesional di Indonesia. Di era ini, klub membangun reputasi besar di kompetisi Galatama dan dikenal sebagai tim elit yang melahirkan banyak legenda sepak bola nasional. Meskipun markasnya sempat berpindah-pindah, nilai profesionalisme yang ditanamkan sejak 1986 menjadi fondasi kuat bagi eksistensi klub di masa depan."
+          "label": "Era Inisiasi & Kejutan Nasional",
+          "title": "Kelahiran dan Kejutan Awal (2016)",
+          "body": "Madura United FC resmi memulai perjalanannya di kancah sepak bola nasional pada 10 Januari 2016. Diinisiasi oleh Achsanul Qosasi, klub ini lahir dengan visi besar untuk menyatukan seluruh masyarakat Pulau Madura melalui sepak bola profesional. Mengusung identitas Laskar Sape Kerrab dengan jersey garis merah-putih yang ikonik, klub ini langsung memberikan kejutan besar pada tahun pertamanya. Di kompetisi Torabika Soccer Championship (TSC) 2016, Madura United tampil sangat dominan, bahkan sempat menjadi juara paruh musim sebelum akhirnya mengakhiri kompetisi di peringkat ketiga nasional."
         },
         "transition": {
-          "label": "Era Transisi",
-          "title": "Pelita Bandung Raya (2012 – 2015)",
-          "body": "Memasuki tahun 2012, klub bertransformasi menjadi Pelita Bandung Raya (PBR). Masa ini adalah periode ujian sekaligus pembuktian. PBR sempat mengejutkan publik sepak bola tanah air dengan menembus babak semifinal Indonesia Super League (ISL) 2014. Namun, dinamika sepak bola nasional di akhir 2015 menuntut adanya perubahan besar untuk menjaga kelangsungan hidup klub."
+          "label": "Era Transformasi & Galacticos",
+          "title": "Transformasi Menuju Klub Profesional Modern (2017 - 2022)",
+          "body": "Setelah kesuksesan awal, Madura United bertransformasi menjadi salah satu klub paling profesional di Indonesia. Pada periode ini, klub dikenal dengan julukan \"Galacticos Indonesia\" karena keberhasilannya mendatangkan pemain-pemain kelas dunia (Marquee Player) seperti Peter Odemwingie serta deretan bintang lokal papan atas. Lebih dari sekadar prestasi tim senior, manajemen mulai fokus membangun fondasi jangka panjang dengan mendirikan Madura United Football Academy (MUFA) dan memiliki pusat pelatihan (Training Ground) sendiri di Pamekasan. Hal ini membuktikan komitmen klub untuk tidak hanya mengejar trofi, tetapi juga mencetak talenta muda asli Madura."
         },
         "revival": {
-          "label": "Era Kebangkitan",
-          "title": "Madura United FC (2016 – Sekarang)",
-          "body1": "Ini adalah era di mana klub akhirnya menemukan rumah dan identitas sejatinya. Melalui akuisisi oleh Prof. Achsanul Qosasi pada 10 Januari 2016, klub resmi berpindah ke Pulau Madura. Bukan sekadar berganti nama, ini adalah deklarasi kemandirian sepak bola rakyat Madura.",
-          "body2": "Madura United mencetak sejarah sebagai klub yang menyatukan empat kabupaten sekaligus — Bangkalan, Sampang, Pamekasan, dan Sumenep — di bawah satu panji Laskar Sape Kerrab.",
-          "body3": "Dalam waktu singkat, klub konsisten berada di papan atas Liga 1. Puncaknya, Madura United meraih posisi Runner-up di musim 2023/2024 dan mulai melebarkan sayap di kompetisi internasional melalui AFC Challenge League 2024/2025."
+          "label": "Era Kejayaan & Konsistensi",
+          "title": "Puncak Prestasi dan Konsistensi Nasional (2023 - Sekarang)",
+          "body1": "Memasuki era baru, Madura United semakin mengukuhkan posisinya sebagai kekuatan utama di Liga 1 Indonesia. Puncak pencapaian fenomenal diraih pada musim 2023/2024, di mana Laskar Sape Kerrab berhasil menembus babak final Championship Series dan keluar sebagai Runner-up Liga 1. Konsistensi ini didukung oleh basis suporter yang semakin solid, mulai dari K-Conk Mania hingga Tretan Dhibi’, yang terus mengawal semangat \"Madura Bersatu\". Kini, Madura United bukan lagi sekadar tim baru, melainkan simbol harga diri dan pemersatu masyarakat Madura di level tertinggi sepak bola tanah air.",
+          "body2": "",
+          "body3": ""
         }
       },
       "vision": {

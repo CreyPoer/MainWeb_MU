@@ -81,12 +81,13 @@ export default function MatchSection() {
 
                 {/* 1. BADGE - MODERN SKEWED STYLE */}
                 <div className="mb-8 md:mb-12 w-full flex flex-col items-center justify-center" style={{ marginBottom: 'clamp(2rem, 4vw, 4rem)' }} data-aos="fade-up">
-                    <div className="relative inline-block transform -skew-x-12 bg-black border-2 border-white shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-transform hover:scale-105 active:scale-95"
+                    <div className="relative inline-block border-[1px] border-white/20 shadow-[0_2px_5px_rgba(0,0,0,0.5)] rounded-xl transition-all duration-300 hover:scale-105 active:scale-95"
                         style={{
-                            padding: 'clamp(0.75rem, 1.5vw, 1rem) clamp(2rem, 3vw, 3rem)'
+                            padding: 'clamp(0.75rem, 1.5vw, 1rem) clamp(2rem, 3vw, 3rem)',
+                            background: 'linear-gradient(to bottom, #333 0%, #2a2a2a 100%)' // Matching new_placeholder from flip countdown
                         }}>
 
-                        <span className="block transform skew-x-12 text-white font-black uppercase tracking-[0.2em] leading-none drop-shadow-md max-[380px]:!text-[0.6rem]"
+                        <span className="block text-white font-black uppercase tracking-[0.2em] leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] max-[380px]:!text-[0.6rem]"
                             style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1.6rem)' }}>
                             {t('match.next_match')}
                         </span>

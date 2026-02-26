@@ -241,14 +241,14 @@ export default function FooterSection() {
                                 <FaEnvelope style={{ color: "#DC2626", marginTop: "4px" }} />
                                 <div>
                                     <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>{t('footer.email')}</span>
-                                    <span style={{ fontSize: "14px" }}>info@maduraunited.com</span>
+                                    <span style={{ fontSize: "14px" }}>app.maduraunitedfc@gmail.com</span>
                                 </div>
                             </li>
                             <li style={{ display: "flex", gap: "16px" }}>
                                 <FaPhoneAlt style={{ color: "#DC2626", marginTop: "4px" }} />
                                 <div>
                                     <span style={{ display: "block", color: "white", fontWeight: "bold", fontSize: "14px", marginBottom: "4px" }}>{t('footer.phone')}</span>
-                                    <span style={{ fontSize: "14px" }}>098 777 888 90</span>
+                                    <span style={{ fontSize: "14px" }}>0877 5025 0450</span>
                                 </div>
                             </li>
                             <li style={{ display: "flex", gap: "16px" }}>

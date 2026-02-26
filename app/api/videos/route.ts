@@ -25,6 +25,13 @@ export async function GET(request: NextRequest) {
                 rawVideos = rawVideos.filter((v: any) => v.channel === channel);
             }
 
+            // Sort descending by upload_date (or created_at as fallback) to ensure latest videos show first
+            rawVideos.sort((a: any, b: any) => {
+                const dateA = new Date(a.upload_date || a.created_at).getTime();
+                const dateB = new Date(b.upload_date || b.created_at).getTime();
+                return dateB - dateA;
+            });
+
             videos = rawVideos.map((item: any) => {
                 // Determine Video ID
                 let videoId = item.url;
@@ -37,7 +44,7 @@ export async function GET(request: NextRequest) {
                 return {
                     id: videoId,
                     title: item.title,
-                    date: item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
+                    date: (item.upload_date || item.created_at) ? new Date(item.upload_date || item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
                     duration: item.duration || '00:00',
                     thumbnail: item.thumbnail
                 };

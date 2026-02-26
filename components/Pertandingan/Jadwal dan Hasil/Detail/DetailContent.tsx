@@ -312,9 +312,15 @@ export default function DetailContent({ match }: DetailContentProps) {
                                         {event.team === 'home' && (
                                             <>
                                                 <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <span style={{ fontWeight: "bold", color: "#111827" }}>{event.player}</span>
+                                                    <span style={{ fontWeight: "bold", color: "#111827" }}>
+                                                        {event.type === 'subst' ? event.sub : event.player}
+                                                    </span>
                                                     {event.assist && <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.assist}</span>}
-                                                    {event.sub && <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.sub}</span>}
+                                                    {event.type === 'subst' ? (
+                                                        <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.player}</span>
+                                                    ) : (
+                                                        event.sub && <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.sub}</span>
+                                                    )}
                                                 </div>
                                                 {event.type === 'goal' && <FaFutbol />}
                                                 {/* For goal score, maybe display it? currently not designed */}
@@ -375,9 +381,15 @@ export default function DetailContent({ match }: DetailContentProps) {
                                                     </div>
                                                 )}
                                                 <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <span style={{ fontWeight: "bold", color: "#111827" }}>{event.player}</span>
+                                                    <span style={{ fontWeight: "bold", color: "#111827" }}>
+                                                        {event.type === 'subst' ? event.sub : event.player}
+                                                    </span>
                                                     {event.assist && <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.assist}</span>}
-                                                    {event.sub && <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.sub}</span>}
+                                                    {event.type === 'subst' ? (
+                                                        <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.player}</span>
+                                                    ) : (
+                                                        event.sub && <span style={{ fontSize: "12px", color: "#6B7280" }}>{event.sub}</span>
+                                                    )}
                                                 </div>
                                             </>
                                         )}

@@ -265,23 +265,23 @@
             "no_community": "No community data available yet.",
             "history": {
                 "title": "History & Journey of Madura United FC",
-                "desc": "The long journey of Madura United FC is rooted in the history of its predecessors. From the era of Pelita Jaya which became the professional foundation, the transformation into Pelita Bandung Raya, to the birth of a new identity as Madura United FC representing four regencies on Madura Island.",
+                "desc": "Madura United FC emerged as a manifestation of the footballing spirit and passion of the people of the 'Salt Island.' Born from a grand vision to establish a resilient professional club, the Laskar Sape Kerrab identity now stands proud, representing the dignity and pride of the communities across the four regencies of Madura. This journey signifies a dynamic evolution, progressing from its initial steps toward an elite standing in the nation's top-tier competition.",
                 "foundation": {
-                    "label": "Foundation Era",
-                    "title": "Pelita Jaya (1986 – 2012)",
-                    "body": "It all started with Pelita Jaya, one of the pioneers of professional clubs in Indonesia. In this era, the club built a great reputation in the Galatama competition and was known as an elite team that produced many national football legends. Although its base moved several times, the value of professionalism instilled since 1986 became a strong foundation for the club's future existence."
+                    "label": "Initiation & National Surprise Era",
+                    "title": "Birth and Early Surprises (2016)",
+                    "body": "Madura United FC officially began its journey in the national football scene on January 10, 2016. Initiated by Achsanul Qosasi, the club was born with a grand vision to unite all communities of Madura Island through professional football. Carrying the Laskar Sape Kerrab identity with its iconic red-and-white striped jersey, the club immediately delivered major surprises in its inaugural year. In the 2016 Torabika Soccer Championship (TSC), Madura United dominated the competition, even clinching the half-season top spot before eventually concluding the tournament in third place nationally."
                 },
                 "transition": {
-                    "label": "Transition Era",
-                    "title": "Pelita Bandung Raya (2012 – 2015)",
-                    "body": "Entering 2012, the club transformed into Pelita Bandung Raya (PBR). This was a period of trial and proof. PBR surprised the national football public by reaching the semifinals of the 2014 Indonesia Super League (ISL). However, the dynamics of national football in late 2015 demanded major changes to maintain the club's survival."
+                    "label": "Transformation & Galacticos Era",
+                    "title": "Transformation Towards a Modern Professional Club (2017 - 2022)",
+                    "body": "Following its initial success, Madura United transformed into one of the most professional clubs in Indonesia. During this period, the club was known as the \"Indonesian Galacticos\" due to its success in signing world-class players (Marquee Players) such as Peter Odemwingie alongside top-tier local stars. Beyond senior team achievements, the management focused on building a long-term foundation by establishing the Madura United Football Academy (MUFA) and securing its own Training Ground in Pamekasan. This signifies the club's commitment not only to chasing trophies but also to developing native Madurese youth talents."
                 },
                 "revival": {
-                    "label": "Revival Era",
-                    "title": "Madura United FC (2016 – Present)",
-                    "body1": "This is the era where the club finally found its true home and identity. Through the acquisition by Prof. Achsanul Qosasi on January 10, 2016, the club officially moved to Madura Island. More than just a name change, this is a declaration of independence for Madura's people's football.",
-                    "body2": "Madura United made history as a club that unites four regencies at once — Bangkalan, Sampang, Pamekasan, and Sumenep — under one banner, Laskar Sape Kerrab.",
-                    "body3": "In a short time, the club has consistently been at the top of Liga 1. Most recently, Madura United secured the Runner-up position in the 2023/2024 season and began spreading its wings in international competition through the AFC Challenge League 2024/2025."
+                    "label": "Glory & Consistency Era",
+                    "title": "Peak Achievements and National Consistency (2023 - Present)",
+                    "body1": "Entering a new era, Madura United further solidified its position as a major powerhouse in Indonesia's Liga 1. The pinnacle of its phenomenal achievement was reached during the 2023/2024 season, where Laskar Sape Kerrab reached the Championship Series finals and emerged as the Liga 1 Runner-up. This consistency is backed by an increasingly solid supporter base, ranging from K-Conk Mania to Tretan Dhibi', who continually safeguard the spirit of \"Madura Bersatu\" (United Madura). Today, Madura United is no longer just a new team, but a symbol of dignity and the unifier of the Madurese community at the highest level of Indonesian football.",
+                    "body2": "",
+                    "body3": ""
                 }
             },
             "vision": {
