@@ -23,7 +23,7 @@ export default function VideoHighlightSection() {
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const res = await fetch('/api/videos');
+                const res = await fetch('/api/videos?channel=MUTV');
                 const data = await res.json();
                 if (Array.isArray(data)) {
                     setVideoData(data);
